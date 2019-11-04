@@ -1,16 +1,16 @@
 include(../../mere-utils/mere-utils-lib/mere-utils-lib.pri)
-include(../../mere-config/mere-config-lib/mere-config-lib.pri)
+#include(../../mere-config/mere-config-lib/mere-config-lib.pri)
 
-QT += core
+QT      = core
 
 CONFIG += c++11
 CONFIG += shared
 
-TARGET = mere-store
+TARGET   = mere-store
 VERSION  = 0.0.1b
 TEMPLATE = lib
 
-DEFINES += LIB_CODE=\\\"$$TARGET\\\"
+DEFINES += LIB_CODE=\\\"store\\\"
 DEFINES += LIB_NAME=\\\"$$TARGET\\\"
 DEFINES += LIB_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
@@ -32,27 +32,25 @@ HEADERS +=  \
 
 DESTDIR = $$PWD/../lib
 
-#INCLUDEPATH += src
-#INCLUDEPATH += ../include
-#INCLUDEPATH += ../mere-store-utils/include
-#INCLUDEPATH += ../../mere-utils/include
-#INCLUDEPATH += ../../mere-config/include
-#INCLUDEPATH += /usr/local/include
-
-#DEPENDPATH += . ../lib
-#LIBS += -L$$PWD/../lib -lmere-store-utils
-
-#DEPENDPATH  +=. ../../mere-utils/lib
-#LIBS += -L../../mere-utils/lib  -lmere-utils
-
-#DEPENDPATH  +=. ../../mere-config/lib
-#LIBS += -L../../mere-config/lib  -lmere-config
-
 LIBS += -lleveldb
 
-#LIBDIR = $$PWD/../lib
-#INCDIR = $$PWD/../include
-#DESTDIR = \"$$LIBDIR\"
+defineTest(copy) {
+    source = $$1
+    target = $$2
+
+    for(file, source) {
+        sdir = $${dirname(file)}
+        sdir = $$replace(sdir, "src", "")
+        path = $${target}$${sdir}
+
+        QMAKE_POST_LINK += $$QMAKE_MKDIR $$quote($$path) $$escape_expand(\\n\\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$file) $$quote($$path) $$escape_expand(\\n\\t)
+    }
+
+    export(QMAKE_POST_LINK)
+}
+
+copy($$HEADERS, $$PWD/../include/mere/store)
 
 #
 # Install
