@@ -8,6 +8,8 @@
 #include <QString>
 #include <QVariant>
 
+typedef QMap<QString, QVariant> StoreUnit;
+
 class MERE_STORE_LIBSPEC MereStoreUnit
 {
 public:
@@ -23,12 +25,16 @@ public:
     QString path() const;
     void setPath(QString path);
 
+    StoreUnit unit() const;
+    void setUnit(StoreUnit unit);
+
     virtual QMap<QString, QVariant> map() const;
 
 private:
-    QUuid   m_uuid;
-    QString m_type;
-    QString m_path;
+    QUuid     m_uuid;
+    QString   m_type;
+    QString   m_path;
+    StoreUnit m_unit;
 };
 
 #endif // MERESTOREUNIT_H

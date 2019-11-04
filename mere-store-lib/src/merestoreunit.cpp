@@ -40,13 +40,24 @@ void MereStoreUnit::setPath(QString path)
     m_path = path;
 }
 
+StoreUnit MereStoreUnit::unit() const
+{
+    return m_unit;
+}
+
+void MereStoreUnit::setUnit(StoreUnit unit)
+{
+    m_unit = unit;
+}
+
 QMap<QString, QVariant> MereStoreUnit::map() const
 {
     QMap<QString, QVariant> map;
-    qDebug() << "?????" << type() << m_type;
+
     map.insert("uuid", uuid());
     map.insert("type", type());
     map.insert("path", path());
+    map.insert("unit", unit());
 
     return map;
 }
