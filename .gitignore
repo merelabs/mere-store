@@ -1,0 +1,6 @@
+*.o
+.qmake.stash
+Makefile
+lib/
+include/
+mere-store.pro.*
