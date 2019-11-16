@@ -20,7 +20,8 @@ SOURCES +=  \
     src/merestore.cpp \
     src/merestoreconfig.cpp \
     src/merestorefilter.cpp \
-    src/merestoreunit.cpp
+    src/merestoreunit.cpp \
+    src/merestoreunitdescriptor.cpp
 
 HEADERS +=  \
     src/meredefaultstore.h \
@@ -28,9 +29,12 @@ HEADERS +=  \
     src/merestoreconfig.h \
     src/merestorefilter.h \
     src/merestoreglobal.h \
-    src/merestoreunit.h
+    src/merestoreunit.h \
+    src/merestoreunitdescriptor.h
 
 DESTDIR = $$PWD/../lib
+
+INCLUDEPATH += /usr/local/include
 
 LIBS += -lleveldb
 

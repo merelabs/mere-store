@@ -2,6 +2,7 @@
 #define MERESTOREUNIT_H
 
 #include "merestoreglobal.h"
+#include "merestoreunitdescriptor.h"
 
 #include <QMap>
 #include <QUuid>
@@ -9,6 +10,7 @@
 #include <QVariant>
 
 typedef QMap<QString, QVariant> StoreUnit;
+typedef MereStoreUnitDescriptor Metadata;
 
 class MERE_STORE_LIBSPEC MereStoreUnit
 {
@@ -19,11 +21,7 @@ public:
     QUuid uuid() const;
     void setUuid(QUuid uuid);
 
-    QString type() const;
-    void setType(QString type);
-
-    QString path() const;
-    void setPath(QString path);
+    Metadata meta() const;
 
     StoreUnit unit() const;
     void setUnit(StoreUnit unit);
@@ -32,8 +30,7 @@ public:
 
 private:
     QUuid     m_uuid;
-    QString   m_type;
-    QString   m_path;
+    Metadata  m_meta;
     StoreUnit m_unit;
 };
 
