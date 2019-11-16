@@ -57,9 +57,7 @@ void MereStoreUnit::properties(StoreUnitProperties properties)
 
 StoreUnit MereStoreUnit::get() const
 {
-    QMap<QString, QVariant> get;
-
-    return get;
+    return m_unit;
 }
 
 void MereStoreUnit::set(StoreUnit unit)
