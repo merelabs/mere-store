@@ -23,6 +23,7 @@ public:
 
 protected:
     static QString UNIT_KEY;
+    static QString UNIT_META_KEY;
     static QString UNIT_ATTR_KEY;
 
 private:

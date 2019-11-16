@@ -9,8 +9,11 @@
 #include <QString>
 #include <QVariant>
 
-typedef QMap<QString, QVariant> StoreUnit;
 typedef MereStoreUnitDescriptor Metadata;
+typedef QMap<QString, QVariant> StoreUnit;
+typedef QMap<QString, QVariant> StoreUnitFields;
+typedef QMap<QString, QVariant> StoreUnitAttributes;
+typedef QMap<QString, QVariant> StoreUnitProperties;
 
 class MERE_STORE_LIBSPEC MereStoreUnit
 {
@@ -23,15 +26,28 @@ public:
 
     Metadata meta() const;
 
-    StoreUnit unit() const;
-    void setUnit(StoreUnit unit);
+    virtual StoreUnit get() const;
+    virtual void set(StoreUnit unit);
 
-    virtual QMap<QString, QVariant> map() const;
+    virtual StoreUnitFields fields() const;
+    virtual void fields(StoreUnitFields fields);
+
+    virtual StoreUnitAttributes attributes() const;
+    virtual void attributes(StoreUnitAttributes attributes);
+
+    virtual StoreUnitProperties properties() const;
+    virtual void properties(StoreUnitProperties properties);
+
+    QMap<QString, QVariant> map() const;
 
 private:
     QUuid     m_uuid;
     Metadata  m_meta;
     StoreUnit m_unit;
+
+    StoreUnitFields     m_fields;
+    StoreUnitAttributes m_attributes;
+    StoreUnitProperties m_properties;
 };
 
 #endif // MERESTOREUNIT_H

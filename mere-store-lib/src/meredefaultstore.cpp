@@ -4,6 +4,7 @@
 #include <QUuid>
 
 QString MereDefaultStore::UNIT_KEY      = "%1:uuid:%2:";
+QString MereDefaultStore::UNIT_META_KEY = "%1:uuid:%2:meta:%3";
 QString MereDefaultStore::UNIT_ATTR_KEY = "%1:uuid:%2:attr:%3";
 
 MereDefaultStore::~MereDefaultStore()
