@@ -27,8 +27,9 @@ public:
     virtual void update(T unit) = 0;
     virtual void fetch(T unit) = 0;
     virtual void remove(T unit) = 0;
+    virtual void list(T criteria) = 0;
 
-protected:
+//protected:
     explicit MereStore(const QString store, QObject *parent = nullptr);
     virtual QString path() const;
 

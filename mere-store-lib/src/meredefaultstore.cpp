@@ -201,6 +201,25 @@ void MereDefaultStore::search(T query)
     delete it;
 }
 
+void MereDefaultStore::list(T criteria)
+{
+    qDebug() << "DEKHA JAK KI HOY!!!" << db();
+    QString pkey;
+
+    std::string skey = pkey.toStdString();
+    std::string ekey = (pkey + ("~")).toStdString();
+
+//    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+//    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+//    {
+//        QString  _key   = QString::fromStdString(it->key().ToString());
+//        QVariant _value = QString::fromStdString(it->value().ToString());
+
+//        qDebug() << "Key/Value: " << _key << " => " << _value;
+
+//    }
+}
+
 int MereDefaultStore::remove(const QString pkey)
 {
     leveldb::WriteOptions writeOptions;

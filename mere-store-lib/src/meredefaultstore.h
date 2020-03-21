@@ -20,6 +20,7 @@ public:
     virtual void remove(T unit);
 
     virtual void search(T query);
+    virtual void list(T criteria);
 
 protected:
     static QString UNIT_KEY;

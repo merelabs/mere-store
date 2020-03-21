@@ -10,6 +10,7 @@ MereStore::MereStore(const QString store, QObject *parent)
     : QObject(parent),
       m_store(store)
 {
+    qDebug() << "....";
 }
 
 void MereStore::init()
@@ -44,13 +45,14 @@ void MereStore::open()
     {
         qDebug() << "Unable to open/create test database: " << store;
     }
-
 }
 
 void MereStore::close()
 {
+    qDebug() << ">>>>>>>>";
     qDebug() << "Closing database" << m_path.append(m_store);
-    delete m_db;
+    if (m_db)
+        delete m_db;
 }
 
 leveldb::DB* MereStore::db()
