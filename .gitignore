@@ -4,3 +4,4 @@ Makefile
 lib/
 include/
 mere-store.pro.*
+*moc_*

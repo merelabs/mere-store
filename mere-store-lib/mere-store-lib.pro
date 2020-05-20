@@ -7,7 +7,7 @@ CONFIG += c++11
 CONFIG += shared
 
 TARGET   = mere-store
-VERSION  = 0.0.1b
+VERSION  = 0.0.1
 TEMPLATE = lib
 
 DEFINES += LIB_CODE=\\\"store\\\"
@@ -35,7 +35,10 @@ HEADERS +=  \
 DESTDIR = $$PWD/../lib
 
 INCLUDEPATH += /usr/local/include
+INCLUDEPATH += /opt/local/include
 
+LIBS += -L/usr/local/lib
+LIBS += -L/opt/local/lib
 LIBS += -lleveldb
 
 defineTest(copy) {
