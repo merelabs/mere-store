@@ -1,0 +1,13 @@
+#ifndef MERESTOREUTILSGLOBAL_H
+#define MERESTOREUTILSGLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(MERE_STORE_UTILS_LIB)
+#  define MERE_STORE_UTILS_LIBSPEC Q_DECL_EXPORT
+#else
+#  define MERE_STORE_UTILS_LIBSPEC Q_DECL_IMPORT
+#endif
+
+
+#endif // MERESTOREUTILSGLOBAL_H

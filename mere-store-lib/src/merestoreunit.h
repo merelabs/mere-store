@@ -11,43 +11,45 @@
 
 typedef MereStoreUnitDescriptor Metadata;
 typedef QMap<QString, QVariant> StoreUnit;
-typedef QMap<QString, QVariant> StoreUnitFields;
+typedef QMap<QString, QVariant> MappedStoreUnit;
+//typedef QMap<QString, QVariant> StoreUnitFields;
 typedef QMap<QString, QVariant> StoreUnitAttributes;
-typedef QMap<QString, QVariant> StoreUnitProperties;
+//typedef QMap<QString, QVariant> StoreUnitProperties;
 
 class MERE_STORE_LIBSPEC MereStoreUnit
 {
 public:
     virtual ~MereStoreUnit();
-    MereStoreUnit();
+    explicit MereStoreUnit(const QString type);
+
+    QString type() const;
+//    void setType(const QString type);
 
     QUuid uuid() const;
     void setUuid(QUuid uuid);
 
-    Metadata meta() const;
+    QString path() const;
+    void setPath(QString path);
+
+//    Metadata meta() const;
 
     virtual StoreUnit get() const;
     virtual void set(StoreUnit unit);
 
-    virtual StoreUnitFields fields() const;
-    virtual void fields(StoreUnitFields fields);
+//    virtual StoreUnitFields fields() const;
+//    virtual void setFields(StoreUnitFields fields);
 
     virtual StoreUnitAttributes attributes() const;
-    virtual void attributes(StoreUnitAttributes attributes);
+    virtual void setAttributes(StoreUnitAttributes attributes);
 
-    virtual StoreUnitProperties properties() const;
-    virtual void properties(StoreUnitProperties properties);
+//    virtual StoreUnitProperties properties() const;
+//    virtual void setProperties(StoreUnitProperties properties);
 
-    QMap<QString, QVariant> map() const;
+    StoreUnit map() const;
 
 private:
-    QUuid     m_uuid;
-    Metadata  m_meta;
-    StoreUnit m_unit;
-
-    StoreUnitFields     m_fields;
-    StoreUnitAttributes m_attributes;
-    StoreUnitProperties m_properties;
+    class MereStoreUnitPrivate;
+    MereStoreUnitPrivate *d_ptr;
 };
 
 #endif // MERESTOREUNIT_H

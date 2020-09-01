@@ -28,7 +28,6 @@ private:
 public:
     static MereStoreConfig* instance();
 
-
     QString storePath() const;
     void setStorePath(const QString path);
 

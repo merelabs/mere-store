@@ -1,24 +1,30 @@
 QT += core
 QT -= gui
-QT += x11extras
 
 CONFIG += c++11
 CONFIG += console
 CONFIG -= app_bundle
+CONFIG += shared
 
 TARGET = mere-store-utils
 TEMPLATE = lib
 
+
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_UTILS_LIB
 
-SOURCES +=
-HEADERS +=
+SOURCES += \
+    merestoreutils.cpp
+HEADERS += \
+    merestoreutils.h \
+    merestoreutilsglobal.h
 
-LIBDIR = $$PWD/../lib
-INCDIR = $$PWD/../include
-DESTDIR = \"$$LIBDIR\"
+INCLUDEPATH += /usr/local/include
+INCLUDEPATH += /opt/local/include
 
-QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$PWD/$$HEADERS) $$quote($$INCDIR) $$escape_expand(\\n\\t)
+LIBS += -L/usr/local/lib
+LIBS += -L/opt/local/lib
+LIBS += -lmere-store
+
 
 #
 # Install
@@ -27,7 +33,7 @@ unix {
     target.path = /usr/local/lib
     INSTALLS += target
 
-    INSTALL_PREFIX = /usr/local/include/mere/store
+    INSTALL_PREFIX = /usr/local/include/mere/store/utils
     for(header, HEADERS) {
         sdir = $${dirname(header)}
         sdir = $$replace(sdir, "src", "")
@@ -38,4 +44,3 @@ unix {
         eval(INSTALLS *= headers_$${path})
     }
 }
-

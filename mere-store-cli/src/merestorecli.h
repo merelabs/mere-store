@@ -1,8 +1,11 @@
 #ifndef MERESTORECLI_H
 #define MERESTORECLI_H
 
-#include <QEvent>
+//#include <QEvent>
 #include <QCoreApplication>
+
+class Prompt;
+class Context;
 
 class MereCli : public QCoreApplication
 {
@@ -13,7 +16,13 @@ public:
     bool init();
     bool start();
 
-    virtual bool eventFilter(QObject *object, QEvent *event)override;
+//    virtual bool eventFilter(QObject *object, QEvent *event) override;
+
+    static Context* context();
+
+private:
+    Prompt *m_prompt;
+//    Context *m_context;
 
 };
 

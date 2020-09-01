@@ -16,7 +16,12 @@ DEFINES += LIB_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
 
 SOURCES +=  \
-    src/meredefaultstore.cpp \
+    src/format/meredefaultstore.cpp \
+    src/format/merejsonstore.cpp \
+    src/engine/merestoreengine.cpp \
+    src/engine/leveldb/merestoreleveldbengine.cpp \
+    src/format/meresimplestore.cpp \
+    src/mereabstractstore.cpp \
     src/merestore.cpp \
     src/merestoreconfig.cpp \
     src/merestorefilter.cpp \
@@ -24,7 +29,12 @@ SOURCES +=  \
     src/merestoreunitdescriptor.cpp
 
 HEADERS +=  \
-    src/meredefaultstore.h \
+    src/format/meredefaultstore.h \
+    src/format/merejsonstore.h \
+    src/engine/merestoreengine.h \
+    src/engine/leveldb/merestoreleveldbengine.h \
+    src/format/meresimplestore.h \
+    src/mereabstractstore.h \
     src/merestore.h \
     src/merestoreconfig.h \
     src/merestorefilter.h \
@@ -41,23 +51,23 @@ LIBS += -L/usr/local/lib
 LIBS += -L/opt/local/lib
 LIBS += -lleveldb
 
-defineTest(copy) {
-    source = $$1
-    target = $$2
+#defineTest(copy) {
+#    source = $$1
+#    target = $$2
 
-    for(file, source) {
-        sdir = $${dirname(file)}
-        sdir = $$replace(sdir, "src", "")
-        path = $${target}$${sdir}
+#    for(file, source) {
+#        sdir = $${dirname(file)}
+#        sdir = $$replace(sdir, "src", "")
+#        path = $${target}$${sdir}
 
-        QMAKE_POST_LINK += $$QMAKE_MKDIR $$quote($$path) $$escape_expand(\\n\\t)
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$file) $$quote($$path) $$escape_expand(\\n\\t)
-    }
+#        QMAKE_POST_LINK += $$QMAKE_MKDIR $$quote($$path) $$escape_expand(\\n\\t)
+#        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$file) $$quote($$path) $$escape_expand(\\n\\t)
+#    }
 
-    export(QMAKE_POST_LINK)
-}
+#    export(QMAKE_POST_LINK)
+#}
 
-copy($$HEADERS, $$PWD/../include/mere/store)
+#copy($$HEADERS, $$PWD/../include/mere/store)
 
 #
 # Install
