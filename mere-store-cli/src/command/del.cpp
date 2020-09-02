@@ -21,7 +21,7 @@ Del::Del(QString argument, QObject *parent)
 
 bool Del::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -49,4 +49,9 @@ bool Del::execute() const
     }
 
     return ok;
+}
+
+void Del::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }

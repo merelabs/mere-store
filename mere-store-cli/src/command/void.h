@@ -1,7 +1,7 @@
 #ifndef VOID_H
 #define VOID_H
 
-#include "command.h"
+#include "../command.h"
 
 #include <QDebug>
 
@@ -13,6 +13,7 @@ public:
     explicit Void(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
+    void help() const override;
 
 signals:
 

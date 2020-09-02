@@ -1,7 +1,7 @@
 #ifndef INSERT_H
 #define INSERT_H
 
-#include "command.h"
+#include "../command.h"
 
 #include <QDebug>
 
@@ -12,14 +12,8 @@ public:
     explicit Insert(QObject *parent = nullptr);
     explicit Insert(QString argument,  QObject *parent = nullptr);
 
-    void setArgument(QString argument);
-
-    QString subject() const;
-    QString object() const;
-
     bool execute() const override;
-signals:
-
+    void help() const override;
 };
 
 #endif // INSERT_H

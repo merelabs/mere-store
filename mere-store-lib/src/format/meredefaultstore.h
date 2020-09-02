@@ -50,9 +50,6 @@ signals:
 public slots:
 
 private:
-    //MereStoreEngine *m_engine;
-
-    friend class MereStoreEngine;
 };
 
 #endif // MEREDEFAULTSTORE_H

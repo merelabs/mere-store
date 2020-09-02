@@ -8,12 +8,12 @@ MereJsonStore::~MereJsonStore()
 MereJsonStore::MereJsonStore(const QString store, QObject *parent)
     : MereSimpleStore(store, parent)
 {
-    qDebug() << "MereJsonStore::...." << store;
+    //qDebug() << "MereJsonStore::...." << store;
 }
 
 void MereJsonStore::save(MappedStoreUnit unit)
 {
-    qDebug() << "Going to save...";
+   // qDebug() << "Going to save...";
 
     QUuid uuid = unit.value("uuid").toUuid();
     if (!uuid.isNull())

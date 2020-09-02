@@ -1,6 +1,6 @@
 #include "create.h"
-#include "../input.h"
 #include "../store.h"
+#include "../kvutils.h"
 
 Create::Create(QObject *parent)
     : Create("", parent)
@@ -16,39 +16,49 @@ Create::Create(QString argument, QObject *parent)
 
 bool Create::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
-    if (this->object().compare("store") == 0)
-    {
-        Store store(this->subject());
-        ok = store.create();
+    QList<QString> blocks;
 
-        if (ok)
-        {
-            qDebug() << "Store " << this->subject() << " created successfully.";
-            store.close();
-        }
-        else
-            qDebug() << "Store " << this->subject() << " already exists.";
+    try
+    {
+        blocks = KVUtils::blocks(this->argument());
     }
+    catch (...)
+    {
+        qDebug() << "Exception....";
+    }
+
+    QString object = blocks.at(0);
+    if (object.compare("store") == 0)
+        ok = createStore(blocks.at(1));
+    else if (object.compare("store") == 0)
+        ok = createSlice(blocks.at(1));
 
     return ok;
 }
 
-QString Create::subject() const
+bool Create::createStore(const QString &store) const
 {
-    Input input(this->argument());
-    input.process();
+    bool ok = false;
 
-    return input.argument();
+    Store s(store);
+    ok = s.create();
+
+    if (ok)
+    {
+        qDebug() << "Store " << store << " created successfully.";
+        s.close();
+    }
+    else
+        qDebug() << "Store " << store << " already exists.";
+
+    return ok;
 }
 
-QString Create::object() const
+bool Create::createSlice(const QString &slice) const
 {
-    Input input(this->argument());
-    input.process();
-
-    return input.command();
+    return false;
 }

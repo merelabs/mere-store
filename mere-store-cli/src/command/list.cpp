@@ -19,29 +19,21 @@ List::List(QString argument, QObject *parent)
 
 bool List::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
     QString storeName = MereCli::context()->get();
 
-//    if (this->object().compare("store") == 0)
-//    {
-        Store store(storeName);
-        QVariant value = store.list();
+    Store store(storeName);
+    QVariant value = store.list();
 
-        qDebug() << "Store " << value;
-
-//        if (ok)
-//        {
-//            qDebug() << "Store " << this->subject() << " created successfully.";
-//            store.close();
-//        }
-//        else
-//            qDebug() << "Store " << this->subject() << " already exists.";
-//    }
+    qDebug() << "Store " << value;
 
     return ok;
-
 }
 
+void List::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
+}

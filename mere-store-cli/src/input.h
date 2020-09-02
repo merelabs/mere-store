@@ -15,11 +15,6 @@ public:
 //private:
     QString command() const;
     QString argument() const;
-
-signals:
-
-private:
-
 };
 
 #endif // INPUT_H

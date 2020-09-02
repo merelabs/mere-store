@@ -16,7 +16,7 @@ Config::Config(QString argument, QObject *parent)
 
 bool Config::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -51,4 +51,9 @@ QString Config::object() const
     input.process();
 
     return input.command();
+}
+
+void Config::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }

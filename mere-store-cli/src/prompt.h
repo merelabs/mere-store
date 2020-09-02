@@ -13,6 +13,7 @@ public:
     explicit Prompt(Context *context, QObject *parent = nullptr);
 
     QString accept();
+    void welcome() const;
 
 signals:
 

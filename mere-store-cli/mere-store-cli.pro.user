@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.12.0, 2020-09-01T22:38:47. -->
+<!-- Written by QtCreator 4.12.0, 2020-09-03T00:26:44. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -38,7 +38,7 @@
    <value type="bool" key="EditorConfiguration.MouseNavigation">true</value>
    <value type="int" key="EditorConfiguration.PaddingMode">1</value>
    <value type="bool" key="EditorConfiguration.ScrollWheelZooming">true</value>
-   <value type="bool" key="EditorConfiguration.ShowMargin">false</value>
+   <value type="bool" key="EditorConfiguration.ShowMargin">true</value>
    <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">0</value>
    <value type="bool" key="EditorConfiguration.SmartSelectionChanging">true</value>
    <value type="bool" key="EditorConfiguration.SpacesForTabs">true</value>

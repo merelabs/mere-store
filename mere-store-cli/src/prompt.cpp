@@ -9,10 +9,13 @@ Prompt::Prompt(Context *context, QObject *parent)
 
 }
 
+void Prompt::welcome() const
+{
+    qDebug() << "Welcome to SliceDB v1.0.0";
+}
+
 QString Prompt::accept()
 {
-    qDebug() << "YYYY>>>>>>>>>>>>" << m_context << m_context->get();
-
     QTextStream(stdout) << QString("%1>").arg(m_context->get());
 
     return m_input.readLine();

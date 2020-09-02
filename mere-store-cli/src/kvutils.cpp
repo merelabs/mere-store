@@ -2,7 +2,7 @@
 
 #include "mere/utils/merestringutils.h"
 
-QList<QPair<QString, QString>> KVUtils::split(const QString &input, const QString &delim)
+QList<QPair<QString, QString>> KVUtils::pairs(const QString &input, const QString &delim)
 {
     QList<QPair<QString, QString>> pairs;
 
@@ -16,7 +16,7 @@ QList<QPair<QString, QString>> KVUtils::split(const QString &input, const QStrin
         pairs.append(pair);
     }
 
-    qDebug() << "Pairs:" << pairs;
+    //qDebug() << "Pairs:" << pairs;
 
     return pairs;
 }
@@ -33,10 +33,9 @@ QList<QString> KVUtils::blocks(const QString &input, const QString &delim)
         blocks.append(block);
     }
 
-    qDebug() << "Blocks:" << blocks;
+    //qDebug() << "Blocks:" << blocks;
 
     return blocks;
-
 }
 
 QString KVUtils::key(QString &input)

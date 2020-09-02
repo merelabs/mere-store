@@ -18,7 +18,7 @@ MereDefaultStore::~MereDefaultStore()
 MereDefaultStore::MereDefaultStore(const QString store, QObject *parent)
     : MereJsonStore(store, parent)
 {
-    qDebug() << "MereDefaultStore::...." << store;
+    //qDebug() << "MereDefaultStore::...." << store;
 }
 
 

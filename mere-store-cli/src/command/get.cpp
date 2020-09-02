@@ -21,7 +21,7 @@ Get::Get(QString argument, QObject *parent)
 
 bool Get::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -49,4 +49,9 @@ bool Get::execute() const
     }
 
     return ok;
+}
+
+void Get::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }

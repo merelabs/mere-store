@@ -25,7 +25,7 @@ bool Store::create()
     s = &store;
 
     int ok = s->create();
-    qDebug() << " Store::create()... " << ok;
+    //qDebug() << " Store::create()... " << ok;
 
     return ok == 0;
 }
@@ -38,7 +38,7 @@ bool Store::select()
     s = &store;
 
     int ok = s->open();
-    qDebug() << " Store::select()... " << ok;
+    //qDebug() << " Store::select()... " << ok;
 
     return ok == 0;
 }

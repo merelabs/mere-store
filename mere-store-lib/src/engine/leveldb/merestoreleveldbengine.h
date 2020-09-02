@@ -7,7 +7,6 @@
 
 #include "leveldb/db.h"
 #include "leveldb/cache.h"
-//#include "leveldb/write_batch.h"
 
 class MereStoreLevelDBEngine : public MereStoreEngine
 {

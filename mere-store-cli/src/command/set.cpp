@@ -21,7 +21,7 @@ Set::Set(QString argument, QObject *parent)
 
 bool Set::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -29,7 +29,7 @@ bool Set::execute() const
 
     try
     {
-        pairs = KVUtils::split(this->argument());
+        pairs = KVUtils::pairs(this->argument());
     }
     catch (...)
     {
@@ -61,4 +61,9 @@ bool Set::execute() const
     }
 
     return ok;
+}
+
+void Set::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }

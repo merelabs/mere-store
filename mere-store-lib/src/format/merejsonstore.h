@@ -21,7 +21,14 @@ public:
     virtual void search(MappedStoreUnit query);
     virtual void list(MappedStoreUnit criteria);
 
+//private:
+    // Just to tell compiler to avoid warning!
+    using MereSimpleStore::create;
+    using MereSimpleStore::remove;
+    using MereSimpleStore::list;
+
 signals:
+
 
 };
 

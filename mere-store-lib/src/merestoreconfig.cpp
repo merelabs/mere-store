@@ -11,14 +11,14 @@ QVariant MereStoreConfig::get(QString key) const
 {
     QVariant value = m_config.value(key);
 
-    qDebug() << QString("Getting config key/value: %1 => %2").arg(key).arg(value.toString());
+    //qDebug() << QString("Getting config key/value: %1 => %2").arg(key).arg(value.toString());
 
     return value;
 }
 
 void MereStoreConfig::set(QString key, QVariant value)
 {
-    qDebug() << QString("Setting config key/value: %1 => %2").arg(key).arg(value.toString());
+    //qDebug() << QString("Setting config key/value: %1 => %2").arg(key).arg(value.toString());
     m_config.insert(key, value);
 }
 

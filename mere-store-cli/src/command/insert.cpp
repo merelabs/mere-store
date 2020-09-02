@@ -16,39 +16,15 @@ Insert::Insert(QString argument, QObject *parent)
 
 bool Insert::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
-    if (this->object().compare("store") == 0)
-    {
-        Store store(this->subject());
-        ok = store.create();
-
-        if (ok)
-        {
-            qDebug() << "Store " << this->subject() << " created successfully.";
-            store.close();
-        }
-        else
-            qDebug() << "Store " << this->subject() << " already exists.";
-    }
 
     return ok;
 }
 
-QString Insert::subject() const
+void Insert::help() const
 {
-    Input input(this->argument());
-    input.process();
-
-    return input.argument();
-}
-
-QString Insert::object() const
-{
-    Input input(this->argument());
-    input.process();
-
-    return input.command();
+    qDebug() <<  "THIS IS A TEST";
 }

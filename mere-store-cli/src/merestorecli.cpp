@@ -48,6 +48,8 @@ bool MereCli::init()
 
 bool MereCli::start()
 {
+    m_prompt->welcome();
+
     QString line;
     do
     {

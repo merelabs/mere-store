@@ -1,7 +1,7 @@
 #ifndef OPEN_H
 #define OPEN_H
 
-#include "command.h"
+#include "../command.h"
 
 class Select : public Command
 {
@@ -10,12 +10,12 @@ public:
     explicit Select(QObject *parent = nullptr);
     explicit Select(QString argument,  QObject *parent = nullptr);
 
-    void setArgument(QString argument);
+    bool execute() const override;
+    void help() const override;
 
-    QString subject() const;
-    QString object() const;
-
-    bool execute() const;
+private:
+    bool selectStore(const QString &store) const;
+    bool selectSlice(const QString &slice) const;
 
 signals:
     void selected(QString) const;

@@ -1,7 +1,7 @@
 #ifndef DEL_H
 #define DEL_H
 
-#include "command.h"
+#include "../command.h"
 
 class Del : public Command
 {
@@ -10,9 +10,8 @@ public:
     explicit Del(QObject *parent = nullptr);
     explicit Del(QString argument,  QObject *parent = nullptr);
 
-    void setArgument(QString argument);
-
     bool execute() const override;
+    void help() const override;
 };
 
 #endif // DEL_H

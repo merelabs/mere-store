@@ -1,15 +1,24 @@
 #ifndef ALIAS_H
 #define ALIAS_H
 
-#include <QObject>
+#include "../command.h"
 
-class Alias : public QObject
+class Alias : public Command
 {
     Q_OBJECT
 public:
     explicit Alias(QObject *parent = nullptr);
+    explicit Alias(QString argument,  QObject *parent = nullptr);
 
-signals:
+    bool execute() const override;
+
+    static bool has(const QString &key);
+    static QString alias(const QString &key);
+
+    void help() const override;
+
+private:
+    static QHash<QString, QString> m_commands;
 
 };
 

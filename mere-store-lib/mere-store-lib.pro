@@ -21,7 +21,7 @@ SOURCES +=  \
     src/engine/merestoreengine.cpp \
     src/engine/leveldb/merestoreleveldbengine.cpp \
     src/format/meresimplestore.cpp \
-    src/mereabstractstore.cpp \
+    src/merebasestore.cpp \
     src/merestore.cpp \
     src/merestoreconfig.cpp \
     src/merestorefilter.cpp \
@@ -34,7 +34,7 @@ HEADERS +=  \
     src/engine/merestoreengine.h \
     src/engine/leveldb/merestoreleveldbengine.h \
     src/format/meresimplestore.h \
-    src/mereabstractstore.h \
+    src/merebasestore.h \
     src/merestore.h \
     src/merestoreconfig.h \
     src/merestorefilter.h \

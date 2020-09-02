@@ -1,7 +1,7 @@
 #ifndef MERESTORELISTCOMMAND_H
 #define MERESTORELISTCOMMAND_H
 
-#include "command.h"
+#include "../command.h"
 
 class List : public Command
 {
@@ -11,6 +11,7 @@ public:
     explicit List(QString argument, QObject *parent = nullptr);
 
     bool execute() const override;
+    void help() const override;
 };
 
 #endif // MERESTORELISTCOMMAND_H

@@ -8,8 +8,7 @@ class MereStoreLevelDBEngine::MereStoreLevelDBEnginePrivate
 public:
     ~MereStoreLevelDBEnginePrivate()
     {
-        qDebug() << "~MereStoreLevelDBEnginePrivate::...." << m_db;
-
+//        qDebug() << "~MereStoreLevelDBEnginePrivate::...." << m_db;
         close();
     }
 
@@ -17,7 +16,7 @@ public:
         : m_db(0),
           q_ptr(q)
     {
-        qDebug() << "MereStoreLevelDBEnginePrivate::....";
+//        qDebug() << "MereStoreLevelDBEnginePrivate::....";
     };
 
     void setStore(const QString store)
@@ -40,7 +39,7 @@ public:
 
         leveldb::Status status = leveldb::DB::Open(options, m_store.toStdString(), &m_db);
 
-        qDebug() << "create()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
+        //qDebug() << "create()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
         // 0  - success
         // !0 - failed
         return !status.ok();
@@ -56,7 +55,7 @@ public:
 
         leveldb::Status status = leveldb::DB::Open(options, m_store.toStdString(), &m_db);
 
-        qDebug() << "open()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
+        //qDebug() << "open()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
 
         // 0  - success
         // !0 - failed

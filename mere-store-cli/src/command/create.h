@@ -1,7 +1,7 @@
 #ifndef CREATECOMMAND_H
 #define CREATECOMMAND_H
 
-#include "command.h"
+#include "../command.h"
 
 class Store;
 class Type;
@@ -13,16 +13,11 @@ public:
     explicit Create(QObject *parent = nullptr);
     explicit Create(QString argument,  QObject *parent = nullptr);
 
-    void setArgument(QString argument);
-
-    QString subject() const;
-    QString object() const;
-
     bool execute() const override;
 
 private:
-    Store *m_store;
-    Type  *m_type;
+    bool createStore(const QString &store) const;
+    bool createSlice(const QString &slice) const;
 };
 
 #endif // CREATECOMMAND_H

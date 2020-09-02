@@ -15,6 +15,11 @@ Void::Void(QString argument, QObject *parent)
 
 bool Void::execute() const
 {
-    qDebug() << "Do nothinhg!";
+    qDebug() << "Invalid command to process. Please run help command to get help.";
     return false;
+}
+
+void Void::help() const
+{
+    qDebug() <<  "...";
 }

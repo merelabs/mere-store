@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>help/create</file>
+        <file>help/help</file>
+    </qresource>
+</RCC>

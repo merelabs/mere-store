@@ -1,6 +1,6 @@
 #include "remove.h"
-#include "../input.h"
 #include "../store.h"
+#include "../kvutils.h"
 
 Remove::Remove(QObject *parent)
     : Remove("", parent)
@@ -16,39 +16,55 @@ Remove::Remove(QString argument, QObject *parent)
 
 bool Remove::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
-    if (this->object().compare("store") == 0)
-    {
-        Store store(this->subject());
-        ok = store.remove();
+    QList<QString> blocks;
 
-        if (ok)
-        {
-            qDebug() << "Store " << this->subject() << " removed successfully.";
-        }
-        else
-            qDebug() << "Store " << this->subject() << " does not exists.";
+    try
+    {
+        blocks = KVUtils::blocks(this->argument());
     }
+    catch (...)
+    {
+        qDebug() << "Exception....";
+    }
+
+    QString object = blocks.at(0);
+    if (object.compare("store") == 0)
+        ok = removeStore(blocks.at(1));
+    else if (object.compare("store") == 0)
+        ok = removeSlice(blocks.at(1));
 
     return ok;
 }
 
-QString Remove::subject() const
+bool Remove::removeStore(const QString &store) const
 {
-    Input input(this->argument());
-    input.process();
+    bool ok = false;
 
-    return input.argument();
+    Store s(store);
+    ok = s.remove();
+
+    if (ok)
+    {
+        qDebug() << "Store " << store << " removed successfully.";
+        s.close();
+    }
+    else
+        qDebug() << "Store " << store << " does not exists.";
+
+    return ok;
 }
 
-QString Remove::object() const
+bool Remove::removeSlice(const QString &slice) const
 {
-    Input input(this->argument());
-    input.process();
+    return false;
+}
 
-    return input.command();
+void Remove::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }
 

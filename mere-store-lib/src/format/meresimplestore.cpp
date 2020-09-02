@@ -1,16 +1,32 @@
 #include "meresimplestore.h"
+#include "../engine/leveldb/merestoreleveldbengine.h"
+
+class MereSimpleStore::MereSimpleStorePrivate
+{
+public:
+    ~MereSimpleStorePrivate()
+    {
+    }
+
+    MereSimpleStorePrivate(MereSimpleStore *q)
+        : q_ptr(q)
+    {
+
+    }
+
+private:
+    MereSimpleStore *q_ptr;
+};
 
 MereSimpleStore::~MereSimpleStore()
 {
-    qDebug() << "~MereSimpleStore::....";
 }
 
 MereSimpleStore::MereSimpleStore(const QString store, QObject *parent)
-    : MereAbstractStore(store, parent)
+    : MereBaseStore(store, parent),
+      d_ptr(new MereSimpleStorePrivate(this))
 {
-    qDebug() << "MereSimpleStore::...." << store;
 }
-
 
 int MereSimpleStore::set(QVariant value)
 {
@@ -20,7 +36,7 @@ int MereSimpleStore::set(QVariant value)
 
     leveldb::Status status = db()->Put(writeOptions, key.toStdString(), value.toString().toStdString());
 
-    qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
+    //qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
 
     // 0  - success
     // !0 - failed
@@ -33,7 +49,7 @@ int MereSimpleStore::set(const QString key, QVariant value)
 
     leveldb::Status status = db()->Put(writeOptions, key.toStdString(), value.toString().toStdString());
 
-    qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
+    //qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
 
     // 0  - success
     // !0 - failed
@@ -75,7 +91,7 @@ QVariant MereSimpleStore::del(const QString &key)
 
     leveldb::Status status = db()->Delete(writeOptions, key.toStdString());
 
-    qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
+    //qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
 
     // 0  - success
     // !0 - failed

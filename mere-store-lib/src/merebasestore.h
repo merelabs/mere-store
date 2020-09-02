@@ -8,15 +8,14 @@
 #include "leveldb/cache.h"
 #include "leveldb/write_batch.h"
 
-class MERE_STORE_LIBSPEC MereAbstractStore : public MereStore
+class MERE_STORE_LIBSPEC MereBaseStore : public MereStore
 {
     Q_OBJECT
 public:
-    virtual ~MereAbstractStore();
-    explicit MereAbstractStore(const QString store, QObject *parent = nullptr);
-    virtual void init();
+    virtual ~MereBaseStore();
+    explicit MereBaseStore(const QString store, QObject *parent = nullptr);
+    virtual void init() override;
 
-//protected:
     virtual int create() override;
     virtual int open() override;
     virtual int close() override;
@@ -27,8 +26,8 @@ public:
 signals:
 
 private:
-    class MereAbstractStorePrivate;
-    MereAbstractStorePrivate *d_ptr;
+    class MereBaseStorePrivate;
+    MereBaseStorePrivate *d_ptr;
 };
 
 #endif // MEREABSTRACTSTORE_H

@@ -1,8 +1,7 @@
 #include "select.h"
-#include "../input.h"
 #include "../store.h"
 #include "../context.h"
-
+#include "../kvutils.h"
 #include "../merestorecli.h"
 
 Select::Select(QObject *parent)
@@ -19,39 +18,57 @@ Select::Select(QString argument, QObject *parent)
 
 bool Select::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
-    if (this->object().compare("store") == 0)
-    {
-        Store store(this->subject());
-        ok = store.select();
+    QList<QString> blocks;
 
-        if (ok)
-        {
-            qDebug() << "Store " << this->subject() << " selected successfully.";
-            emit selected(this->subject());
-        }
-        else
-            qDebug() << "Store " << this->subject() << " does not exists.";
+    try
+    {
+        blocks = KVUtils::blocks(this->argument());
     }
+    catch (...)
+    {
+        qDebug() << "Exception....";
+    }
+
+    QString object = blocks.at(0);
+    if (object.compare("store") == 0)
+        ok = selectStore(blocks.at(1));
+    else if (object.compare("store") == 0)
+        ok = selectSlice(blocks.at(1));
+
 
     return ok;
 }
 
-QString Select::subject() const
+bool Select::selectStore(const QString &store) const
 {
-    Input input(this->argument());
-    input.process();
+    bool ok = false;
 
-    return input.argument();
+    Store s(store);
+    ok = s.select();
+
+    if (ok)
+    {
+        qDebug() << "Store " << store << " selected successfully.";
+        s.close();
+        emit selected(store);
+    }
+    else
+        qDebug() << "Store " << store << " does not exists.";
+
+    return ok;
 }
 
-QString Select::object() const
+bool Select::selectSlice(const QString &slice) const
 {
-    Input input(this->argument());
-    input.process();
-
-    return input.command();
+    return false;
 }
+
+void Select::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
+}
+

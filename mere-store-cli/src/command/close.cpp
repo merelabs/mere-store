@@ -15,7 +15,7 @@ Close::Close(QString argument, QObject *parent)
 
 bool Close::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     if (this->object().compare("store") == 0)
     {
@@ -40,4 +40,9 @@ QString Close::object() const
     input.process();
 
     return input.command();
+}
+
+void Close::help() const
+{
+    qDebug() <<  "THIS IS A TEST";
 }

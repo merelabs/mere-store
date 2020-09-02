@@ -18,7 +18,7 @@
 class KVUtils
 {
 public:
-    static QList<QPair<QString, QString> > split(const QString &input, const QString &delim = " ");
+    static QList<QPair<QString, QString> > pairs(const QString &input, const QString &delim = " ");
     static QList<QString> blocks(const QString &input, const QString &delim = " ");
 
 private:

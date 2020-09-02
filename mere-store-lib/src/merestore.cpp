@@ -8,7 +8,7 @@ public:
     MereStorePrivate(const QString store)
         : m_store(store)
     {
-        qDebug() << "MereStorePrivate::...." << store;
+        //qDebug() << "MereStorePrivate::...." << store;
     }
 
     QString store() const
@@ -31,7 +31,7 @@ MereStore::MereStore(const QString store, QObject *parent)
     : QObject(parent),
       d_ptr(new MereStorePrivate(store))
 {
-    qDebug() << "MereStore::...." << store;
+    //qDebug() << "MereStore::...." << store;
 }
 
 QString MereStore::store() const

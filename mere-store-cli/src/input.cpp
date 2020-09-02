@@ -1,5 +1,6 @@
 #include "input.h"
 #include "command.h"
+#include "command/history.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -11,7 +12,10 @@ Input::Input(const QString &input, QObject *parent)
 
 bool Input::process()
 {
-    qDebug() << "Going to process " << this->command();
+    //qDebug() << "Going to process " << this->command();
+
+    // append to the command history
+    History::append(this->input());
 
     const QString key = this->command();
     Command *command = Command::get(key);

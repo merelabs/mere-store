@@ -16,8 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += src/main.cpp  \
     src/command/alias.cpp \
     src/command/close.cpp \
-    src/command/command.cpp \
+    src/command.cpp \
     src/command/config.cpp \
+    src/command/help.cpp \
+    src/command/history.cpp \
     src/context.cpp \
     src/command/create.cpp \
     src/command/del.cpp \
@@ -39,8 +41,10 @@ SOURCES += src/main.cpp  \
 HEADERS +=  \
     src/command/alias.h \
     src/command/close.h \
-    src/command/command.h \
+    src/command.h \
     src/command/config.h \
+    src/command/help.h \
+    src/command/history.h \
     src/context.h \
     src/command/create.h \
     src/command/del.h \
@@ -76,4 +80,7 @@ unix{
     target.path = /usr/local/bin
     INSTALLS += target
 }
+
+RESOURCES += \
+    res/res.qrc
 
