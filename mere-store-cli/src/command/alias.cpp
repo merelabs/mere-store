@@ -1,5 +1,8 @@
 #include "alias.h"
+#include "../command.h"
 #include "../kvutils.h"
+
+#include "mere/utils/merestringutils.h"
 
 QHash<QString, QString> Alias::m_commands;
 
@@ -21,21 +24,18 @@ bool Alias::execute() const
 
     bool ok = true;
 
-    QList<QString> blocks;
-
-    try
+    if (!MereStringUtils::isBlank(this->argument()))
     {
-        blocks = KVUtils::blocks(this->argument());
+        int pos = this->argument().indexOf(" ");
+        if (pos != -1)
+            add(this->argument().left(pos), this->argument().mid(pos + 1));
+        else
+            show(this->argument());
     }
-    catch (...)
+    else
     {
-        qDebug() << "Exception....";
+        show();
     }
-
-    const QString alias   = blocks.at(0);
-    const QString command = blocks.at(1);
-
-    m_commands.insert(alias, command);
 
     return ok;
 }
@@ -50,6 +50,29 @@ bool Alias::has(const QString &key)
 QString Alias::alias(const QString &key)
 {
     return Alias::m_commands.value(key);
+}
+
+void Alias::show() const
+{
+    QTextStream out(stdout);
+    QHashIterator<QString, QString> it(Alias::m_commands);
+    while (it.hasNext())
+    {
+        it.next();
+
+        out << "- " << it.key() << " " << it.value() << endl;
+    }
+}
+
+void Alias::show(const QString &alias) const
+{
+    QTextStream out(stdout);
+    out << "- " << alias << this->alias(alias) << endl;
+}
+
+void Alias::add(const QString &alias, const QString &command) const
+{
+    m_commands.insert(alias, command);
 }
 
 void Alias::help() const

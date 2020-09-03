@@ -9,6 +9,7 @@ class Input : public Processor
 {
     Q_OBJECT
 public:
+    ~Input();
     explicit Input(const QString &input, QObject *parent = nullptr);
     bool process() override;
 

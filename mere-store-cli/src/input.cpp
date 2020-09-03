@@ -1,23 +1,38 @@
 #include "input.h"
 #include "command.h"
+#include "command/alias.h"
 #include "command/history.h"
 
+
+#include "command/alias.h"
+
 #include "mere/utils/merestringutils.h"
+
+Input::~Input()
+{
+
+}
 
 Input::Input(const QString &input, QObject *parent)
     : Processor(input, parent)
 {
-
 }
 
 bool Input::process()
 {
     //qDebug() << "Going to process " << this->command();
 
+    const QString key = this->command();
+    if (Alias::has(key))
+    {
+        const QString line(Alias::alias(key) + " " + this->argument());
+        Input input(line);
+        return input.process();
+    }
+
     // append to the command history
     History::append(this->input());
 
-    const QString key = this->command();
     Command *command = Command::get(key);
     if (command == NULL)
         return false;

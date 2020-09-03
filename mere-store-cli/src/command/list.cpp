@@ -1,7 +1,7 @@
 #include "list.h"
 #include "../store.h"
 #include "../context.h"
-#include "../merestorecli.h"
+#include "../app.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -23,7 +23,7 @@ bool List::execute() const
 
     bool ok = false;
 
-    QString storeName = MereCli::context()->get();
+    QString storeName = App::context()->get();
 
     Store store(storeName);
     QVariant value = store.list();

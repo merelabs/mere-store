@@ -3,7 +3,7 @@
 #include "../store.h"
 #include "../context.h"
 #include "../kvutils.h"
-#include "../merestorecli.h"
+#include "../app.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -37,7 +37,7 @@ bool Set::execute() const
     }
 
 
-    QString storeName = MereCli::context()->get();
+    QString storeName = App::context()->get();
 
     Store store(storeName);
 

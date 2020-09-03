@@ -14,6 +14,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += src/main.cpp  \
+    src/app.cpp \
     src/command/alias.cpp \
     src/command/close.cpp \
     src/command.cpp \
@@ -28,17 +29,19 @@ SOURCES += src/main.cpp  \
     src/command/insert.cpp \
     src/kvutils.cpp \
     src/command/list.cpp \
-    src/merestorecli.cpp \
+    src/linereader.cpp \
     src/processor.cpp \
     src/prompt.cpp \
     src/command/remove.cpp \
     src/command/select.cpp \
     src/command/set.cpp \
+    src/reader.cpp \
     src/slice.cpp \
     src/store.cpp \
     src/type.cpp \
     src/command/void.cpp
 HEADERS +=  \
+    src/app.h \
     src/command/alias.h \
     src/command/close.h \
     src/command.h \
@@ -53,12 +56,13 @@ HEADERS +=  \
     src/command/insert.h \
     src/kvutils.h \
     src/command/list.h \
-    src/merestorecli.h \
+    src/linereader.h \
     src/processor.h \
     src/prompt.h \
     src/command/remove.h \
     src/command/select.h \
     src/command/set.h \
+    src/reader.h \
     src/slice.h \
     src/store.h \
     src/type.h \

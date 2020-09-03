@@ -2,7 +2,7 @@
 #include "../store.h"
 #include "../context.h"
 #include "../kvutils.h"
-#include "../merestorecli.h"
+#include "../app.h"
 
 Select::Select(QObject *parent)
     : Select("", parent)
@@ -13,7 +13,7 @@ Select::Select(QObject *parent)
 Select::Select(QString argument, QObject *parent)
     : Command(Command::Select, argument, parent)
 {
-    connect(this, SIGNAL(selected(QString)), MereCli::context(), SLOT(selected(QString)));
+    connect(this, SIGNAL(selected(QString)), App::context(), SLOT(selected(QString)));
 }
 
 bool Select::execute() const

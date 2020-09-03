@@ -1,5 +1,10 @@
 #include "processor.h"
 
+Processor::~Processor()
+{
+
+}
+
 Processor::Processor(const QString &input, QObject *parent)
     : QObject(parent),
       m_input(input)
@@ -7,7 +12,7 @@ Processor::Processor(const QString &input, QObject *parent)
 
 }
 
-const QString Processor::input() const
+QString Processor::input() const
 {
     return m_input;
 }

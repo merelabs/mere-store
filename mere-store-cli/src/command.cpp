@@ -77,24 +77,24 @@ QString Command::argument() const
 //static
 Command* Command::get(const QString &key)
 {
-    QString _key = key;
-    bool found = m_commands.contains(_key);
-    if (!found )
-    {
-        if(Alias::has(key))
-        {
-            _key = Alias::alias(_key);
-            if(!m_commands.contains(_key))
-                _key = Command::Void;
-        }
-        else
-            _key = Command::Void;
-    }
+//    QString _key = key;
+//    bool found = m_commands.contains(_key);
+//    if (!found )
+//    {
+//        if(Alias::has(key))
+//        {
+//            _key = Alias::alias(_key);
+//            if(!m_commands.contains(_key))
+//                _key = Command::Void;
+//        }
+//        else
+//            _key = Command::Void;
+//    }
 
-    Command *command = m_commands.value(_key);
+    Command *command = m_commands.value(key);
     if (command == NULL)
     {
-        //if (m_commands.contains(_key))
+        if (m_commands.contains(key))
         {
             if(key.compare(Command::Alias) == 0)
                 command = new class Alias();
@@ -123,10 +123,10 @@ Command* Command::get(const QString &key)
             else if(key.compare(Command::Set) == 0)
                 command = new class Set();
 
-            m_commands[_key] = command;
+            m_commands[key] = command;
         }
-        //else
-        //    command = m_commands.value(Command::Void);
+        else
+            command = m_commands.value(Command::Void);
     }
 
     return command;
