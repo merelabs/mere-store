@@ -5,9 +5,6 @@
 #include <QHash>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
-
-class Context;
 
 class Command : public QObject
 {
@@ -17,7 +14,6 @@ public:
     virtual bool execute() const = 0;
     virtual void help() const
     {
-        qDebug() << ">>>>>>>>" << this->command();
         QFile help(":/help/" + this->command());
         if (help.exists() && help.open(QIODevice::ReadOnly))
         {

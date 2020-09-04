@@ -16,7 +16,6 @@
 #include "command/select.h"
 #include "command/set.h"
 #include "command/void.h"
-#include "context.h"
 
 const QString Command::Alias  = "alias";
 const QString Command::Close  = "close";
