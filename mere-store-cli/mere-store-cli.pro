@@ -21,6 +21,9 @@ SOURCES += src/main.cpp  \
     src/command/config.cpp \
     src/command/help.cpp \
     src/command/history.cpp \
+    src/command/mdel.cpp \
+    src/command/mget.cpp \
+    src/command/mset.cpp \
     src/context.cpp \
     src/command/create.cpp \
     src/command/del.cpp \
@@ -38,6 +41,7 @@ SOURCES += src/main.cpp  \
     src/reader.cpp \
     src/slice.cpp \
     src/store.cpp \
+    src/system.cpp \
     src/type.cpp \
     src/command/void.cpp
 HEADERS +=  \
@@ -48,6 +52,9 @@ HEADERS +=  \
     src/command/config.h \
     src/command/help.h \
     src/command/history.h \
+    src/command/mdel.h \
+    src/command/mget.h \
+    src/command/mset.h \
     src/context.h \
     src/command/create.h \
     src/command/del.h \
@@ -65,6 +72,7 @@ HEADERS +=  \
     src/reader.h \
     src/slice.h \
     src/store.h \
+    src/system.h \
     src/type.h \
     src/command/void.h
 

@@ -22,6 +22,9 @@ bool App::start()
 {
     m_prompt->welcome();
 
+    //LineReader reader;
+    //reader.read();
+
     QString line;
     do
     {
@@ -29,7 +32,6 @@ bool App::start()
 
         Input input(line);
         input.process();
-
     } while (line.compare(Command::Exit) && line.compare(Command::Quit));
 
     ::exit(0);

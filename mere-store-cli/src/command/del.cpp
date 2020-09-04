@@ -37,7 +37,7 @@ bool Del::execute() const
     }
 
 
-    QString storeName = App::context()->get();
+    QString storeName = App::context()->store();
     Store store(storeName);
 
     QListIterator<QString> it(keys);
@@ -45,13 +45,7 @@ bool Del::execute() const
     {
         QString key = it.next();
         QVariant value = store.del(key);
-        qDebug() << "-" << key << value.toString();
     }
 
     return ok;
-}
-
-void Del::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
 }

@@ -23,7 +23,7 @@ bool List::execute() const
 
     bool ok = false;
 
-    QString storeName = App::context()->get();
+    QString storeName = App::context()->store();
 
     Store store(storeName);
     QVariant value = store.list();

@@ -16,7 +16,7 @@ void Prompt::welcome() const
 
 QString Prompt::accept()
 {
-    QTextStream(stdout) << QString("%1>").arg(m_context->get());
+    QTextStream(stdout) << QString("%1>").arg(m_context->store());
 
     return m_input.readLine();
 }

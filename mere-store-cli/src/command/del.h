@@ -11,7 +11,6 @@ public:
     explicit Del(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
 };
 
 #endif // DEL_H

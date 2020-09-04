@@ -15,16 +15,12 @@ public:
     static bool has(const QString &key);
     static QString alias(const QString &key);
 
-
-    void help() const override;
-
     void show() const;
     void show(const QString &alias) const;
     void add(const QString &alias, const QString &command) const;
 
 private:
     static QHash<QString, QString> m_commands;
-
 };
 
 #endif // ALIAS_H

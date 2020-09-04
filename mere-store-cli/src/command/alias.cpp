@@ -67,15 +67,10 @@ void Alias::show() const
 void Alias::show(const QString &alias) const
 {
     QTextStream out(stdout);
-    out << "- " << alias << this->alias(alias) << endl;
+    out << "- " << alias << " " << this->alias(alias) << endl;
 }
 
 void Alias::add(const QString &alias, const QString &command) const
 {
     m_commands.insert(alias, command);
-}
-
-void Alias::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
 }

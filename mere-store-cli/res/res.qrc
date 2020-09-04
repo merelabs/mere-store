@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>help/create</file>
         <file>help/help</file>
+        <file>help/alias</file>
+        <file>help/del</file>
+        <file>help/set</file>
     </qresource>
 </RCC>

@@ -1,22 +1,31 @@
 #include "context.h"
 
-const QString Root  = ".";
-const QString Store = "store";
-const QString Slice = "slice";
+const QString Context::Root  = ".";
+const QString Context::Store = "store";
+const QString Context::Slice = "slice";
 
 Context::Context(QObject *parent)
     : QObject(parent),
-      m_context("")
+      m_store(""),
+      m_slice("")
 {
 
 }
 
-QString Context::get() const
+QString Context::store() const
 {
-    return m_context;
+    return m_store;
 }
 
-void Context::selected(QString context)
+void Context::selected(QString store)
 {
-    m_context = context;
+    m_store = store;
+}
+
+void Context::selected(QString context, QString value)
+{
+    if (context.compare(Context::Store) == 0)
+        m_store = value;
+    else if (context.compare(Context::Slice) == 0)
+        m_slice = value;
 }

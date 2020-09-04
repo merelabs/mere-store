@@ -17,7 +17,7 @@ public:
 
 private:
     bool createStore(const QString &store) const;
-    bool createSlice(const QString &slice) const;
+    bool createSlice(const QString &store, const QString &slice) const;
 };
 
 #endif // CREATECOMMAND_H

@@ -14,15 +14,18 @@ public:
     static const QString Store;
     static const QString Slice;
 
-    QString get() const;
+    QString store() const;
+    QString slice() const;
 
 public slots:
-    void selected(QString context);
+    void selected(QString value);
+    void selected(QString context, QString value);
 
 signals:
 
 private:
-    QString m_context;
+    QString m_store;
+    QString m_slice;
 
 };
 

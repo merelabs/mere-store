@@ -2,6 +2,8 @@
 
 #include "mere/store/format/meredefaultstore.h"
 
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QFileInfo>
 
 Store::Store(QObject *parent)
@@ -26,6 +28,16 @@ bool Store::create()
 
     int ok = s->create();
     //qDebug() << " Store::create()... " << ok;
+
+//    QVariantMap map;
+//    map.insert("name", m_store);
+//    map.insert("born", QDateTime::currentDateTime().toString());
+
+//    QJsonObject jsonObj = QJsonObject::fromVariantMap(map);
+//    QJsonDocument jsonDoc(jsonObj);
+//    qDebug() << "XXX>>>>>>>>>>" << map;
+//    qDebug() << "XXX>>>>>>>>>>" << QString(jsonDoc.toJson(QJsonDocument::Compact));
+//    s->set(".", QString(jsonDoc.toJson(QJsonDocument::Compact)));
 
     return ok == 0;
 }

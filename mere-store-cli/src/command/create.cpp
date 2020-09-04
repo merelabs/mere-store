@@ -1,5 +1,8 @@
 #include "create.h"
 #include "../store.h"
+#include "../slice.h"
+#include "../context.h"
+#include "../app.h"
 #include "../kvutils.h"
 
 Create::Create(QObject *parent)
@@ -33,9 +36,14 @@ bool Create::execute() const
 
     QString object = blocks.at(0);
     if (object.compare("store") == 0)
+    {
         ok = createStore(blocks.at(1));
+    }
     else if (object.compare("store") == 0)
-        ok = createSlice(blocks.at(1));
+    {
+        QString store = App::context()->store();
+        ok = createSlice(store, blocks.at(1));
+    }
 
     return ok;
 }
@@ -58,7 +66,21 @@ bool Create::createStore(const QString &store) const
     return ok;
 }
 
-bool Create::createSlice(const QString &slice) const
+bool Create::createSlice(const QString &store, const QString &slice) const
 {
-    return false;
+    bool ok = false;
+
+    Slice s(store, slice);
+    ok = s.create();
+
+    if (ok)
+    {
+        qDebug() << "Slice " << slice << " of " << store << " created successfully.";
+        //s.close();
+    }
+    else
+        qDebug() << "Slice " << slice << " of " << store << " already exists.";
+
+    return ok;
+
 }

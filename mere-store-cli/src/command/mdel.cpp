@@ -1,4 +1,4 @@
-#include "get.h"
+#include "mdel.h"
 #include "../input.h"
 #include "../store.h"
 #include "../context.h"
@@ -7,19 +7,19 @@
 
 #include "mere/utils/merestringutils.h"
 
-Get::Get(QObject *parent)
-    : Get("", parent)
+MDel::MDel(QObject *parent)
+    : MDel("", parent)
 {
 
 }
 
-Get::Get(QString argument, QObject *parent)
-    : Command(Command::Get, argument, parent)
+MDel::MDel(QString argument, QObject *parent)
+    : Command(Command::MDel, argument, parent)
 {
 
 }
 
-bool Get::execute() const
+bool MDel::execute() const
 {
     //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
@@ -44,14 +44,9 @@ bool Get::execute() const
     while(it.hasNext())
     {
         QString key = it.next();
-        QVariant value = store.get(key);
+        QVariant value = store.del(key);
         qDebug() << "-" << key << value.toString();
     }
 
     return ok;
-}
-
-void Get::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
 }

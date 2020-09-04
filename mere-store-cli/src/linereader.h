@@ -3,6 +3,8 @@
 
 #include "reader.h"
 
+#include <QDebug>
+
 class LineReader : public Reader
 {
     Q_OBJECT

@@ -1,5 +1,4 @@
 #include "help.h"
-#include "../kvutils.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -20,33 +19,16 @@ bool Help::execute() const
 
     bool ok = true;
 
-    QList<QString> blocks;
 
-    try
-    {
-        blocks = KVUtils::blocks(this->argument());
-    }
-    catch (...)
-    {
-        qDebug() << "Exception....";
-    }
-
-    if (blocks.size() == 0)
+    const QString key = this->argument();
+    if (MereStringUtils::isBlank(key) || !Command::has(key))
     {
         help();
     }
     else
     {
-        const QString key = blocks.at(0);
-        if (MereStringUtils::isBlank(key) || !Command::has(key))
-        {
-            help();
-        }
-        else
-        {
-            Command *command = Command::get(key);
-            command->help();
-        }
+        Command *command = Command::get(key);
+        command->help();
     }
 
     return ok;

@@ -9,6 +9,9 @@
 #include "command/history.h"
 #include "command/insert.h"
 #include "command/list.h"
+#include "command/mdel.h"
+#include "command/mget.h"
+#include "command/mset.h"
 #include "command/remove.h"
 #include "command/select.h"
 #include "command/set.h"
@@ -26,6 +29,9 @@ const QString Command::Help   = "help";
 const QString Command::History= "history";
 const QString Command::Insert = "insert";
 const QString Command::List   = "list";
+const QString Command::MDel   = "mdel";
+const QString Command::MGet   = "mget";
+const QString Command::MSet   = "mset";
 const QString Command::Quit   = "quit";
 const QString Command::Remove = "remove";
 const QString Command::Select = "select";
@@ -39,11 +45,15 @@ QHash<QString, Command *> Command::m_commands =
     {Command::Config,   0},
     {Command::Create,   0},
     {"create.store",    0},
+    {Command::Del,      0},
     {Command::Get,      0},
     {Command::Help,     0},
     {Command::History,  0},
     {Command::Insert,   0},
     {Command::List,     0},
+    {Command::MDel,     0},
+    {Command::MGet,     0},
+    {Command::MSet,     0},
     {Command::Remove,   0},
     {"remove.store",    0},
     {Command::Select,   0},
@@ -77,20 +87,6 @@ QString Command::argument() const
 //static
 Command* Command::get(const QString &key)
 {
-//    QString _key = key;
-//    bool found = m_commands.contains(_key);
-//    if (!found )
-//    {
-//        if(Alias::has(key))
-//        {
-//            _key = Alias::alias(_key);
-//            if(!m_commands.contains(_key))
-//                _key = Command::Void;
-//        }
-//        else
-//            _key = Command::Void;
-//    }
-
     Command *command = m_commands.value(key);
     if (command == NULL)
     {
@@ -116,6 +112,12 @@ Command* Command::get(const QString &key)
                 command = new class Insert();
             else if(key.compare(Command::List) == 0)
                 command = new class List();
+            else if(key.compare(Command::MDel) == 0)
+                command = new class MDel();
+            else if(key.compare(Command::MGet) == 0)
+                command = new class MGet();
+            else if(key.compare(Command::MSet) == 0)
+                command = new class MSet();
             else if(key.compare(Command::Remove) == 0)
                 command = new class Remove();
             else if(key.compare(Command::Select) == 0)

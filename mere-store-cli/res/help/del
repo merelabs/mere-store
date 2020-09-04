@@ -1,0 +1,27 @@
+
+NAME
+    del - remove a key from a store or a slice of a store
+
+SYNOPSIS
+    del [key]
+
+DESCRIPTION
+    The del command removes key and associated value from the selected store
+    or slice of a store.
+
+NOTE
+    Del commnad removes data permantantly - onece deleted can't be reverted.
+
+OPTIONS
+    key    - key to remove
+
+EXAMPLE
+Delete a person named "mere" from store employee
+>select store employee
+employee>del mere
+
+Delete a person named "mere" from store employee and slice developer
+>select store employee
+employee>select slice developer
+employee.developer>del mere
+

@@ -17,6 +17,7 @@ public:
     virtual bool execute() const = 0;
     virtual void help() const
     {
+        qDebug() << ">>>>>>>>" << this->command();
         QFile help(":/help/" + this->command());
         if (help.exists() && help.open(QIODevice::ReadOnly))
         {
@@ -44,6 +45,9 @@ public:
     static const QString History;
     static const QString Insert;
     static const QString List;
+    static const QString MDel;
+    static const QString MGet;
+    static const QString MSet;
     static const QString Quit;
     static const QString Remove;
     static const QString Select;
