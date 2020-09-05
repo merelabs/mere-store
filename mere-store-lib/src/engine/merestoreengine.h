@@ -14,6 +14,7 @@ public:
     virtual int open() = 0;
     virtual int close() = 0;
     virtual int remove() = 0;
+    virtual bool exists() = 0;
 
 signals:
     void created();

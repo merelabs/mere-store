@@ -16,11 +16,12 @@ DEFINES += LIB_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
 
 SOURCES +=  \
-    src/format/meredefaultstore.cpp \
     src/format/merejsonstore.cpp \
     src/engine/merestoreengine.cpp \
     src/engine/leveldb/merestoreleveldbengine.cpp \
+    src/format/meremapstore.cpp \
     src/format/meresimplestore.cpp \
+    src/format/mereunitstore.cpp \
     src/merebasestore.cpp \
     src/merestore.cpp \
     src/merestoreconfig.cpp \
@@ -29,11 +30,12 @@ SOURCES +=  \
     src/merestoreunitdescriptor.cpp
 
 HEADERS +=  \
-    src/format/meredefaultstore.h \
     src/format/merejsonstore.h \
     src/engine/merestoreengine.h \
     src/engine/leveldb/merestoreleveldbengine.h \
+    src/format/meremapstore.h \
     src/format/meresimplestore.h \
+    src/format/mereunitstore.h \
     src/merebasestore.h \
     src/merestore.h \
     src/merestoreconfig.h \

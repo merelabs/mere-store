@@ -8,7 +8,6 @@ class MereStoreLevelDBEngine::MereStoreLevelDBEnginePrivate
 public:
     ~MereStoreLevelDBEnginePrivate()
     {
-//        qDebug() << "~MereStoreLevelDBEnginePrivate::...." << m_db;
         close();
     }
 
@@ -16,7 +15,6 @@ public:
         : m_db(0),
           q_ptr(q)
     {
-//        qDebug() << "MereStoreLevelDBEnginePrivate::....";
     };
 
     void setStore(const QString store)
@@ -86,6 +84,14 @@ public:
         return 0;
     };
 
+    bool exists()
+    {
+        bool err = open();
+        close();
+
+        return err;
+    };
+
     leveldb::DB* db()
     {
         return m_db;
@@ -141,6 +147,11 @@ int MereStoreLevelDBEngine::close()
 int MereStoreLevelDBEngine::remove()
 {
     return d_ptr->remove();
+}
+
+bool MereStoreLevelDBEngine::exists()
+{
+    return d_ptr->exists();
 }
 
 leveldb::DB* MereStoreLevelDBEngine::db()

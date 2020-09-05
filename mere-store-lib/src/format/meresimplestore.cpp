@@ -22,8 +22,13 @@ MereSimpleStore::~MereSimpleStore()
 {
 }
 
-MereSimpleStore::MereSimpleStore(const QString store, QObject *parent)
-    : MereBaseStore(store, parent),
+MereSimpleStore::MereSimpleStore(const QString &store, QObject *parent)
+    : MereSimpleStore(store, "", parent)
+{
+}
+
+MereSimpleStore::MereSimpleStore(const QString &store, const QString &slice, QObject *parent)
+    : MereBaseStore(store, slice, parent),
       d_ptr(new MereSimpleStorePrivate(this))
 {
 }

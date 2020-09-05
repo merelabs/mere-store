@@ -1,7 +1,7 @@
 #include "slice.h"
 #include "store.h"
 
-#include "mere/store/format/meredefaultstore.h"
+#include "mere/store/format/mereunitstore.h"
 
 Slice::Slice(QObject *parent)
     : Slice("", "", parent)
@@ -21,7 +21,8 @@ bool Slice::create() const
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    qDebug() << ">>>>>>" << m_store + "/slices/" + m_slice;
+    MereUnitStore store(m_store, m_slice);
     s = &store;
 
 //    QMap<QString, QVariant> map = s->get(".").toMap();

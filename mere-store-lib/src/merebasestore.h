@@ -5,15 +5,17 @@
 #include "merestore.h"
 
 #include "leveldb/db.h"
-#include "leveldb/cache.h"
-#include "leveldb/write_batch.h"
+
+#include <QDebug>
 
 class MERE_STORE_LIBSPEC MereBaseStore : public MereStore
 {
     Q_OBJECT
 public:
     virtual ~MereBaseStore();
-    explicit MereBaseStore(const QString store, QObject *parent = nullptr);
+    explicit MereBaseStore(const QString &store, QObject *parent = nullptr);
+    explicit MereBaseStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+
     virtual void init() override;
 
     virtual int create() override;
@@ -22,8 +24,6 @@ public:
     virtual int remove() override;
 
     leveldb::DB* db();
-
-signals:
 
 private:
     class MereBaseStorePrivate;

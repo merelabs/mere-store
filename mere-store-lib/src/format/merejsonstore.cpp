@@ -5,8 +5,14 @@ MereJsonStore::~MereJsonStore()
 
 }
 
-MereJsonStore::MereJsonStore(const QString store, QObject *parent)
-    : MereSimpleStore(store, parent)
+MereJsonStore::MereJsonStore(const QString &store, QObject *parent)
+    : MereJsonStore(store, "", parent)
+{
+    //qDebug() << "MereJsonStore::...." << store;
+}
+
+MereJsonStore::MereJsonStore(const QString &store, const QString &slice, QObject *parent)
+    : MereSimpleStore(store, slice, parent)
 {
     //qDebug() << "MereJsonStore::...." << store;
 }

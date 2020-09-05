@@ -23,6 +23,8 @@ public:
     int close() override;
     int remove() override;
 
+    bool exists() override;
+
     leveldb::DB* db();
 
 private:

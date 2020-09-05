@@ -1,6 +1,6 @@
 #include "store.h"
 
-#include "mere/store/format/meredefaultstore.h"
+#include "mere/store/format/mereunitstore.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -23,11 +23,11 @@ bool Store::create()
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int ok = s->create();
-    //qDebug() << " Store::create()... " << ok;
+    qDebug() << " Store::create()... " << ok;
 
 //    QVariantMap map;
 //    map.insert("name", m_store);
@@ -46,7 +46,7 @@ bool Store::select()
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int ok = s->open();
@@ -59,7 +59,7 @@ bool Store::close()
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int ok = s->close();
@@ -73,7 +73,7 @@ bool Store::remove()
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int ok = s->remove();
@@ -87,7 +87,7 @@ bool Store::set(const QVariant value)
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -103,7 +103,7 @@ bool Store::set(const QString key, const QVariant value)
 {
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -121,7 +121,7 @@ QVariant Store::get(const QString key)
 
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -141,7 +141,7 @@ QVariant Store::list()
 
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -161,7 +161,7 @@ QVariant Store::del(const QString &key)
 
     MereStore *s;
 
-    MereDefaultStore store(m_store);
+    MereUnitStore store(m_store);
     s = &store;
 
     int err = s->open();

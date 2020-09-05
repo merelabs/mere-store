@@ -15,9 +15,12 @@ class MERE_STORE_LIBSPEC MereStore : public QObject
     Q_OBJECT
 public:
     virtual ~MereStore();
-    explicit MereStore(const QString store, QObject *parent = nullptr);
+    explicit MereStore(const QString &store, QObject *parent = nullptr);
+    explicit MereStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual QString store() const;
+    virtual QString slice() const;
+
     virtual QString path() const = 0;
 
     virtual void save(MappedStoreUnit unit) = 0;

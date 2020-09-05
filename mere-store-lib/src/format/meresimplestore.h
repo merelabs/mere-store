@@ -3,7 +3,7 @@
 
 #include "../merestoreglobal.h"
 #include "../merebasestore.h"
-#include "../merestoreunit.h"
+//#include "../merestoreunit.h"
 
 
 #include <QObject>
@@ -13,7 +13,8 @@ class MereSimpleStore : public MereBaseStore
     Q_OBJECT
 public:
     virtual ~MereSimpleStore();
-    explicit MereSimpleStore(const QString store, QObject *parent = nullptr);
+    explicit MereSimpleStore(const QString &store, QObject *parent = nullptr);
+    explicit MereSimpleStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual int set(QVariant value) override;
     virtual int set(const QString key, QVariant value) override;
