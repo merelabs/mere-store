@@ -13,10 +13,10 @@ public:
     explicit Store(QObject *parent = nullptr);
     explicit Store(QString store, QObject *parent = nullptr);
 
-    bool create();
-    bool select();
-    bool close();
-    bool remove();
+    bool create() const;
+    bool select() const;
+    bool close() const;
+    bool remove() const;
 
     bool set(const QVariant value);
     bool set(const QString key, const QVariant value);
@@ -24,8 +24,6 @@ public:
     QVariant del(const QString &key);
 
     QVariant list();
-
-signals:
 
 private:
     QString m_store;

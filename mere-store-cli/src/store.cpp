@@ -19,7 +19,7 @@ Store::Store(QString store, QObject *parent)
 
 }
 
-bool Store::create()
+bool Store::create() const
 {
     MereStore *s;
 
@@ -27,22 +27,12 @@ bool Store::create()
     s = &store;
 
     int ok = s->create();
-    qDebug() << " Store::create()... " << ok;
-
-//    QVariantMap map;
-//    map.insert("name", m_store);
-//    map.insert("born", QDateTime::currentDateTime().toString());
-
-//    QJsonObject jsonObj = QJsonObject::fromVariantMap(map);
-//    QJsonDocument jsonDoc(jsonObj);
-//    qDebug() << "XXX>>>>>>>>>>" << map;
-//    qDebug() << "XXX>>>>>>>>>>" << QString(jsonDoc.toJson(QJsonDocument::Compact));
-//    s->set(".", QString(jsonDoc.toJson(QJsonDocument::Compact)));
+    //qDebug() << " Store::create()... " << ok;
 
     return ok == 0;
 }
 
-bool Store::select()
+bool Store::select() const
 {
     MereStore *s;
 
@@ -55,7 +45,7 @@ bool Store::select()
     return ok == 0;
 }
 
-bool Store::close()
+bool Store::close() const
 {
     MereStore *s;
 
@@ -69,7 +59,7 @@ bool Store::close()
 }
 
 
-bool Store::remove()
+bool Store::remove() const
 {
     MereStore *s;
 
@@ -80,7 +70,6 @@ bool Store::remove()
     //qDebug() << " Store::remove()... " << ok;
 
     return ok == 0;
-
 }
 
 bool Store::set(const QVariant value)

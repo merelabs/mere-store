@@ -12,23 +12,23 @@ MereJsonStore::MereJsonStore(const QString &store, QObject *parent)
 }
 
 MereJsonStore::MereJsonStore(const QString &store, const QString &slice, QObject *parent)
-    : MereSimpleStore(store, slice, parent)
+    : MerePairStore(store, slice, parent)
 {
     //qDebug() << "MereJsonStore::...." << store;
 }
 
-void MereJsonStore::save(MappedStoreUnit unit)
+void MereJsonStore::save(QJsonObject unit)
 {
    // qDebug() << "Going to save...";
 
-    QUuid uuid = unit.value("uuid").toUuid();
-    if (!uuid.isNull())
-        update(unit);
-    else
-        create(unit);
+//    QUuid uuid = unit.value("uuid").toUuid();
+//    if (!uuid.isNull())
+//        update(unit);
+//    else
+//        create(unit);
 }
 
-void MereJsonStore::create(MappedStoreUnit unit)
+void MereJsonStore::create(QJsonObject unit)
 {
     qDebug() << "Going to create..." << unit.value("type");
 
@@ -55,13 +55,13 @@ void MereJsonStore::create(MappedStoreUnit unit)
 
 //    write(key, uuid, attrs);
 
-    emit created(unit);
+    //emit created(unit);
 
     //qDebug() << QString("Unit %1:uuid:%2 added to the system").arg(key).arg(uuid.toString());
 }
 
 
-void MereJsonStore::update(MappedStoreUnit unit)
+void MereJsonStore::update(QJsonObject unit)
 {
     qDebug() << "Going to update...";
 
@@ -92,13 +92,13 @@ void MereJsonStore::update(MappedStoreUnit unit)
 
 //    write(key, uuid, attrs);
 
-    emit updated(unit);
+    //emit updated(unit);
 
     //qDebug() << QString("Unit %1:uuid:%2 updated to the system").arg(key).arg(uuid.toString());
 }
 
 
-void MereJsonStore::fetch(MappedStoreUnit unit)
+void MereJsonStore::fetch(QJsonObject unit)
 {
     qDebug() << "Going to fetch...";
 //    // Unit Type
@@ -130,11 +130,11 @@ void MereJsonStore::fetch(MappedStoreUnit unit)
 
 //    read(key, unit);
 
-    emit fetched(unit);
+    //emit fetched(unit);
 }
 
 
-void MereJsonStore::remove(MappedStoreUnit unit)
+void MereJsonStore::remove(QJsonObject unit)
 {
     qDebug() << "Going to remove...";
 
@@ -164,11 +164,11 @@ void MereJsonStore::remove(MappedStoreUnit unit)
 
 //    remove(pkey);
 
-    emit removed(unit);
+    //emit removed(unit);
 }
 
 
-void MereJsonStore::search(MappedStoreUnit query)
+void MereJsonStore::search(QJsonObject query)
 {
     qDebug() << "Search for path:" << query.value("path").toString();
     qDebug() << "Search for type:" << query.value("type").toString();
@@ -205,21 +205,21 @@ void MereJsonStore::search(MappedStoreUnit query)
 //    delete it;
 }
 
-void MereJsonStore::list(MappedStoreUnit criteria)
-{
-    qDebug() << "DEKHA JAK KI HOY!!!" << db();
-    QString pkey;
+//void MereJsonStore::list(QJsonObject criteria)
+//{
+//    qDebug() << "DEKHA JAK KI HOY!!!" << db();
+//    QString pkey;
 
-    std::string skey = pkey.toStdString();
-    std::string ekey = (pkey + ("~")).toStdString();
+//    std::string skey = pkey.toStdString();
+//    std::string ekey = (pkey + ("~")).toStdString();
 
-//    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-//    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
-//    {
-//        QString  _key   = QString::fromStdString(it->key().ToString());
-//        QVariant _value = QString::fromStdString(it->value().ToString());
+////    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+////    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+////    {
+////        QString  _key   = QString::fromStdString(it->key().ToString());
+////        QVariant _value = QString::fromStdString(it->value().ToString());
 
-//        qDebug() << "Key/Value: " << _key << " => " << _value;
+////        qDebug() << "Key/Value: " << _key << " => " << _value;
 
-//    }
-}
+////    }
+//}

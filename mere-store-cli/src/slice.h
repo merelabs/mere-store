@@ -11,8 +11,16 @@ public:
     explicit Slice(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     bool create() const;
+    bool select() const;
+    bool remove() const;
 
-signals:
+    bool set(const QVariant value);
+    bool set(const QString key, const QVariant value);
+    QVariant get(const QString key);
+    QVariant del(const QString &key);
+
+    QVariant list();
+
 
 private:
     QString m_store;

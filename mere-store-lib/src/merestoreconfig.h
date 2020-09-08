@@ -12,10 +12,9 @@ namespace Mere
 {
     namespace Store
     {
-        const QString AppKey            = "mere.store.name";
-        const QString VersionKey        = "mere.store.version";
-        const QString StoreKey          = "mere.store.store";
-        const QString StoreDefaultKey   = "mere.store.store.default";
+        const QString NameKey    = "mere.store.name";
+        const QString VersionKey = "mere.store.version";
+        const QString PathKey    = "mere.store.path";
     }
 }
 
@@ -24,18 +23,23 @@ class MERE_STORE_LIBSPEC MereStoreConfig : public QObject
     Q_OBJECT
 private:
     explicit MereStoreConfig(QObject *parent = nullptr);
+    explicit MereStoreConfig(const QString &config, QObject *parent = nullptr);
 
 public:
-    static MereStoreConfig* instance();
+    void init();
 
     QString storePath() const;
-    void setStorePath(const QString path);
+    void setStorePath(const QString &path);
 
-    QVariant get(QString key) const;
-    void set(QString key, QVariant value);
+    QVariant get(const QString &key) const;
+    void set(const QString &key, const QVariant &value);
+
+    static MereStoreConfig* instance();
 
 private:
-    QMap<QString, QVariant> m_config;
+    QMap<QString, QVariant> m_configs;
+
+    QString m_config;
 };
 
 #endif // MERESTORECONFIG_H

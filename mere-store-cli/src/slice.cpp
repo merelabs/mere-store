@@ -21,16 +21,131 @@ bool Slice::create() const
 {
     MereStore *s;
 
-    qDebug() << ">>>>>>" << m_store + "/slices/" + m_slice;
-    MereUnitStore store(m_store, m_slice);
-    s = &store;
-
-//    QMap<QString, QVariant> map = s->get(".").toMap();
-//    QMap<QString, QVariant> slices = map.value("slices").toMap();
-
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
 
     int ok = s->create();
-    //qDebug() << " Store::create()... " << ok;
+    //qDebug() << " Slice::create()... " << ok;
 
     return ok == 0;
+}
+
+bool Slice::remove() const
+{
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int ok = s->remove();
+    //qDebug() << " Slice::remove()... " << ok;
+
+    return ok == 0;
+}
+
+bool Slice::select() const
+{
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int ok = s->open();
+    //qDebug() << " Slice::select()... " << ok;
+
+    return ok == 0;
+}
+
+
+bool Slice::set(const QVariant value)
+{
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    if (!err)
+        err = s->set(value);
+
+    //qDebug() << " Slice::set()... " << err;
+
+    return err == 0;
+}
+
+bool Slice::set(const QString key, const QVariant value)
+{
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    if (!err)
+        err = s->set(key, value);
+
+    //qDebug() << " Slice::set()... " << err;
+
+    return err == 0;
+}
+
+QVariant Slice::get(const QString key)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::set()... " << err;
+
+    if (!err)
+        value = s->get(key);
+
+    //qDebug() << " Slice::set()... " << value;
+
+    return value;
+}
+
+QVariant Slice::list()
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::list()... " << err;
+
+    if (!err)
+        value = s->list();
+
+    //qDebug() << " Slice::set()... " << value;
+
+    return value;
+}
+
+QVariant Slice::del(const QString &key)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::del()... " << err;
+
+    if (!err)
+        value = s->del(key);
+
+    //qDebug() << " Slice::del()... " << value;
+
+    return value;
+
 }

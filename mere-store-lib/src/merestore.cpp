@@ -9,14 +9,13 @@ public:
         : m_store(store),
           m_slice("")
     {
-        //qDebug() << "MereStorePrivate::...." << store;
     }
 
     MereStorePrivate(const QString &store, const QString &slice)
         : m_store(store),
           m_slice(slice)
     {
-        qDebug() << "MereStorePrivate::...." << store;
+
     }
 
     QString store() const
@@ -38,21 +37,21 @@ private:
 
 MereStore::~MereStore()
 {
-    //close();
+
 }
 
 MereStore::MereStore(const QString &store, QObject *parent)
     : QObject(parent),
       d_ptr(new MereStorePrivate(store))
 {
-    //qDebug() << "MereStore::...." << store;
+
 }
 
 MereStore::MereStore(const QString &store, const QString &slice, QObject *parent)
     : QObject(parent),
       d_ptr(new MereStorePrivate(store, slice))
 {
-    //qDebug() << "MereStore::...." << store;
+
 }
 
 QString MereStore::store() const

@@ -11,12 +11,13 @@ public:
     explicit Remove(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
 
 private:
     bool removeStore(const QString &store) const;
-    bool removeSlice(const QString &slice) const;
+    bool removeStores(const QList<QString> &stores) const;
 
+    bool removeSlice(const QString &store, const QString &slice) const;
+    bool removeSlices(const QString &store, const QList<QString> &slices) const;
 };
 
 #endif // REMOVE_H

@@ -1,16 +1,14 @@
 #ifndef MEREJSONSTORE_H
 #define MEREJSONSTORE_H
 
-#include "meresimplestore.h"
+#include "merepairstore.h"
 
-#include <QObject>
-
-//#include "leveldb/db.h"
 #include "leveldb/cache.h"
 #include "leveldb/write_batch.h"
 
+#include <QJsonObject>
 
-class MereJsonStore : public MereSimpleStore
+class MERE_STORE_LIBSPEC MereJsonStore : public MerePairStore
 {
     Q_OBJECT
 public:
@@ -18,20 +16,24 @@ public:
     explicit MereJsonStore(const QString &store, QObject *parent = nullptr);
     explicit MereJsonStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-    virtual void save(MappedStoreUnit unit);
-    virtual void create(MappedStoreUnit unit);
-    virtual void update(MappedStoreUnit unit);
-    virtual void fetch(MappedStoreUnit unit);
-    virtual void remove(MappedStoreUnit unit);
+    virtual void save(QJsonObject unit) override;
+    virtual void create(QJsonObject unit) override;
+    virtual void update(QJsonObject unit) override;
+    virtual void fetch(QJsonObject unit) override;
+    virtual void remove(QJsonObject unit) override;
 
-    virtual void search(MappedStoreUnit query);
-    virtual void list(MappedStoreUnit criteria);
+    virtual void search(QJsonObject query);
+//    virtual void list(QJsonObject criteria);
 
 private:
     // Just to tell compiler to avoid warning!
-    using MereSimpleStore::create;
-    using MereSimpleStore::remove;
-    using MereSimpleStore::list;
+    using MerePairStore::save;
+    using MerePairStore::create;
+    using MerePairStore::update;
+    using MerePairStore::fetch;
+    using MerePairStore::remove;
+//    using MereSimpleStore::list;
+    using MerePairStore::search;
 
 signals:
 

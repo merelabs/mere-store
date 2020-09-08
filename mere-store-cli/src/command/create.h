@@ -15,10 +15,6 @@ public:
 
     bool execute() const override;
 
-    static const QString STORE;
-    static const QString SLICE;
-
-
 private:
     bool createStore(const QString &store) const;
     bool createStores(const QList<QString> &stores) const;

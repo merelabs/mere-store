@@ -1,39 +1,39 @@
-#include "meresimplestore.h"
+#include "merepairstore.h"
 #include "../engine/leveldb/merestoreleveldbengine.h"
 
-class MereSimpleStore::MereSimpleStorePrivate
+class MerePairStore::MereSimpleStorePrivate
 {
 public:
     ~MereSimpleStorePrivate()
     {
     }
 
-    MereSimpleStorePrivate(MereSimpleStore *q)
+    MereSimpleStorePrivate(MerePairStore *q)
         : q_ptr(q)
     {
 
     }
 
 private:
-    MereSimpleStore *q_ptr;
+    MerePairStore *q_ptr;
 };
 
-MereSimpleStore::~MereSimpleStore()
+MerePairStore::~MerePairStore()
 {
 }
 
-MereSimpleStore::MereSimpleStore(const QString &store, QObject *parent)
-    : MereSimpleStore(store, "", parent)
+MerePairStore::MerePairStore(const QString &store, QObject *parent)
+    : MerePairStore(store, "", parent)
 {
 }
 
-MereSimpleStore::MereSimpleStore(const QString &store, const QString &slice, QObject *parent)
+MerePairStore::MerePairStore(const QString &store, const QString &slice, QObject *parent)
     : MereBaseStore(store, slice, parent),
       d_ptr(new MereSimpleStorePrivate(this))
 {
 }
 
-int MereSimpleStore::set(QVariant value)
+int MerePairStore::set(QVariant value)
 {
     QString key = QUuid::createUuid().toString();
 
@@ -48,7 +48,7 @@ int MereSimpleStore::set(QVariant value)
     return !status.ok();
 }
 
-int MereSimpleStore::set(const QString key, QVariant value)
+int MerePairStore::set(const QString key, QVariant value)
 {
     leveldb::WriteOptions writeOptions;
 
@@ -61,7 +61,7 @@ int MereSimpleStore::set(const QString key, QVariant value)
     return !status.ok();
 }
 
-QVariant MereSimpleStore::get(const QString &key)
+QVariant MerePairStore::get(const QString &key)
 {
     std::string value;
 
@@ -72,7 +72,7 @@ QVariant MereSimpleStore::get(const QString &key)
     return QString::fromStdString(value);
 }
 
-QVariant MereSimpleStore::list()
+QVariant MerePairStore::list()
 {
     QMap<QString, QVariant> data;
 
@@ -88,7 +88,26 @@ QVariant MereSimpleStore::list()
     return data;
 }
 
-QVariant MereSimpleStore::del(const QString &key)
+QVariant MerePairStore::list(const QString &key)
+{
+    QMap<QString, QVariant> records;
+
+    std::string skey = key.toStdString();
+    std::string ekey = skey + "~";
+
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    {
+        //qDebug() << QString::fromStdString(it->key().ToString()) << ": "  << QString::fromStdString(it->value().ToString());
+        records.insert(QString::fromStdString(it->key().ToString()), QString::fromStdString(it->value().ToString()));
+    }
+
+    delete it;
+
+    return records;
+}
+
+QVariant MerePairStore::del(const QString &key)
 {
     QVariant value = get(key);
 

@@ -1,4 +1,5 @@
 #include "merebasestore.h"
+#include "merestoreconfig.h"
 #include "engine/leveldb/merestoreleveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
@@ -22,20 +23,12 @@ public:
         : q_ptr(q),
           m_engine(new MereStoreLevelDBEngine())
     {
-        QString base = "/tmp/store/";
 
-        m_storeHome = base + q_ptr->store();
-        m_sliceHome = base + q_ptr->store() + "/slices";
-
-        if (MereStringUtils::isBlank(q_ptr->slice()))
-            m_engine->setStore(m_storeHome + "/master");
-        else
-            m_engine->setStore(m_sliceHome + "/" + q_ptr->slice() + "/master");
     };
 
     void init()
     {
-        //open();
+
     };
 
     /*
@@ -49,82 +42,42 @@ public:
 
     int create()
     {
-        if (MereStringUtils::isBlank(q_ptr->slice()))
-        {
-            if (QDir(m_storeHome).exists())
-                return 1;
+        int err = layout();
+        qDebug() << "KKK: " << err;
+        if (err) return err;
 
-            // Create HOME of the Store
-            bool ok = QDir().mkdir(m_storeHome);
-            if (!ok)
-            {
-                // handle error here!
-                return 2;
-            }
+        store();
 
-            // Create a file named store
-            QFile store(m_storeHome + "/.store");
-            if (store.open(QIODevice::ReadWrite))
-                store.close();
-            else
-                ; // handle error here!
-
-            // Create HOME of the Slices
-            QDir().mkdir(m_sliceHome);
-
-            // Create a file named slices
-            QFile slices(m_sliceHome + "/.slices");
-            if (slices.open(QIODevice::ReadWrite))
-                slices.close();
-            else
-                ; // handle error here!
-        }
-        else
-        {
-            if (!QDir(m_storeHome).exists())
-                return 3;
-
-            // Create HOME of the Slices
-            if (!QDir(m_sliceHome).exists())
-                QDir().mkdir(m_sliceHome);
-
-            // Create HOME of the Slice
-            QDir().mkdir(m_sliceHome + "/" + q_ptr->slice() );
-
-            // Create a file named slice
-            QFile slice(m_sliceHome + "/" + q_ptr->slice() + "/.slice");
-            if (slice.open(QIODevice::ReadWrite))
-                slice.close();
-            else
-                ; // handle error here!
-        }
-
+        qDebug() << "KKK: " << m_engine->store();
         return m_engine->create();
     };
 
     int open()
     {
+        store();
+
         return m_engine->open();
     };
 
     int close()
     {
+        store();
+
         return m_engine->close();
     };
 
     int remove()
     {
-        int err = m_engine->remove();
-        if (MereStringUtils::isBlank(q_ptr->slice()))
-        {
-            if(!err)
-            {
-                QDir dir(m_storeHome);
-                dir.removeRecursively();
-            }
-        }
+        store();
 
-        return err;
+        int err = m_engine->remove();
+        if (err) return 1;
+
+        QDir dir(home());
+        bool ok = dir.removeRecursively();
+        if (!ok) return 2;
+
+        return 0;
     };
 
     leveldb::DB* db()
@@ -133,9 +86,90 @@ public:
     };
 
 private:
-    QString m_storeHome;
-    QString m_sliceHome;
+    QString path()
+    {
+        QString path = q_ptr->path();
 
+        if (!path.endsWith(QDir::separator()))
+            path = path.append(QDir::separator());
+
+        return path;
+    }
+
+    QString base()
+    {
+        return base(path());
+    }
+
+    QString base(const QString &path)
+    {
+        return path + q_ptr->store();
+    }
+
+    QString home()
+    {
+        return this->home(this->base());
+    }
+
+    QString home(const QString &base)
+    {
+        return MereStringUtils::isBlank(q_ptr->slice()) ? base : (base + "/slices/" + q_ptr->slice());
+    }
+
+    void store()
+    {
+        m_engine->setStore(this->home() + "/master");
+    }
+
+    void store(const QString &home)
+    {
+        m_engine->setStore(home + "/master");
+    }
+
+    int layout()
+    {
+        QString path = this->path();
+
+        if (!QDir(path).exists() && !QDir().mkpath(path))
+            return 1;
+
+        QString base = this->base(path);
+        QString home = this->home(base);
+
+        if (QDir(home).exists())
+            return 2;
+
+        // Create HOME of the Store/Slice
+        if(!QDir().mkdir(home))
+            return 3;
+
+        // Create a file named .store/.slice
+        QString file = MereStringUtils::isBlank(q_ptr->slice()) ? ".store" : ".slice";
+        QFile hidden(home + "/" + file);
+        if (!hidden.open(QIODevice::ReadWrite))
+            return 4;
+
+        hidden.close();
+
+        // its store
+        if (MereStringUtils::isBlank(q_ptr->slice()))
+        {
+            // Create HOME of the Slices
+            if(!QDir().mkdir(home + "/slices"))
+                return 5;
+
+            // Create a file named slices
+            QFile slices(home + "/slices/.slices");
+            if (!slices.open(QIODevice::ReadWrite))
+                return 6;
+
+            slices.close();
+        }
+
+        return 0;
+    }
+
+private:
     MereBaseStore *q_ptr;
     MereStoreLevelDBEngine *m_engine;
 };
@@ -152,25 +186,30 @@ MereBaseStore::~MereBaseStore()
 MereBaseStore::MereBaseStore(const QString &store, QObject *parent)
     : MereBaseStore(store, "", parent)
 {
-    qDebug() << "MereBaseStorePrivate::>>>>>>>>>>>>>>>>>";
+
 }
 
 MereBaseStore::MereBaseStore(const QString &store, const QString &slice, QObject *parent)
     : MereStore(store, slice, parent),
       d_ptr(new MereBaseStorePrivate(this))
 {
-    qDebug() << "MereBaseStorePrivate::>>>>>>>>>>>>>>>>>";
-}
 
+}
 
 void MereBaseStore::init()
 {
     d_ptr->init();
 }
 
+QString MereBaseStore::path() const
+{
+    MereStoreConfig *config = MereStoreConfig::instance();
+
+    return config->storePath();
+}
+
 int MereBaseStore::create()
 {
-    qDebug() << "create::>>>>>>>>>>>>>>>>>";
     return d_ptr->create();
 }
 

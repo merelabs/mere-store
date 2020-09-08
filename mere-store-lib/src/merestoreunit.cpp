@@ -8,80 +8,39 @@ public:
 
     }
 
-    MereStoreUnitPrivate(const QString type, MereStoreUnit *q)
-        : m_type(type),
-          q_ptr(q)
+    MereStoreUnitPrivate(MereStoreUnit *q)
+        :q_ptr(q)
     {
 
     }
 
-    QString type() const
-    {
-        return m_type;
-    }
-
-//    void setType(const QString type)
-//    {
-//        m_type = type;
-//    }
-
-    QUuid uuid() const
-    {
-        return m_uuid;
-    }
-
-    void setUuid(QUuid uuid)
-    {
-        m_uuid = uuid;
-    }
-
-    QString path() const
-    {
-        return m_path;
-    }
-
-    void setPath(QString path)
-    {
-        m_path = path;
-    }
-
-    Metadata meta() const
-    {
-        return m_meta;
-    }
-
-
-    StoreUnitAttributes attributes() const
+    MereStoreUnitAttributes attributes() const
     {
         return m_attributes;
     }
 
-    void setAttributes(StoreUnitAttributes attributes)
+    void setAttributes(MereStoreUnitAttributes attributes)
     {
         m_attributes = attributes;
     }
 
-    StoreUnit get() const
+    void addAttribute(const QString &name, const QVariant &value)
     {
-        return m_unit;
+        m_attributes.insert(name, value);
     }
 
-    void set(StoreUnit unit)
+    void addAttributes(MereStoreUnitAttributes attributes)
     {
-        m_unit = unit;
+        QMapIterator<QString, QVariant> it(attributes);
+        while (it.hasNext())
+        {
+            it.next();
+            addAttribute(it.key(), it.value());
+        }
     }
-
 
 private:
-    QString   m_type;
-    QUuid     m_uuid;
-    QString   m_path;
-    Metadata  m_meta;
-    StoreUnit m_unit;
-
-//    StoreUnitFields     m_fields;
-    StoreUnitAttributes m_attributes;
-//    StoreUnitProperties m_properties;
+    MereStoreUnitAttributes m_attributes;
 
     MereStoreUnit *q_ptr;
 };
@@ -92,98 +51,40 @@ MereStoreUnit::~MereStoreUnit()
     delete d_ptr;
 }
 
-MereStoreUnit::MereStoreUnit(const QString type)
-    : d_ptr(new MereStoreUnitPrivate(type, this))
+MereStoreUnit::MereStoreUnit(const QString &type)
+    : d_ptr(new MereStoreUnitPrivate(this))
 {
-
+    setType(type);
 }
 
-QString MereStoreUnit::type() const
-{
-    return d_ptr->type();
-}
-
-//void MereStoreUnit::setType(const QString type)
-//{
-//    d_ptr->setType(type);
-//}
-
-QUuid MereStoreUnit::uuid() const
-{
-    return d_ptr->uuid();
-}
-
-void MereStoreUnit::setUuid(QUuid uuid)
-{
-    d_ptr->setUuid(uuid);
-}
-
-QString MereStoreUnit::path() const
-{
-    return d_ptr->path();
-}
-
-void MereStoreUnit::setPath(QString path)
-{
-    d_ptr->setPath(path);
-}
-
-//Metadata MereStoreUnit::meta() const
-//{
-//    return m_meta;
-//}
-
-//StoreUnitFields MereStoreUnit::fields() const
-//{
-//    return m_fields;
-//}
-
-//void MereStoreUnit::setFields(StoreUnitFields fields)
-//{
-//    m_fields = fields;
-//}
-
-StoreUnitAttributes MereStoreUnit::attributes() const
+MereStoreUnitAttributes MereStoreUnit::attributes() const
 {
     return d_ptr->attributes();
 }
 
-void MereStoreUnit::setAttributes(StoreUnitAttributes attributes)
+void MereStoreUnit::setAttributes(MereStoreUnitAttributes attributes)
 {
     d_ptr->setAttributes(attributes);
 }
 
-//StoreUnitProperties MereStoreUnit::properties() const
-//{
-//    return m_properties;
-//}
-
-//void MereStoreUnit::setProperties(StoreUnitProperties properties)
-//{
-//    m_properties = properties;
-//}
-
-StoreUnit MereStoreUnit::get() const
+void MereStoreUnit::addAttribute(const QString &name, const QVariant &value)
 {
-    return d_ptr->get();
+    return d_ptr->addAttribute(name, value);
 }
 
-void MereStoreUnit::set(StoreUnit unit)
+void MereStoreUnit::addAttributes(MereStoreUnitAttributes attributes)
 {
-    d_ptr->set(unit);
+    return d_ptr->addAttributes(attributes);
 }
 
-StoreUnit MereStoreUnit::map() const
+MereStoreUnitMap MereStoreUnit::map() const
 {
-    StoreUnit unit;
+    MereStoreUnitMap unit;
 
+    unit.insert("path", path());
     unit.insert("type", type());
     unit.insert("uuid", uuid());
-//    map.insert("meta", meta().map());
-//    map.insert("unit", get());
-//    map.insert("flds", fields());
     unit.insert("attr", attributes());
-//    map.insert("prop", properties());
 
     return unit;
 }

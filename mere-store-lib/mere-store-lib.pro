@@ -20,21 +20,22 @@ SOURCES +=  \
     src/engine/merestoreengine.cpp \
     src/engine/leveldb/merestoreleveldbengine.cpp \
     src/format/meremapstore.cpp \
-    src/format/meresimplestore.cpp \
+    src/format/merepairstore.cpp \
     src/format/mereunitstore.cpp \
     src/merebasestore.cpp \
     src/merestore.cpp \
     src/merestoreconfig.cpp \
     src/merestorefilter.cpp \
     src/merestoreunit.cpp \
-    src/merestoreunitdescriptor.cpp
+    src/merestoreunitdescriptor.cpp \
+    src/merestoreunitref.cpp
 
 HEADERS +=  \
     src/format/merejsonstore.h \
     src/engine/merestoreengine.h \
     src/engine/leveldb/merestoreleveldbengine.h \
     src/format/meremapstore.h \
-    src/format/meresimplestore.h \
+    src/format/merepairstore.h \
     src/format/mereunitstore.h \
     src/merebasestore.h \
     src/merestore.h \
@@ -42,7 +43,8 @@ HEADERS +=  \
     src/merestorefilter.h \
     src/merestoreglobal.h \
     src/merestoreunit.h \
-    src/merestoreunitdescriptor.h
+    src/merestoreunitdescriptor.h \
+    src/merestoreunitref.h
 
 DESTDIR = $$PWD/../lib
 
