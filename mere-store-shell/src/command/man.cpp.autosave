@@ -1,0 +1,53 @@
+#include "man.h"
+#include "../kvutils.h"
+
+#include "mere/utils/merestringutils.h"
+
+Man::Man(QObject *parent)
+    : Man("", parent)
+{
+
+}
+
+Man::Man(QString argument, QObject *parent)
+    : Command(Command::Man, argument, parent)
+{
+
+}
+bool Man::execute() const
+{
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+
+    bool ok = true;
+
+    QList<QString> blocks;
+
+    try
+    {
+        blocks = KVUtils::blocks(this->argument());
+    }
+    catch (...)
+    {
+        qDebug() << "Exception....";
+    }
+
+    if (blocks.size() == 0)
+    {
+        man();
+    }
+    else
+    {
+        const QString key = blocks.at(0);
+        if (MereStringUtils::isBlank(key) || !Command::has(key))
+        {
+            man();
+        }
+        else
+        {
+            Command *command = Command::get(key);
+            command->man();
+        }
+    }
+
+    return ok;
+}
