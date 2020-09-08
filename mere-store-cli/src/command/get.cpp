@@ -1,6 +1,7 @@
 #include "get.h"
 #include "../input.h"
 #include "../store.h"
+#include "../slice.h"
 #include "../context.h"
 #include "../kvutils.h"
 #include "../app.h"
@@ -21,7 +22,7 @@ Get::Get(QString argument, QObject *parent)
 
 bool Get::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -36,22 +37,44 @@ bool Get::execute() const
         qDebug() << "Exception....";
     }
 
-
-    QString storeName = App::context()->store();
-    Store store(storeName);
-
     QListIterator<QString> it(keys);
     while(it.hasNext())
     {
-        QString key = it.next();
-        QVariant value = store.get(key);
+        QString key    = it.next();
+        QVariant value = get(key);
         qDebug() << "-" << key << value.toString();
     }
 
     return ok;
 }
 
-void Get::help() const
+
+QVariant Get::get(const QString &key) const
 {
-    qDebug() <<  "THIS IS A TEST";
+    QVariant val;
+
+    if (MereStringUtils::isBlank(App::context()->slice()))
+        val = getStore(key);
+    else
+        val = getSlice(key);
+
+    return val;
+}
+
+QVariant Get::getStore(const QString &key) const
+{
+    QString storeName = App::context()->store();
+    Store store(storeName);
+
+    return store.get(key);
+}
+
+QVariant Get::getSlice(const QString &key) const
+{
+    QString storeName = App::context()->store();
+    QString sliceName = App::context()->slice();
+
+    Slice slice(storeName, sliceName);
+
+    return slice.get(key);
 }

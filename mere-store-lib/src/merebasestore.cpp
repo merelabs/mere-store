@@ -43,12 +43,10 @@ public:
     int create()
     {
         int err = layout();
-        qDebug() << "KKK: " << err;
         if (err) return err;
 
         store();
 
-        qDebug() << "KKK: " << m_engine->store();
         return m_engine->create();
     };
 

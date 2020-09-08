@@ -11,14 +11,14 @@ public:
     explicit Select(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
 
 private:
     bool selectStore(const QString &store) const;
-    bool selectSlice(const QString &slice) const;
+    bool selectSlice(const QString &store, const QString &slice) const;
 
 signals:
-    void selected(QString) const;
+    void selected(const QString&, const QString&) const;
+
 };
 
 #endif // OPEN_H

@@ -1,8 +1,6 @@
 #include "context.h"
 
-const QString Context::Root  = ".";
-const QString Context::Store = "store";
-const QString Context::Slice = "slice";
+#include "mere/store/merestore.h"
 
 Context::Context(QObject *parent)
     : QObject(parent),
@@ -17,15 +15,20 @@ QString Context::store() const
     return m_store;
 }
 
-void Context::selected(QString store)
+QString Context::slice() const
 {
-    m_store = store;
+    return m_slice;
 }
 
-void Context::selected(QString context, QString value)
+void Context::selected(const QString &context, const QString &value)
 {
-    if (context.compare(Context::Store) == 0)
+    if (Mere::Store::Type::STORE.compare(context) == 0)
+    {
         m_store = value;
-    else if (context.compare(Context::Slice) == 0)
+        m_slice = "";
+    }
+    else if (Mere::Store::Type::SLICE.compare(context) == 0)
+    {
         m_slice = value;
+    }
 }

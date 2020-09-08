@@ -10,13 +10,10 @@ public:
     explicit Config(QObject *parent = nullptr);
     explicit Config(QString argument,  QObject *parent = nullptr);
 
-    //void setArgument(QString argument);
-
-    QString subject() const;
-    QString object() const;
-
     bool execute() const override;
-    void help() const override;
+
+    QString key() const;
+    QString value() const;
 };
 
 #endif // CONFIG_H

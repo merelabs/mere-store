@@ -12,8 +12,13 @@ public:
 
     bool execute() const override;
 
+private:
     QString key() const;
     QString value() const;
+
+    bool set(const QString &key, const QString &value) const;
+    bool setStore(const QString &key, const QString &val) const;
+    bool setSlice(const QString &key, const QString &val) const;
 };
 
 #endif // SET_H

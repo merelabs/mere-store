@@ -50,6 +50,9 @@ int MerePairStore::set(QVariant value)
 
 int MerePairStore::set(const QString key, QVariant value)
 {
+    qDebug() << "STORE" << this->store();
+    qDebug() << "SLICE" << this->slice();
+
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Put(writeOptions, key.toStdString(), value.toString().toStdString());
@@ -63,6 +66,9 @@ int MerePairStore::set(const QString key, QVariant value)
 
 QVariant MerePairStore::get(const QString &key)
 {
+    qDebug() << "STORE" << this->store();
+    qDebug() << "SLICE" << this->slice();
+
     std::string value;
 
     leveldb::ReadOptions readOptions;

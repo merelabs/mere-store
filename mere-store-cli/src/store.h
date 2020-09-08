@@ -18,9 +18,9 @@ public:
     bool close() const;
     bool remove() const;
 
-    bool set(const QVariant value);
-    bool set(const QString key, const QVariant value);
-    QVariant get(const QString key);
+    bool set(const QVariant &value);
+    bool set(const QString &key, const QVariant &value);
+    QVariant get(const QString &key);
     QVariant del(const QString &key);
 
     QVariant list();

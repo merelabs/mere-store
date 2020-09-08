@@ -1,5 +1,6 @@
 #include "set.h"
 #include "../store.h"
+#include "../slice.h"
 #include "../context.h"
 #include "../app.h"
 
@@ -23,16 +24,10 @@ bool Set::execute() const
 
     bool ok = false;
 
-    QString storeName = App::context()->store();
-    Store store(storeName);
-
     QString key = this->key();
     QString val = this->value();
 
-    if (MereStringUtils::isBlank(val))
-        ok = store.set(key);
-    else
-        ok = store.set(key, val);
+    ok = set(key, val);
 
     return ok;
 }
@@ -59,3 +54,45 @@ QString Set::value() const
     return value;
 }
 
+bool Set::set(const QString &key, const QString &value) const
+{
+    bool ok = false;
+
+    if (MereStringUtils::isBlank(App::context()->slice()))
+        ok = storeSet(key, value);
+    else
+        ok = setSlice(key, value);
+
+    return ok;
+}
+
+bool Set::setStore(const QString &key, const QString &val) const
+{
+    bool ok = false;
+
+    QString storeName = App::context()->store();
+    Store store(storeName);
+
+    if (MereStringUtils::isBlank(val))
+        ok = store.set(key);
+    else
+        ok = store.set(key, val);
+
+    return ok;
+}
+
+bool Set::setSlice(const QString &key, const QString &val) const
+{
+    bool ok = false;
+
+    QString storeName = App::context()->store();
+    QString sliceName = App::context()->slice();
+    Slice slice(storeName, sliceName);
+
+    if (MereStringUtils::isBlank(val))
+        ok = slice.set(key);
+    else
+        ok = slice.set(key, val);
+
+    return ok;
+}

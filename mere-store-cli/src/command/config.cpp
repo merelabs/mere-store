@@ -1,6 +1,9 @@
 #include "config.h"
 #include "../input.h"
 #include "../store.h"
+#include "../app.h"
+
+#include "mere/utils/merestringutils.h"
 
 Config::Config(QObject *parent)
     : Config("", parent)
@@ -20,40 +23,38 @@ bool Config::execute() const
 
     bool ok = false;
 
-    if (this->object().compare("store") == 0)
-    {
-//        Store store(this->subject());
-//        ok = store.create();
+//    Config config;
 
-//        if (ok)
-//        {
-//            qDebug() << "Store " << this->subject() << " created successfully.";
-//            store.close();
-//        }
-//        else
-//            qDebug() << "Store " << this->subject() << " already exists.";
-    }
+//    QString key = this->key();
+//    QString val = this->value();
+
+//    if (MereStringUtils::isBlank(val))
+//        ok = config.get(key);
+//    else
+//        ok = config.set(key, val);
 
     return ok;
 }
 
-QString Config::subject() const
+QString Config::key() const
 {
-    Input input(this->argument());
-    input.process();
+    QString key;
 
-    return input.argument();
+    int pos = this->argument().indexOf(" ");
+    if(pos != -1)
+        key = this->argument().left(pos);
+
+    return key;
 }
 
-QString Config::object() const
+QString Config::value() const
 {
-    Input input(this->argument());
-    input.process();
+    QString value;
 
-    return input.command();
+    int pos = this->argument().indexOf(" ");
+    if(pos != -1)
+        value = this->argument().mid(pos + 1);
+
+    return value;
 }
 
-void Config::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
-}

@@ -11,7 +11,11 @@ public:
     explicit Get(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
+
+private:
+    QVariant get(const QString &key) const;
+    QVariant getStore(const QString &key) const;
+    QVariant getSlice(const QString &key) const;
 };
 
 #endif // GET_H

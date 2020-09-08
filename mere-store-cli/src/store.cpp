@@ -72,7 +72,7 @@ bool Store::remove() const
     return ok == 0;
 }
 
-bool Store::set(const QVariant value)
+bool Store::set(const QVariant &value)
 {
     MereStore *s;
 
@@ -88,7 +88,7 @@ bool Store::set(const QVariant value)
     return err == 0;
 }
 
-bool Store::set(const QString key, const QVariant value)
+bool Store::set(const QString &key, const QVariant &value)
 {
     MereStore *s;
 
@@ -104,7 +104,7 @@ bool Store::set(const QString key, const QVariant value)
     return err == 0;
 }
 
-QVariant Store::get(const QString key)
+QVariant Store::get(const QString &key)
 {
     QVariant value;
 
@@ -114,12 +114,12 @@ QVariant Store::get(const QString key)
     s = &store;
 
     int err = s->open();
-    //qDebug() << " Store::set()... " << err;
+    //qDebug() << " Store::get()... " << err;
 
     if (!err)
         value = s->get(key);
 
-    //qDebug() << " Store::set()... " << value;
+    //qDebug() << " Store::get()... " << value;
 
     return value;
 }

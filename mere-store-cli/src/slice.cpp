@@ -56,8 +56,20 @@ bool Slice::select() const
     return ok == 0;
 }
 
+bool Slice::close() const
+{
+    MereStore *s;
 
-bool Slice::set(const QVariant value)
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int ok = s->close();
+    //qDebug() << " Slice::close()... " << ok;
+
+    return ok == 0;
+}
+
+bool Slice::set(const QVariant &value)
 {
     MereStore *s;
 
@@ -73,7 +85,7 @@ bool Slice::set(const QVariant value)
     return err == 0;
 }
 
-bool Slice::set(const QString key, const QVariant value)
+bool Slice::set(const QString &key, const QVariant &value)
 {
     MereStore *s;
 
@@ -84,12 +96,10 @@ bool Slice::set(const QString key, const QVariant value)
     if (!err)
         err = s->set(key, value);
 
-    //qDebug() << " Slice::set()... " << err;
-
     return err == 0;
 }
 
-QVariant Slice::get(const QString key)
+QVariant Slice::get(const QString &key)
 {
     QVariant value;
 
@@ -99,12 +109,12 @@ QVariant Slice::get(const QString key)
     s = &slice;
 
     int err = s->open();
-    //qDebug() << " Slice::set()... " << err;
+    //qDebug() << " Slice::get()... " << err;
 
     if (!err)
         value = s->get(key);
 
-    //qDebug() << " Slice::set()... " << value;
+    //qDebug() << " Slice::get()... " << value;
 
     return value;
 }
