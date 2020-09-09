@@ -1,11 +1,12 @@
 #include "create.h"
 #include "../store.h"
 #include "../slice.h"
-#include "../app.h"
+#include "../shell.h"
 #include "../context.h"
 #include "../kvutils.h"
 
 #include "mere/store/merestore.h"
+#include "mere/utils/merestringutils.h"
 
 Create::Create(QObject *parent)
     : Create("", parent)
@@ -51,7 +52,7 @@ bool Create::execute() const
     else if (Mere::Store::Type::SLICE.compare(object) == 0)
     {
         blocks.removeFirst();
-        QString store = App::context()->store();
+        QString store = Shell::context()->store();
         ok = createSlices(store, blocks);
     }
     else
@@ -115,6 +116,14 @@ bool Create::createSlice(const QString &store, const QString &slice) const
 bool Create::createSlices(const QString &store, const QList<QString> &slices) const
 {
     bool ok = false;
+
+    if (MereStringUtils::isBlank(store))
+    {
+        QTextStream(stdout) << "Slice is a part of a store, select a store before creating a slice." << endl
+                            << "Run 'help create' or 'help select' for more information." << endl;
+
+        return ok;
+    }
 
     QListIterator<QString> it(slices);
     while (it.hasNext())

@@ -3,7 +3,7 @@
 #include "../store.h"
 #include "../context.h"
 #include "../kvutils.h"
-#include "../app.h"
+#include "../shell.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -37,7 +37,7 @@ bool MGet::execute() const
     }
 
 
-    QString storeName = App::context()->store();
+    QString storeName = Shell::context()->store();
     Store store(storeName);
 
     QListIterator<QString> it(keys);

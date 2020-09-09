@@ -1,7 +1,7 @@
 #include "remove.h"
 #include "../store.h"
 #include "../slice.h"
-#include "../app.h"
+#include "../shell.h"
 #include "../context.h"
 #include "../kvutils.h"
 
@@ -51,7 +51,7 @@ bool Remove::execute() const
     }
     else if (Mere::Store::Type::SLICE.compare(object) == 0)
     {
-        QString store = App::context()->store();
+        QString store = Shell::context()->store();
         if (MereStringUtils::isBlank(store))
         {
             QTextStream(stdout) << "To delete a slice, select the store first." << endl

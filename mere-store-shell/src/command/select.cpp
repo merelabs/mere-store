@@ -3,7 +3,7 @@
 #include "../slice.h"
 #include "../context.h"
 #include "../kvutils.h"
-#include "../app.h"
+#include "../shell.h"
 
 #include "mere/store/merestore.h"
 
@@ -16,7 +16,7 @@ Select::Select(QObject *parent)
 Select::Select(QString argument, QObject *parent)
     : Command(Command::Select, argument, parent)
 {
-    connect(this, SIGNAL(selected(const QString&, const QString&)), App::context(), SLOT(selected(const QString&, const QString&)));
+    connect(this, SIGNAL(selected(const QString&, const QString&)), Shell::context(), SLOT(selected(const QString&, const QString&)));
 }
 
 bool Select::execute() const
@@ -49,7 +49,7 @@ bool Select::execute() const
     }
     else if (Mere::Store::Type::SLICE.compare(object) == 0)
     {
-        QString store = App::context()->store();
+        QString store = Shell::context()->store();
         ok = selectSlice(store, blocks.at(1));
     }
     else

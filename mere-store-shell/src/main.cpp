@@ -1,13 +1,13 @@
-#include "app.h"
+#include "shell.h"
 
 #include "kvutils.h"
 
 int main(int argc, char *argv[])
 {
-    App app(argc, argv);
-    app.init();
-    app.start();
+    Shell shell(argc, argv);
+    shell.init();
+    shell.start();
 
-    return app.exec();
+    return shell.exec();
 }
 

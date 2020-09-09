@@ -6,11 +6,11 @@
 class Prompt;
 class Context;
 
-class App : public QCoreApplication
+class Shell : public QCoreApplication
 {
     Q_OBJECT
 public:
-    explicit App(int argc, char *argv[]);
+    explicit Shell(int argc, char *argv[]);
 
     bool init();
     bool start();

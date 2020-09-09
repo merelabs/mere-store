@@ -1,7 +1,8 @@
 #include "config.h"
 #include "../input.h"
 #include "../store.h"
-#include "../app.h"
+#include "../shell.h"
+#include "../konfig.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -23,15 +24,20 @@ bool Config::execute() const
 
     bool ok = false;
 
-//    Config config;
 
-//    QString key = this->key();
-//    QString val = this->value();
 
-//    if (MereStringUtils::isBlank(val))
-//        ok = config.get(key);
-//    else
-//        ok = config.set(key, val);
+    QString key = this->key();
+    QString val = this->value();
+
+    Konfig config;
+
+    if (MereStringUtils::isBlank(val))
+    {
+        QString value = config.get(key);
+        QTextStream(stdout) << "Current store path : " << value << endl;
+    }
+    else
+        ok = config.set(key, val);
 
     return ok;
 }

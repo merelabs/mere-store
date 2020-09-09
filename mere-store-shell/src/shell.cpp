@@ -1,4 +1,4 @@
-#include "app.h"
+#include "shell.h"
 #include "input.h"
 #include "prompt.h"
 #include "context.h"
@@ -7,18 +7,18 @@
 
 Q_GLOBAL_STATIC(Context, globalContext)
 
-App::App(int argc, char *argv[])
+Shell::Shell(int argc, char *argv[])
     : QCoreApplication(argc, argv)
 {
     m_prompt = new Prompt(globalContext);
 }
 
-bool App::init()
+bool Shell::init()
 {
     return true;
 }
 
-bool App::start()
+bool Shell::start()
 {
     m_prompt->welcome();
 
@@ -39,7 +39,7 @@ bool App::start()
     return true;
 }
 
-Context* App::context()
+Context* Shell::context()
 {
     return globalContext;;
 }

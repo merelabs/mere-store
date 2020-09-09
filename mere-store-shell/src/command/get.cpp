@@ -4,7 +4,7 @@
 #include "../slice.h"
 #include "../context.h"
 #include "../kvutils.h"
-#include "../app.h"
+#include "../shell.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -53,7 +53,7 @@ QVariant Get::get(const QString &key) const
 {
     QVariant val;
 
-    if (MereStringUtils::isBlank(App::context()->slice()))
+    if (MereStringUtils::isBlank(Shell::context()->slice()))
         val = getStore(key);
     else
         val = getSlice(key);
@@ -63,7 +63,7 @@ QVariant Get::get(const QString &key) const
 
 QVariant Get::getStore(const QString &key) const
 {
-    QString storeName = App::context()->store();
+    QString storeName = Shell::context()->store();
     Store store(storeName);
 
     return store.get(key);
@@ -71,8 +71,8 @@ QVariant Get::getStore(const QString &key) const
 
 QVariant Get::getSlice(const QString &key) const
 {
-    QString storeName = App::context()->store();
-    QString sliceName = App::context()->slice();
+    QString storeName = Shell::context()->store();
+    QString sliceName = Shell::context()->slice();
 
     Slice slice(storeName, sliceName);
 
