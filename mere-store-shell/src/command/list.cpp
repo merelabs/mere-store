@@ -1,5 +1,6 @@
 #include "list.h"
 #include "../store.h"
+#include "../slice.h"
 #include "../context.h"
 #include "../shell.h"
 
@@ -23,17 +24,37 @@ bool List::execute() const
 
     bool ok = false;
 
-    QString storeName = Shell::context()->store();
+    QVariant list = this->list();
 
-    Store store(storeName);
-    QVariant value = store.list();
-
-    qDebug() << "Store " << value;
+    QMap<QString, QVariant> map = list.toMap();
+    QMapIterator<QString, QVariant> it(map);
+    while (it.hasNext())
+    {
+        it.next();
+        QTextStream(stdout) << "- " << it.key() << " : " << it.value().toString() << endl;
+    }
 
     return ok;
 }
 
-void List::help() const
+QVariant List::list() const
 {
-    qDebug() <<  "THIS IS A TEST";
+    QVariant list;
+
+    QString store = Shell::context()->store();
+    QString slice = Shell::context()->slice();
+
+    if(MereStringUtils::isBlank(slice))
+    {
+        Store s(store);
+        list = s.list();
+    }
+    else
+    {
+        Slice s(store, slice);
+        list = s.list();
+
+    }
+
+    return list;
 }

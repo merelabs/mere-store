@@ -49,6 +49,7 @@ public:
     static const QString Select;
     static const QString Set;
     static const QString Void;
+    static const QString What;
 
 private:
     QString m_command;

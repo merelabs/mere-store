@@ -22,7 +22,7 @@ Get::Get(QString argument, QObject *parent)
 
 bool Get::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -42,7 +42,7 @@ bool Get::execute() const
     {
         QString key    = it.next();
         QVariant value = get(key);
-        QTextStream(stdout) << "- " << key << " => " << value.toString() << endl;
+        QTextStream(stdout) << "- " << key << " : " << value.toString() << endl;
     }
 
     return ok;

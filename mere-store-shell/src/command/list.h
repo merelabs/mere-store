@@ -11,7 +11,9 @@ public:
     explicit List(QString argument, QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
+
+private:
+    QVariant list() const;
 };
 
 #endif // MERESTORELISTCOMMAND_H
