@@ -42,7 +42,7 @@ bool Get::execute() const
     {
         QString key    = it.next();
         QVariant value = get(key);
-        qDebug() << "-" << key << value.toString();
+        QTextStream(stdout) << "- " << key << " => " << value.toString() << endl;
     }
 
     return ok;

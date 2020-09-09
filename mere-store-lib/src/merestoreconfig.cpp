@@ -3,6 +3,7 @@
 #include "mere/utils/merestringutils.h"
 
 #include <QDir>
+#include <QFile>
 #include <QSettings>
 
 MereStoreConfig::MereStoreConfig(QObject *parent)
@@ -20,8 +21,11 @@ MereStoreConfig::MereStoreConfig(const QString &config, QObject *parent)
 
 void MereStoreConfig::init()
 {
-    QSettings settings(m_config, QSettings::IniFormat);
-    set(Mere::Store::PathKey, settings.value(Mere::Store::PathKey));
+    if (QFile(m_config).exists())
+    {
+        QSettings settings(m_config, QSettings::IniFormat);
+        set(Mere::Store::PathKey, settings.value(Mere::Store::PathKey));
+    }
 }
 
 QVariant MereStoreConfig::get(const QString &key) const
@@ -39,7 +43,7 @@ void MereStoreConfig::set(const QString &key, const QVariant &value)
     m_configs.insert(key, value);
 }
 
-QString MereStoreConfig::storePath() const
+QString MereStoreConfig::path() const
 {
     QString path = get(Mere::Store::PathKey).toString();
     if (MereStringUtils::isBlank(path))
@@ -52,9 +56,23 @@ QString MereStoreConfig::storePath() const
     return path;
 }
 
-void MereStoreConfig::setStorePath(const QString &path)
+void MereStoreConfig::setPath(const QString &path)
 {
     return set(Mere::Store::PathKey, path);
+}
+
+QString MereStoreConfig::mime() const
+{
+    QString mime = get(Mere::Store::MimeKey).toString();
+    if (MereStringUtils::isBlank(mime))
+            mime = "text/plain";
+
+    return mime;
+}
+
+void MereStoreConfig::setMime(const QString &mime)
+{
+    return set(Mere::Store::MimeKey, mime);
 }
 
 //static

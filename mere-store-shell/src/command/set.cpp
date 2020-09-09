@@ -1,8 +1,8 @@
 #include "set.h"
+#include "../shell.h"
+#include "../context.h"
 #include "../store.h"
 #include "../slice.h"
-#include "../context.h"
-#include "../shell.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -24,12 +24,56 @@ bool Set::execute() const
 
     bool ok = false;
 
-    QString key = this->key();
-    QString val = this->value();
+//    QString store = Shell::context()->store();
+//    if (MereStringUtils::isBlank(store))
+//    {
+//        QTextStream(stdout) << "Did you mean to set key/value to a store or a slice?" << endl
+//                            << "Run 'help set' for more information." << endl;
+//        return ok;
+//    }
 
-    ok = set(key, val);
+    QString type  = this->type();
+    QString key   = this->key();
+    QString value = this->value();
+
+    if (MereStringUtils::isBlank(key) && MereStringUtils::isBlank(value))
+    {
+        QTextStream(stdout) << "Did you mean to set key/value for a store or a slice?" << endl
+                            << "Please provide key and value to persist to the store or slice." << endl
+                            << "Run 'help set' for more information." << endl;
+        return ok;
+    }
+
+    ok = set(key, value, type);
 
     return ok;
+}
+
+QString Set::type() const
+{
+    QString type("string");
+
+    if(this->argument().startsWith("-"))
+    {
+        QChar ch = this->argument().at(1);
+        switch (ch.unicode())
+        {
+            case 'j':
+                type = "json";
+                break;
+
+            case 'm':
+                type = "mson";
+                break;
+
+            default:
+                type ="string";
+                break;
+
+        }
+    }
+
+    return type;
 }
 
 QString Set::key() const
@@ -54,34 +98,34 @@ QString Set::value() const
     return value;
 }
 
-bool Set::set(const QString &key, const QString &value) const
+bool Set::set(const QString &key, const QString &value, const QString &type) const
 {
     bool ok = false;
 
     if (MereStringUtils::isBlank(Shell::context()->slice()))
-        ok = setStore(key, value);
+        ok = setStore(key, value, type);
     else
-        ok = setSlice(key, value);
+        ok = setSlice(key, value, type);
 
     return ok;
 }
 
-bool Set::setStore(const QString &key, const QString &val) const
+bool Set::setStore(const QString &key, const QString &value, const QString &type) const
 {
     bool ok = false;
 
     QString storeName = Shell::context()->store();
     Store store(storeName);
 
-    if (MereStringUtils::isBlank(val))
+    if (MereStringUtils::isBlank(value))
         ok = store.set(key);
     else
-        ok = store.set(key, val);
+        ok = store.set(key, value);
 
     return ok;
 }
 
-bool Set::setSlice(const QString &key, const QString &val) const
+bool Set::setSlice(const QString &key, const QString &value, const QString &type) const
 {
     bool ok = false;
 
@@ -89,10 +133,10 @@ bool Set::setSlice(const QString &key, const QString &val) const
     QString sliceName = Shell::context()->slice();
     Slice slice(storeName, sliceName);
 
-    if (MereStringUtils::isBlank(val))
+    if (MereStringUtils::isBlank(value))
         ok = slice.set(key);
     else
-        ok = slice.set(key, val);
+        ok = slice.set(key, value);
 
     return ok;
 }

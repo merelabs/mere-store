@@ -15,6 +15,7 @@ namespace Mere
         const QString NameKey    = "mere.store.name";
         const QString VersionKey = "mere.store.version";
         const QString PathKey    = "mere.store.path";
+        const QString MimeKey    = "mere.store.mime";
     }
 }
 
@@ -28,8 +29,11 @@ private:
 public:
     void init();
 
-    QString storePath() const;
-    void setStorePath(const QString &path);
+    QString path() const;
+    void setPath(const QString &path);
+
+    QString mime() const;
+    void setMime(const QString &mime);
 
     QVariant get(const QString &key) const;
     void set(const QString &key, const QVariant &value);

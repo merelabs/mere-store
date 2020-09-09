@@ -3,8 +3,8 @@ NAME
     set - store a piece of data into a store or slice of a store
 
 SYNOPSIS
-    set [key] [value]
-    set [value]
+    set [-jms ] [key] [value]
+    set [-jms ] [value]
 
 DESCRIPTION
     The set command stores piece of data provided as 'value'; if you proide a
@@ -14,6 +14,16 @@ DESCRIPTION
 OPTIONS
     key    - key to store data against it
     value  - value to store into the system
+
+    -j  json
+        Input value is of json type. System will validate the input data.
+
+    -m  mson
+        Input value is of mson type. System will validate the input data.
+
+    -s  string
+        By default, systm will consider the input data as string data type, and
+        will not perform any validation.
 
 EXAMPLE
 Store name of a person

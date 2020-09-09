@@ -20,24 +20,27 @@ Config::Config(QString argument, QObject *parent)
 
 bool Config::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
-
-
     QString key = this->key();
-    QString val = this->value();
+    QString value = this->value();
 
     Konfig config;
 
-    if (MereStringUtils::isBlank(val))
+    if (MereStringUtils::isBlank(value))
     {
-        QString value = config.get(key);
-        QTextStream(stdout) << "Current store path : " << value << endl;
+        value = config.get(key);
+        ok = true;
+
+        QTextStream(stdout) << "Current store " << key << " : " << value << endl;
     }
     else
-        ok = config.set(key, val);
+    {
+        ok = config.set(key, value);
+        QTextStream(stdout) << "Store " << key << " set to : " << value << endl;
+    }
 
     return ok;
 }
@@ -48,7 +51,13 @@ QString Config::key() const
 
     int pos = this->argument().indexOf(" ");
     if(pos != -1)
+    {
         key = this->argument().left(pos);
+    }
+    else
+    {
+        key = this->argument();
+    }
 
     return key;
 }

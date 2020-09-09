@@ -203,7 +203,14 @@ QString MereBaseStore::path() const
 {
     MereStoreConfig *config = MereStoreConfig::instance();
 
-    return config->storePath();
+    return config->path();
+}
+
+QString MereBaseStore::mime() const
+{
+    MereStoreConfig *config = MereStoreConfig::instance();
+
+    return config->mime();
 }
 
 int MereBaseStore::create()

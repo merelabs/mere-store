@@ -14,6 +14,7 @@ public:
 
     virtual void init() override;
     virtual QString path() const override;
+    virtual QString mime() const override;
 
     virtual int create() override;
     virtual int open() override;

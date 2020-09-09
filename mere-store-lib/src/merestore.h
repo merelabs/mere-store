@@ -35,6 +35,7 @@ public:
     virtual QString slice() const;
 
     virtual QString path() const = 0;
+    virtual QString mime() const = 0;
 
     // raw - key/value pair
     virtual int set(QVariant value) = 0;

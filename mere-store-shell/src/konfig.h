@@ -10,7 +10,7 @@ public:
     explicit Konfig(QObject *parent = nullptr);
 
     QString get(const QString &key) const;
-    bool set(const QString &key, const QString &values) const;
+    bool set(const QString &key, const QString &value) const;
 
 signals:
 

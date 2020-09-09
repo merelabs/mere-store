@@ -3,26 +3,29 @@ NAME
     alias - create a custom command based on existing one.
 
 SYNOPSIS
-    alias [name [command-name [argument...]]]
+    alias [name [command [argument...]]
 
 DESCRIPTION
-    The alias command internally instruct the cli to replace one string with
-    another string - the another string usually a command with arguments.
+    The alias command instruct the shell to replace one string with another
+    string - the another string usually a command with arguments.
     When we use a single commnad with arguments, that make the command long,
     multiple times, it is convenient to give a short name of the long one.
+
 
 OPTIONS
     name    - name of the alias
     commnad - name of the commnad
     argument- argument of the command
 
-EXAMPLE
-Create an alias for a command
->alias {alias-name} {commmand-name} {commnad-argument}
+EXAMPLES
+Create a short-cut command named "cs" to create a store
+>alias cs create store
 
-See the commnad and arguments for a named alias
->alias {name}
+To see the defined command for a named alias "cs", run alias with alias name as
+argument
+>alias cs
 
-See all the defined alias
+Invoking alias with no argument will display all the aliases defined; So to see
+all the defined aliases
 >alias
 

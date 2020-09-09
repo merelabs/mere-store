@@ -9,15 +9,21 @@ Konfig::Konfig(QObject *parent) : QObject(parent)
 
 QString Konfig::get(const QString &key) const
 {
+    QString value;
     MereStore *s;
 
     MereUnitStore store("");
     s = &store;
 
-    return s->path();
+    if (key.compare("path") == 0)
+        value = s->path();
+    else if (key.compare("mime") == 0)
+        value = s->mime();
+
+    return value;
 }
 
-bool Konfig::set(const QString &key, const QString &values) const
+bool Konfig::set(const QString &key, const QString &value) const
 {
     return false;
 }

@@ -50,9 +50,6 @@ int MerePairStore::set(QVariant value)
 
 int MerePairStore::set(const QString key, QVariant value)
 {
-    qDebug() << "STORE" << this->store();
-    qDebug() << "SLICE" << this->slice();
-
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Put(writeOptions, key.toStdString(), value.toString().toStdString());
@@ -66,9 +63,6 @@ int MerePairStore::set(const QString key, QVariant value)
 
 QVariant MerePairStore::get(const QString &key)
 {
-    qDebug() << "STORE" << this->store();
-    qDebug() << "SLICE" << this->slice();
-
     std::string value;
 
     leveldb::ReadOptions readOptions;
@@ -85,10 +79,9 @@ QVariant MerePairStore::list()
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
     for (it->SeekToFirst(); it->Valid(); it->Next())
     {
-        //qDebug() << QString::fromStdString(it->key().ToString()) << ": "  << QString::fromStdString(it->value().ToString());
         data.insert(QString::fromStdString(it->key().ToString()), QString::fromStdString(it->value().ToString()));
     }
-//    assert(it->status().ok());
+
     delete it;
 
     return data;
@@ -104,7 +97,6 @@ QVariant MerePairStore::list(const QString &key)
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
     for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
     {
-        //qDebug() << QString::fromStdString(it->key().ToString()) << ": "  << QString::fromStdString(it->value().ToString());
         records.insert(QString::fromStdString(it->key().ToString()), QString::fromStdString(it->value().ToString()));
     }
 
@@ -120,8 +112,6 @@ QVariant MerePairStore::del(const QString &key)
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Delete(writeOptions, key.toStdString());
-
-    //qDebug() << "set()::" << status.ok() << key << value << QString::fromStdString(status.ToString());
 
     // 0  - success
     // !0 - failed
