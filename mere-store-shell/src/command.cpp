@@ -15,6 +15,7 @@
 #include "command/remove.h"
 #include "command/select.h"
 #include "command/set.h"
+#include "command/switch.h"
 #include "command/void.h"
 #include "command/what.h"
 
@@ -36,6 +37,7 @@ const QString Command::Quit   = "quit";
 const QString Command::Remove = "remove";
 const QString Command::Select = "select";
 const QString Command::Set    = "set";
+const QString Command::Switch = "switch";
 const QString Command::Void   = "void";
 const QString Command::What   = "what";
 
@@ -59,6 +61,7 @@ QHash<QString, Command *> Command::m_commands =
     {"remove.store",    0},
     {Command::Select,   0},
     {Command::Set,      0},
+    {Command::Switch,   0},
     {Command::Void,     new class Void()},
     {Command::What,     0}
 };
@@ -126,6 +129,8 @@ Command* Command::get(const QString &key)
                 command = new class Select();
             else if(key.compare(Command::Set) == 0)
                 command = new class Set();
+            else if(key.compare(Command::Switch) == 0)
+                command = new class Switch();
             else if(key.compare(Command::What) == 0)
                 command = new class What();
 

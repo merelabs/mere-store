@@ -14,6 +14,7 @@ public:
     QString slice() const;
 
 public slots:
+    void switched(const QString &value);
     void selected(const QString &context, const QString &value);
 
 private:

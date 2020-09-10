@@ -20,6 +20,11 @@ QString Context::slice() const
     return m_slice;
 }
 
+void Context::switched(const QString &value)
+{
+
+}
+
 void Context::selected(const QString &context, const QString &value)
 {
     if (Mere::Store::Type::STORE.compare(context) == 0)
