@@ -2,6 +2,7 @@
 #include "store.h"
 
 #include "mere/store/format/mereunitstore.h"
+#include "mere/store/format/merepairstore.h"
 
 Slice::Slice(QObject *parent)
     : Slice("", "", parent)
@@ -125,7 +126,7 @@ QVariant Slice::list()
 
     MereStore *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    MerePairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();

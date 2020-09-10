@@ -6,6 +6,7 @@
 #include "../shell.h"
 
 #include "mere/store/merestore.h"
+#include "mere/utils/merestringutils.h"
 
 Select::Select(QObject *parent)
     : Select("", parent)
@@ -23,8 +24,6 @@ bool Select::execute() const
 {
     //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
-    bool ok = false;
-
     QList<QString> blocks;
 
     try
@@ -34,13 +33,23 @@ bool Select::execute() const
     catch (...)
     {
         qDebug() << "Exception....";
+        return false;
     }
+
 
     if (blocks.size() == 0)
     {
-        QTextStream(stdout) << "Did you mean to select store or slice? Run help select for more information." << endl;
-        return ok;
+        QTextStream(stdout) << "Did you mean to select store or slice? Run 'help select' for more information." << endl;
+        return false;
     }
+
+    if (blocks.size() > 2)
+    {
+        QTextStream(stdout) << "Too many arguments to select store or slice. Run 'help select' for more information." << endl;
+        return false;
+    }
+
+    bool ok = false;
 
     QString object = blocks.at(0);
     if (Mere::Store::Type::STORE.compare(object) == 0)

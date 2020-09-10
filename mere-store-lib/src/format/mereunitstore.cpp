@@ -27,9 +27,40 @@ MereUnitStore::MereUnitStore(const QString &store, const QString &slice, QObject
 
 }
 
+QVariant MereUnitStore::list()
+{
+    QMap<QString, QVariant> units;
+
+    QMap<QString, QVariant> results = MereMapStore::list().toMap();
+    QMapIterator<QString, QVariant> it(results);
+    while (it.hasNext())
+    {
+        it.next();
+        QString key = it.key();
+        QVariant val = it.value();
+
+        MereStoreUnitMap map = val.toMap();
+
+        QString type = map.value("type").toString();
+        QString uuid = map.value("uuid").toString();
+        MereStoreUnitAttributes attrs = map.take("attr").toMap();
+
+        MereStoreUnit *unit = new MereStoreUnit(type);
+        unit->setUuid(uuid);
+        unit->setAttributes(attrs);
+
+        QVariant var;
+        var.setValue(unit);
+
+        units.insert(key, var);
+    }
+
+    return units;
+}
+
 int MereUnitStore::create(MereStoreUnit &unit)
 {
-    qDebug() << "Going to create..." << unit.type();
+    //qDebug() << "Going to create..." << unit.type();
 
     MereStoreUnitMap map = unit.map();
     int err = create(map);
@@ -44,7 +75,7 @@ int MereUnitStore::create(MereStoreUnit &unit)
 
 int MereUnitStore::update(MereStoreUnit &unit)
 {
-    qDebug() << "Going to update...";
+    //qDebug() << "Going to update...";
 
     MereStoreUnitMap map = unit.map();
     int err = update(map);

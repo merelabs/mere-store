@@ -17,6 +17,9 @@ public:
     virtual ~MereStoreUnit();
     explicit MereStoreUnit(const QString &type);
 
+    MereStoreUnit() = default;
+    MereStoreUnit(const MereStoreUnit &other) = default;
+
     virtual MereStoreUnitAttributes attributes() const;
     virtual void setAttributes(MereStoreUnitAttributes attributes);
 
@@ -29,5 +32,10 @@ private:
     class MereStoreUnitPrivate;
     MereStoreUnitPrivate *d_ptr;
 };
+
+Q_DECLARE_METATYPE(MereStoreUnit);
+Q_DECLARE_METATYPE(MereStoreUnit*);
+Q_DECLARE_OPAQUE_POINTER(MereStoreUnit::MereStoreUnitPrivate);
+Q_DECLARE_OPAQUE_POINTER(MereStoreUnit::MereStoreUnitPrivate*);
 
 #endif // MERESTOREUNIT_H

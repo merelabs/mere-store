@@ -19,14 +19,54 @@ MereMapStore::MereMapStore(const QString &store, QObject *parent)
 }
 
 MereMapStore::MereMapStore(const QString &store, const QString &slice, QObject *parent)
-    : MereJsonStore(store, slice, parent)
+    : MerePairStore(store, slice, parent)
 {
     //qDebug() << "MereDefaultStore::...." << store;
 }
 
-void MereMapStore::save(MereStoreUnitMap unit)
+//FIXME
+QVariant MereMapStore::list()
 {
-    qDebug() << "Going to save...";
+    QMap<QString, QVariant> results;
+
+    QString uuid = "";
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->SeekToFirst(); it->Valid(); it->Next())
+    {
+        QString  _key   = QString::fromStdString(it->key().ToString());
+        QVariant _value = QString::fromStdString(it->value().ToString());
+
+        //qDebug() << "Key/Value: " << _key << " => " << _value;
+
+        QStringList parts = _key.split(":");
+        //qDebug() << "UUID:" << parts.at(2);
+        if (uuid.compare(parts.at(2)) != 0)
+        {
+            uuid = parts.at(2);
+            //qDebug() << "New UUID";
+            QString pkey(UNIT_KEY.arg(parts.at(0), parts.at(2)));
+            std::string skey = pkey.toStdString();
+            std::string ekey = skey + "~";
+
+            //qDebug() << "KEY:" << QString::fromStdString(skey);
+            //qDebug() << "KEY~:" << QString::fromStdString(ekey);
+            MereStoreUnitMap map;
+            int err = read(pkey, map);
+            if (!err)
+                results.insert(uuid, map);
+        }
+    }
+
+    delete it;
+
+
+    //qDebug() << "SIZE OF:" << results.size();
+    return results;
+}
+
+void MereMapStore::save(MereStoreUnitMap &unit)
+{
+    //qDebug() << "Going to save...";
 
     QUuid uuid = unit.value("uuid").toUuid();
     if (!uuid.isNull())
@@ -37,7 +77,7 @@ void MereMapStore::save(MereStoreUnitMap unit)
 
 int MereMapStore::create(MereStoreUnitMap &unit)
 {
-    qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXX Going to create..." << unit.value("type");
+    //qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXX Going to create..." << unit.value("type");
 
     // Unit Type
     QString type = unit.value("type").toString();
@@ -58,7 +98,7 @@ int MereMapStore::create(MereStoreUnitMap &unit)
         uuid = QUuid::createUuid();
         unit.insert("uuid", uuid);
     }
-    qDebug() << "YYYYYYYYYYYYYYYYYYY Going to create..." << uuid;
+    //qDebug() << "YYYYYYYYYYYYYYYYYYY Going to create..." << uuid;
 
     // Unit Attrs
     MereStoreUnitMap attrs = unit.value("attr").toMap();
@@ -71,7 +111,7 @@ int MereMapStore::create(MereStoreUnitMap &unit)
 
     emit created(unit);
 
-    qDebug() << QString("XX Unit %1:uuid:%2 added to the system").arg(key).arg(uuid.toString());
+    qDebug() << QString("Unit %1:uuid:%2 added to the system").arg(key).arg(uuid.toString());
 
     return 0;
 }
@@ -79,7 +119,7 @@ int MereMapStore::create(MereStoreUnitMap &unit)
 
 int MereMapStore::update(MereStoreUnitMap &unit)
 {
-    qDebug() << "Going to update...";
+    //qDebug() << "Going to update...";
 
     // Unit Type
     const QString type = unit.value("type").toString();
@@ -189,8 +229,8 @@ void MereMapStore::remove(MereStoreUnitMap unit)
 
 void MereMapStore::search(MereStoreUnitMap query)
 {
-    qDebug() << "Search for path:" << query.value("path").toString();
-    qDebug() << "Search for type:" << query.value("type").toString();
+    //qDebug() << "Search for path:" << query.value("path").toString();
+    //qDebug() << "Search for type:" << query.value("type").toString();
 
     // Unit Type
     const QString type = query.value("type").toString();
@@ -245,11 +285,21 @@ void MereMapStore::search(MereStoreUnitMap query)
 
 int MereMapStore::read(const QString pkey, MereStoreUnitMap &map)
 {
+    QStringList parts = pkey.split(":");
+    if (parts.size() >= 2)
+    {
+        QString type = parts.at(0).mid(1);
+        QString uuid = parts.at(2);
+
+        map.insert("type", type);
+        map.insert("uuid", uuid);
+    }
+
     std::string skey = pkey.toStdString();
     std::string ekey = skey + "~";
 
-    qDebug() << "KEY:" << QString::fromStdString(skey);
-    qDebug() << "KEY~:" << QString::fromStdString(ekey);
+    //qDebug() << "KEY:" << QString::fromStdString(skey);
+    //qDebug() << "KEY~:" << QString::fromStdString(ekey);
 
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
     for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
@@ -257,12 +307,13 @@ int MereMapStore::read(const QString pkey, MereStoreUnitMap &map)
         QString  _key   = QString::fromStdString(it->key().ToString());
         QVariant _value = QString::fromStdString(it->value().ToString());
 
-        qDebug() << "Key/Value: " << _key << " => " << _value;
+        //qDebug() << "ZZ Key/Value: " << _key << " => " << _value;
 
         QMap<QString, QVariant> data;
 
         QString rest = _key.remove(pkey);
         QStringList parts = rest.split(":");
+
         for (int i = parts.size() - 1; i >=0 ; i--)
         {
             QString part = parts.at(i);
@@ -298,7 +349,7 @@ int MereMapStore::read(const QString pkey, MereStoreUnitMap &map)
 
 int MereMapStore::write(const QString type, const QUuid uuid, const MereStoreUnitMap &data)
 {
-    qDebug() << "ADDING DATA" << uuid << data;
+    //qDebug() << "ADDING DATA" << uuid << data;
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;
 
@@ -313,7 +364,7 @@ int MereMapStore::write(const QString type, const QUuid uuid, const MereStoreUni
 
         QString val(it.value().toString());
 
-        qDebug() << "ADDING DATA" << key << ":" << val;
+        //qDebug() << "ADDING DATA" << key << ":" << val;
         batch.Put(key.toStdString(), val.toStdString());
     }
 

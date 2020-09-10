@@ -13,10 +13,12 @@ public:
     explicit MereUnitStore(const QString &store, QObject *parent = nullptr);
     explicit MereUnitStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-    virtual int create(MereStoreUnit &unit) override;
-    virtual int update(MereStoreUnit &unit) override;
-    virtual int fetch(MereStoreUnit &unit) override;
-    virtual int remove(MereStoreUnit &unit) override;
+    virtual int create(MereStoreUnit &unit);
+    virtual int update(MereStoreUnit &unit) ;
+    virtual int fetch(MereStoreUnit &unit) ;
+    virtual int remove(MereStoreUnit &unit) ;
+
+    virtual QVariant list() override;
 
 private:
     // Just to tell compiler to avoid warning!

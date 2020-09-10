@@ -46,6 +46,7 @@ public:
     virtual QVariant list() = 0;
     virtual QVariant list(const QString &key) = 0;
 
+    /*
     // mere-unit
     virtual int create(MereStoreUnit &unit) = 0;
     virtual int update(MereStoreUnit &unit) = 0;
@@ -66,6 +67,7 @@ public:
     virtual void update(QJsonObject unit) = 0;
     virtual void fetch(QJsonObject unit) = 0;
     virtual void remove(QJsonObject unit) = 0;
+    //*/
 
 //protected:
     virtual void init() = 0;
