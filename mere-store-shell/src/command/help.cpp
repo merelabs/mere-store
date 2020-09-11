@@ -19,8 +19,9 @@ bool Help::execute() const
 
     bool ok = true;
 
-
     const QString key = this->argument();
+
+
     if (MereStringUtils::isBlank(key) || !Command::has(key))
     {
         help();
