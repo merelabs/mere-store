@@ -51,19 +51,23 @@ bool List::execute() const
         else
             list = this->list(arg);
     }
-    else if (blocks.size() == 2)
+    else if (blocks.size() == 2 &&
+             !blocks.contains("-k") &&
+             !blocks.contains("--key") &&
+             !blocks.contains("-v") &&
+             !blocks.contains("--value") &&
+             !blocks.contains("-l") &&
+             !blocks.contains("--limit"))
     {
         list = this->list(blocks.at(0), blocks.at(1).toInt());
     }
-
-//    QVariant list = this->list();
 
     QMap<QString, QVariant> map = list.toMap();
     QMapIterator<QString, QVariant> it(map);
     while (it.hasNext())
     {
         it.next();
-        QTextStream(stdout) << "- " << it.key() << " : " << it.value().toString() << endl;
+        QTextStream(stdout) << "- " << it.key() << " : " << it.value().toString() << Qt::endl;
     }
 
     return ok;
