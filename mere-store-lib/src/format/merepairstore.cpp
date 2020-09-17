@@ -1,6 +1,8 @@
 #include "merepairstore.h"
 #include "../engine/leveldb/merestoreleveldbengine.h"
 
+#include <QRegularExpression>
+
 class MerePairStore::MereSimpleStorePrivate
 {
 public:
@@ -121,6 +123,7 @@ QVariant MerePairStore::list(const QString &key, const uint &limit)
 {
     QMap<QString, QVariant> records;
 
+    QRegularExpression re(key);
     uint count = limit;
 
     // find the string to search
@@ -146,28 +149,9 @@ QVariant MerePairStore::list(const QString &key, const uint &limit)
         QString _key = QString::fromStdString(it->key().ToString());
         QString _val = QString::fromStdString(it->value().ToString());
 
-        MatchCriteria criteria = this->criteria(key);
-        switch (criteria)
-        {
-            case MatchCriteria::StartWith:
-                // do nothing
-                break;
-
-            case MatchCriteria::EndWith:
-                if(!_key.endsWith(str))
-                    continue;
-                break;
-
-            case MatchCriteria::Match:
-                if(_key.compare(str) != 0)
-                    continue;
-                break;
-
-            case MatchCriteria::Contain:
-                if (!_key.contains(str))
-                    continue;
-                break;
-        }
+        QRegularExpressionMatch match = re.match(_key);
+        if (!match.hasMatch())
+            continue;
 
         records.insert(_key, _val);
         count--;
@@ -183,20 +167,4 @@ QVariant MerePairStore::list(const QMap<QString, QVariant> &filter, const uint &
     QMap<QString, QVariant> records;
 
     return records;
-}
-
-MereStore::MatchCriteria MerePairStore::criteria(const QString &query)
-{
-    MereStore::MatchCriteria criteria;
-
-    if (query.startsWith("^") && query.endsWith("$"))
-        criteria =  MereStore::MatchCriteria::Match;
-    else if (query.startsWith("^"))
-        criteria =  MereStore::MatchCriteria::StartWith;
-    else if (query.endsWith("$"))
-        criteria =  MereStore::MatchCriteria::EndWith;
-    else
-        criteria = MereStore::MatchCriteria::Contain;
-
-    return criteria;
 }

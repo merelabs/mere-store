@@ -21,9 +21,6 @@ public:
     virtual QVariant list(const QString &key, const uint &limit = 25) override;
     virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) override;
 
-protected:
-    MereStore::MatchCriteria criteria(const QString &query);
-
 private:
     class MereSimpleStorePrivate;
     MereSimpleStorePrivate *d_ptr;
