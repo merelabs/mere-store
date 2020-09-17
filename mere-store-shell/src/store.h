@@ -24,6 +24,9 @@ public:
     QVariant del(const QString &key);
 
     QVariant list();
+    QVariant list(const uint &limit);
+    QVariant list(const QString &key);
+    QVariant list(const QString &key, const uint &limit);
 
 private:
     QString m_store;

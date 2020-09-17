@@ -3,6 +3,7 @@
 #include "../slice.h"
 #include "../context.h"
 #include "../shell.h"
+#include "../kvutils.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -24,7 +25,38 @@ bool List::execute() const
 
     bool ok = false;
 
-    QVariant list = this->list();
+    QVariant list;
+
+    QList<QString> blocks;
+
+    try
+    {
+        blocks = KVUtils::blocks(this->argument());
+    }
+    catch (...)
+    {
+        qDebug() << "Exception....";
+    }
+
+    if (blocks.size() == 0)
+    {
+        list = this->list();
+    }
+    else if (blocks.size() == 1)
+    {
+        QString arg = blocks.at(0);
+
+        if (MereStringUtils::isInteger(arg))
+            list = this->list(arg.toInt());
+        else
+            list = this->list(arg);
+    }
+    else if (blocks.size() == 2)
+    {
+        list = this->list(blocks.at(0), blocks.at(1).toInt());
+    }
+
+//    QVariant list = this->list();
 
     QMap<QString, QVariant> map = list.toMap();
     QMapIterator<QString, QVariant> it(map);
@@ -53,8 +85,72 @@ QVariant List::list() const
     {
         Slice s(store, slice);
         list = s.list();
-
     }
 
     return list;
 }
+
+QVariant List::list(const uint &limit) const
+{
+    QVariant list;
+
+    QString store = Shell::context()->store();
+    QString slice = Shell::context()->slice();
+
+    if(MereStringUtils::isBlank(slice))
+    {
+        Store s(store);
+        list = s.list(limit);
+    }
+    else
+    {
+        Slice s(store, slice);
+        list = s.list(limit);
+    }
+
+    return list;
+}
+
+QVariant  List::list(const QString &key) const
+{
+    QVariant list;
+
+    QString store = Shell::context()->store();
+    QString slice = Shell::context()->slice();
+
+    if(MereStringUtils::isBlank(slice))
+    {
+        Store s(store);
+        list = s.list(key);
+    }
+    else
+    {
+        Slice s(store, slice);
+        list = s.list(key);
+    }
+
+    return list;
+}
+
+QVariant  List::list(const QString &key, const uint &limit) const
+{
+    QVariant list;
+
+    QString store = Shell::context()->store();
+    QString slice = Shell::context()->slice();
+
+    if(MereStringUtils::isBlank(slice))
+    {
+        Store s(store);
+        list = s.list(key, limit);
+    }
+    else
+    {
+        Slice s(store, slice);
+        list = s.list(key, limit);
+    }
+
+    return list;
+}
+
+

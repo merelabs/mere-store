@@ -3,7 +3,9 @@
 #include "prompt.h"
 #include "context.h"
 #include "command.h"
-#include "linereader.h"
+
+#include <QTimer>
+#include <QDebug>
 
 Q_GLOBAL_STATIC(Context, globalContext)
 
@@ -20,21 +22,20 @@ bool Shell::init()
 
 bool Shell::start()
 {
-    m_prompt->welcome();
+//    QTimer::singleShot(0, [this](){
+        m_prompt->welcome();
 
-    //LineReader reader;
-    //reader.read();
+        QString line;
+        do
+        {
+            Input input(line);
+            input.process();
 
-    QString line;
-    do
-    {
-        line = m_prompt->accept();
+            line = m_prompt->accept();
+        } while (line.compare(Command::Exit) && line.compare(Command::Quit));
 
-        Input input(line);
-        input.process();
-    } while (line.compare(Command::Exit) && line.compare(Command::Quit));
-
-    ::exit(0);
+        quit();
+//    });
 
     return true;
 }

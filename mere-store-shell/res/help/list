@@ -1,0 +1,24 @@
+
+NAME
+    list - list records of a store or a slice of a store
+
+SYNOPSIS
+    list
+    list [key as string]
+    list [limit as number]
+    list [key] [limit]
+
+DESCRIPTION
+    The list command show the records of store or slice of a store named as
+    operands.
+
+
+OPTIONS
+    -k      --key
+            ...
+
+    -v      --value
+            ...
+
+EXAMPLES
+

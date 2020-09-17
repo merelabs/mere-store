@@ -23,7 +23,7 @@ public:
 
     virtual void search(MereStoreUnitMap query);
 //    virtual void list(MereStoreUnitMap criteria);
-    virtual QVariant list() override;
+//    virtual QVariant list() override;
 
 protected:
     int read(const QString pkey, MereStoreUnitMap &map);
@@ -38,7 +38,7 @@ protected:
     static QString UNIT_KEY;
     static QString UNIT_META_KEY;
     static QString UNIT_ATTR_KEY;
-    static QString UNIT_PROP_KEY;
+    static QString UNIT_LINK_KEY;
 
 private:
 };

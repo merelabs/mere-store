@@ -27,36 +27,36 @@ MereUnitStore::MereUnitStore(const QString &store, const QString &slice, QObject
 
 }
 
-QVariant MereUnitStore::list()
-{
-    QMap<QString, QVariant> units;
+//QVariant MereUnitStore::list()
+//{
+//    QMap<QString, QVariant> units;
 
-    QMap<QString, QVariant> results = MereMapStore::list().toMap();
-    QMapIterator<QString, QVariant> it(results);
-    while (it.hasNext())
-    {
-        it.next();
-        QString key = it.key();
-        QVariant val = it.value();
+//    QMap<QString, QVariant> results = MereMapStore::list().toMap();
+//    QMapIterator<QString, QVariant> it(results);
+//    while (it.hasNext())
+//    {
+//        it.next();
+//        QString key = it.key();
+//        QVariant val = it.value();
 
-        MereStoreUnitMap map = val.toMap();
+//        MereStoreUnitMap map = val.toMap();
 
-        QString type = map.value("type").toString();
-        QString uuid = map.value("uuid").toString();
-        MereStoreUnitAttributes attrs = map.take("attr").toMap();
+//        QString type = map.value("type").toString();
+//        QString uuid = map.value("uuid").toString();
+//        MereStoreUnitAttributes attrs = map.take("attr").toMap();
 
-        MereStoreUnit *unit = new MereStoreUnit(type);
-        unit->setUuid(uuid);
-        unit->setAttributes(attrs);
+//        MereStoreUnit *unit = new MereStoreUnit(type);
+//        unit->setUuid(uuid);
+//        unit->setAttributes(attrs);
 
-        QVariant var;
-        var.setValue(unit);
+//        QVariant var;
+//        var.setValue(unit);
 
-        units.insert(key, var);
-    }
+//        units.insert(key, var);
+//    }
 
-    return units;
-}
+//    return units;
+//}
 
 int MereUnitStore::create(MereStoreUnit &unit)
 {

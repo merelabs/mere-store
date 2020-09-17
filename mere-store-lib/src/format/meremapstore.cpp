@@ -2,10 +2,10 @@
 
 #include "mere/utils/merestringutils.h"
 
-QString MereMapStore::UNIT_KEY      = "%1:uuid:%2:";
-QString MereMapStore::UNIT_META_KEY = "%1:uuid:%2:meta:%3";
-QString MereMapStore::UNIT_ATTR_KEY = "%1:uuid:%2:attr:%3";
-QString MereMapStore::UNIT_PROP_KEY = "%1:uuid:%2:prop:%3";
+QString MereMapStore::UNIT_KEY      = "type:%1:uuid:%2:";
+QString MereMapStore::UNIT_META_KEY = UNIT_KEY + "meta:%3";
+QString MereMapStore::UNIT_ATTR_KEY = UNIT_KEY + "attr:%3";
+QString MereMapStore::UNIT_LINK_KEY = UNIT_KEY + "link:%3:" + UNIT_KEY;
 
 MereMapStore::~MereMapStore()
 {
@@ -25,6 +25,7 @@ MereMapStore::MereMapStore(const QString &store, const QString &slice, QObject *
 }
 
 //FIXME
+/*
 QVariant MereMapStore::list()
 {
     QMap<QString, QVariant> results;
@@ -63,7 +64,7 @@ QVariant MereMapStore::list()
     //qDebug() << "SIZE OF:" << results.size();
     return results;
 }
-
+*/
 void MereMapStore::save(MereStoreUnitMap &unit)
 {
     //qDebug() << "Going to save...";

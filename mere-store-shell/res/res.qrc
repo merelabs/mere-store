@@ -6,5 +6,6 @@
         <file>help/del</file>
         <file>help/set</file>
         <file>help/remove</file>
+        <file>help/list</file>
     </qresource>
 </RCC>

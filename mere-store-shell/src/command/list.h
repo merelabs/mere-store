@@ -14,6 +14,9 @@ public:
 
 private:
     QVariant list() const;
+    QVariant list(const uint &limit) const;
+    QVariant list(const QString &key) const;
+    QVariant list(const QString &key, const uint &limit) const;
 };
 
 #endif // MERESTORELISTCOMMAND_H

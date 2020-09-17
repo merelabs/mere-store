@@ -18,7 +18,7 @@ public:
     virtual int fetch(MereStoreUnit &unit) ;
     virtual int remove(MereStoreUnit &unit) ;
 
-    virtual QVariant list() override;
+    //virtual QVariant list() override;
 
 private:
     // Just to tell compiler to avoid warning!

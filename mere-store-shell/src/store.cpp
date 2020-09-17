@@ -124,26 +124,6 @@ QVariant Store::get(const QString &key)
     return value;
 }
 
-QVariant Store::list()
-{
-    QVariant value;
-
-    MereStore *s;
-
-    MereUnitStore store(m_store);
-    s = &store;
-
-    int err = s->open();
-    //qDebug() << " Store::list()... " << err;
-
-    if (!err)
-        value = s->list();
-
-    //qDebug() << " Store::set()... " << value;
-
-    return value;
-}
-
 QVariant Store::del(const QString &key)
 {
     QVariant value;
@@ -164,3 +144,84 @@ QVariant Store::del(const QString &key)
     return value;
 
 }
+
+QVariant Store::list()
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    //qDebug() << " Store::list()... " << err;
+
+    if (!err)
+        value = s->list();
+
+    //qDebug() << " Store::set()... " << value;
+
+    return value;
+}
+
+QVariant Store::list(const uint &limit)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    //qDebug() << " Store::list()... " << err;
+
+    if (!err)
+        value = s->list(limit);
+
+    //qDebug() << " Store::set()... " << value;
+
+    return value;
+}
+
+QVariant Store::list(const QString &key)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    //qDebug() << " Store::list()... " << err;
+
+    if (!err)
+        value = s->list(key);
+
+    //qDebug() << " Store::set()... " << value;
+
+    return value;
+}
+
+QVariant Store::list(const QString &key, const uint &limit)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    //qDebug() << " Store::list()... " << err;
+
+    if (!err)
+        value = s->list(key, limit);
+
+    //qDebug() << " Store::set()... " << value;
+
+    return value;
+}
+

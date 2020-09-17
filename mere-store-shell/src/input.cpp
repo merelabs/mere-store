@@ -2,8 +2,6 @@
 #include "command.h"
 #include "command/alias.h"
 #include "command/history.h"
-
-
 #include "command/alias.h"
 
 #include "mere/utils/merestringutils.h"

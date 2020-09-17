@@ -120,6 +120,26 @@ QVariant Slice::get(const QString &key)
     return value;
 }
 
+QVariant Slice::del(const QString &key)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MereUnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::del()... " << err;
+
+    if (!err)
+        value = s->del(key);
+
+    //qDebug() << " Slice::del()... " << value;
+
+    return value;
+}
+
 QVariant Slice::list()
 {
     QVariant value;
@@ -140,23 +160,63 @@ QVariant Slice::list()
     return value;
 }
 
-QVariant Slice::del(const QString &key)
+
+QVariant Slice::list(const uint &limit)
 {
     QVariant value;
 
     MereStore *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    MerePairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
-    //qDebug() << " Slice::del()... " << err;
+    //qDebug() << " Slice::list()... " << err;
 
     if (!err)
-        value = s->del(key);
+        value = s->list(limit);
 
-    //qDebug() << " Slice::del()... " << value;
+    //qDebug() << " Slice::set()... " << value;
 
     return value;
+}
 
+QVariant Slice::list(const QString &key)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MerePairStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::list()... " << err;
+
+    if (!err)
+        value = s->list(key);
+
+    //qDebug() << " Slice::set()... " << value;
+
+    return value;
+}
+
+QVariant Slice::list(const QString &key, const uint &limit)
+{
+    QVariant value;
+
+    MereStore *s;
+
+    MerePairStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    //qDebug() << " Slice::list()... " << err;
+
+    if (!err)
+        value = s->list(key, limit);
+
+    //qDebug() << " Slice::set()... " << value;
+
+    return value;
 }

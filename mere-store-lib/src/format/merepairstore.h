@@ -17,8 +17,12 @@ public:
     virtual QVariant get(const QString &key) override;
     virtual QVariant del(const QString &key) override;
 
-    virtual QVariant list() override;
-    virtual QVariant list(const QString &key) override;
+    virtual QVariant list(const uint &limit = 25) override;
+    virtual QVariant list(const QString &key, const uint &limit = 25) override;
+    virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) override;
+
+protected:
+    MereStore::MatchCriteria criteria(const QString &query);
 
 private:
     class MereSimpleStorePrivate;

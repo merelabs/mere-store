@@ -43,31 +43,11 @@ public:
     virtual QVariant get(const QString &key) = 0;
     virtual QVariant del(const QString &key) = 0;
 
-    virtual QVariant list() = 0;
-    virtual QVariant list(const QString &key) = 0;
+    enum MatchCriteria { StartWith, EndWith, Contain, Match };
 
-    /*
-    // mere-unit
-    virtual int create(MereStoreUnit &unit) = 0;
-    virtual int update(MereStoreUnit &unit) = 0;
-    virtual int fetch(MereStoreUnit &unit) = 0;
-    virtual int remove(MereStoreUnit &unit) = 0;
-
-    // mapped-unit
-    virtual int create(MereStoreUnitMap &unit) = 0;
-    virtual int update(MereStoreUnitMap &unit) = 0;
-    virtual void fetch(MereStoreUnitMap unit) = 0;
-    virtual void remove(MereStoreUnitMap unit) = 0;
-    virtual void save(MereStoreUnitMap unit) = 0;
-    virtual void search(MereStoreUnitMap criteria) = 0;
-
-
-    virtual void save(QJsonObject unit) = 0;
-    virtual void create(QJsonObject unit) = 0;
-    virtual void update(QJsonObject unit) = 0;
-    virtual void fetch(QJsonObject unit) = 0;
-    virtual void remove(QJsonObject unit) = 0;
-    //*/
+    virtual QVariant list(const uint &limit = 25) = 0;
+    virtual QVariant list(const QString &key, const uint &limit = 25) = 0;
+    virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) = 0;
 
 //protected:
     virtual void init() = 0;
@@ -77,6 +57,7 @@ public:
     virtual int remove() = 0;
 
 signals:
+    // move from here
     void saved(MereStoreUnitMap data);
     void created(MereStoreUnitMap data);
     void updated(MereStoreUnitMap data);
