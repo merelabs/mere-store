@@ -43,6 +43,8 @@ public:
     virtual QVariant get(const QString &key) = 0;
     virtual QVariant del(const QString &key) = 0;
 
+    enum MatchCriteria { StartWith, EndWith, Contain, Match };
+
     virtual QVariant list(const uint &limit = 25) = 0;
     virtual QVariant list(const QString &key, const uint &limit = 25) = 0;
     virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) = 0;

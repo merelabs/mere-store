@@ -10,7 +10,6 @@
 
 typedef QMap<QString, QVariant> MereStoreUnitMap;
 typedef QMap<QString, QVariant> MereStoreUnitAttributes;
-typedef QMap<QString, QList<MereStoreUnitRef>> MereStoreUnitLinks;
 
 class MERE_STORE_LIBSPEC MereStoreUnit : public MereStoreUnitRef
 {
@@ -26,13 +25,6 @@ public:
 
     virtual void addAttribute(const QString &name, const QVariant &value);
     virtual void addAttributes(MereStoreUnitAttributes attributes);
-
-    virtual MereStoreUnitLinks links() const;
-    virtual void setLink(const QString &link, const MereStoreUnitRef &ref);
-    virtual void setLinks(const QString &link, const QList<MereStoreUnitRef> &refs);
-
-    virtual void addLink(const QString &link, const MereStoreUnitRef &ref);
-    virtual void addLinks(const QString &link, const QList<MereStoreUnitRef> &refs);
 
     MereStoreUnitMap map() const;
 

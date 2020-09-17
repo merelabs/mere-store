@@ -29,9 +29,4 @@ private:
     MereStoreUnitRefPrivate *d_ptr;
 };
 
-//Q_DECLARE_METATYPE(MereStoreUnitRef);
-//Q_DECLARE_METATYPE(MereStoreUnitRef*);
-//Q_DECLARE_OPAQUE_POINTER(MereStoreUnitRef::MereStoreUnitRefPrivate);
-//Q_DECLARE_OPAQUE_POINTER(MereStoreUnitRef::MereStoreUnitRefPrivate*);
-
 #endif // MERESTOREUNITREF_H
