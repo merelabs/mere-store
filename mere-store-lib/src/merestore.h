@@ -43,7 +43,9 @@ public:
     virtual int set(const QList<QPair<QString, QVariant>> &pairs) = 0;
 
     virtual QVariant get(const QString &key) = 0;
-    virtual QVariant del(const QString &key) = 0;
+
+    virtual int del(const QString &key) = 0;
+    virtual int del(const QList<QString> &keys) = 0;
 
     virtual QVariant list(const uint &limit = 25) = 0;
     virtual QVariant list(const QString &key, const uint &limit = 25) = 0;

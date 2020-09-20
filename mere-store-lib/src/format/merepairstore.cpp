@@ -3,14 +3,14 @@
 
 #include <QRegularExpression>
 
-class MerePairStore::MereSimpleStorePrivate
+class MerePairStore::MerePairStorePrivate
 {
 public:
-    ~MereSimpleStorePrivate()
+    ~MerePairStorePrivate()
     {
     }
 
-    MereSimpleStorePrivate(MerePairStore *q)
+    MerePairStorePrivate(MerePairStore *q)
         : q_ptr(q)
     {
 
@@ -31,7 +31,7 @@ MerePairStore::MerePairStore(const QString &store, QObject *parent)
 
 MerePairStore::MerePairStore(const QString &store, const QString &slice, QObject *parent)
     : MereBaseStore(store, slice, parent),
-      d_ptr(new MereSimpleStorePrivate(this))
+      d_ptr(new MerePairStorePrivate(this))
 {
 }
 
@@ -92,13 +92,33 @@ QVariant MerePairStore::get(const QString &key)
     return QString::fromStdString(value);
 }
 
-QVariant MerePairStore::del(const QString &key)
+int MerePairStore::del(const QString &key)
 {
     QVariant value = get(key);
 
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Delete(writeOptions, key.toStdString());
+
+    // 0  - success
+    // !0 - failed
+    return !status.ok();
+}
+
+int MerePairStore::del(const QList<QString> &keys)
+{
+    leveldb::WriteOptions writeOptions;
+    leveldb::WriteBatch batch;
+
+    QListIterator<QString> it(keys);
+    while (it.hasNext())
+    {
+        QString key = it.next();
+
+        batch.Delete(key.toStdString());
+    }
+
+    leveldb::Status status = db()->Write(writeOptions, &batch);
 
     // 0  - success
     // !0 - failed
@@ -156,7 +176,7 @@ QVariant MerePairStore::list(const QString &key, const uint &limit)
         if(!match.hasMatch())
             continue;
 
-        records.insert(_key, _val);
+        //records.insert(_key, _val);
         count--;
     }
 

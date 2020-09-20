@@ -16,15 +16,17 @@ public:
     virtual int set(const QList<QPair<QString, QVariant> > &pairs) override;
 
     virtual QVariant get(const QString &key) override;
-    virtual QVariant del(const QString &key) override;
+
+    virtual int del(const QString &key) override;
+    virtual int del(const QList<QString> &keys) override;
 
     virtual QVariant list(const uint &limit = 25) override;
     virtual QVariant list(const QString &key, const uint &limit = 25) override;
     virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) override;
 
 private:
-    class MereSimpleStorePrivate;
-    MereSimpleStorePrivate *d_ptr;
+    class MerePairStorePrivate;
+    MerePairStorePrivate *d_ptr;
 };
 
 #endif // MERESIMPLE_H
