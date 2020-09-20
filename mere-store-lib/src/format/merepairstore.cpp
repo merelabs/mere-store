@@ -1,6 +1,8 @@
 #include "merepairstore.h"
 #include "../engine/leveldb/merestoreleveldbengine.h"
 
+#include "mere/utils/merestringutils.h"
+
 #include <QRegularExpression>
 
 class MerePairStore::MerePairStorePrivate
@@ -37,6 +39,9 @@ MerePairStore::MerePairStore(const QString &store, const QString &slice, QObject
 
 int MerePairStore::set(QVariant value)
 {
+    if(!value.isValid())
+        return 1;
+
     QString key = QUuid::createUuid().toString();
 
     leveldb::WriteOptions writeOptions;
@@ -52,6 +57,12 @@ int MerePairStore::set(QVariant value)
 
 int MerePairStore::set(const QString key, QVariant value)
 {
+    if (MereStringUtils::isBlank(key))
+        return 1;
+
+    if (!value.isValid())
+        return 2;
+
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Put(writeOptions, key.toStdString(), value.toString().toStdString());
@@ -73,7 +84,15 @@ int MerePairStore::set(const QList<QPair<QString, QVariant>> &pairs)
     {
         QPair<QString, QVariant> pair = it.next();
 
-        batch.Put(pair.first.toStdString(), pair.second.toString().toStdString());
+        QString key = pair.first;
+        if (MereStringUtils::isBlank(key))
+            continue;
+
+        QVariant val = pair.second;
+        if (!val.isValid())
+            continue;
+
+        batch.Put(key.toStdString(), val.toString().toStdString());
     }
 
     leveldb::Status status = db()->Write(writeOptions, &batch);
@@ -83,17 +102,23 @@ int MerePairStore::set(const QList<QPair<QString, QVariant>> &pairs)
 
 QVariant MerePairStore::get(const QString &key)
 {
+    if (MereStringUtils::isBlank(key))
+        return QVariant(QVariant::Invalid);
+
     std::string value;
 
     leveldb::ReadOptions readOptions;
 
-    leveldb::Status s = db()->Get(leveldb::ReadOptions(), key.toStdString(), &value);
+    leveldb::Status s = db()->Get(readOptions, key.toStdString(), &value);
 
     return QString::fromStdString(value);
 }
 
 int MerePairStore::del(const QString &key)
 {
+    if (MereStringUtils::isBlank(key))
+        return 1;
+
     QVariant value = get(key);
 
     leveldb::WriteOptions writeOptions;
@@ -114,6 +139,9 @@ int MerePairStore::del(const QList<QString> &keys)
     while (it.hasNext())
     {
         QString key = it.next();
+
+        if (MereStringUtils::isBlank(key))
+            continue;
 
         batch.Delete(key.toStdString());
     }
