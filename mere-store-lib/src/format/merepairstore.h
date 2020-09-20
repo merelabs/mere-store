@@ -13,6 +13,7 @@ public:
 
     virtual int set(QVariant value) override;
     virtual int set(const QString key, QVariant value) override;
+    virtual int set(const QList<QPair<QString, QVariant> > &pairs) override;
 
     virtual QVariant get(const QString &key) override;
     virtual QVariant del(const QString &key) override;

@@ -63,6 +63,24 @@ int MerePairStore::set(const QString key, QVariant value)
     return !status.ok();
 }
 
+int MerePairStore::set(const QList<QPair<QString, QVariant>> &pairs)
+{
+    leveldb::WriteOptions writeOptions;
+    leveldb::WriteBatch batch;
+
+    QListIterator<QPair<QString, QVariant>> it(pairs);
+    while (it.hasNext())
+    {
+        QPair<QString, QVariant> pair = it.next();
+
+        batch.Put(pair.first.toStdString(), pair.second.toString().toStdString());
+    }
+
+    leveldb::Status status = db()->Write(writeOptions, &batch);
+
+    return !status.ok();
+}
+
 QVariant MerePairStore::get(const QString &key)
 {
     std::string value;
