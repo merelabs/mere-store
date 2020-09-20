@@ -74,21 +74,6 @@ QVariant MerePairStore::get(const QString &key)
     return QString::fromStdString(value);
 }
 
-//QVariant MerePairStore::list()
-//{
-//    QMap<QString, QVariant> data;
-
-//    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-//    for (it->SeekToFirst(); it->Valid(); it->Next())
-//    {
-//        data.insert(QString::fromStdString(it->key().ToString()), QString::fromStdString(it->value().ToString()));
-//    }
-
-//    delete it;
-
-//    return data;
-//}
-
 QVariant MerePairStore::del(const QString &key)
 {
     QVariant value = get(key);
