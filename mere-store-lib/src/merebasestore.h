@@ -3,6 +3,7 @@
 
 #include "merestore.h"
 #include "leveldb/db.h"
+#include "leveldb/write_batch.h"
 
 class MERE_STORE_LIBSPEC MereBaseStore : public MereStore
 {
