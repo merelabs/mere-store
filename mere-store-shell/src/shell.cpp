@@ -22,7 +22,7 @@ bool Shell::init()
 
 bool Shell::start()
 {
-//    QTimer::singleShot(0, [this](){
+    QTimer::singleShot(0, [this](){
         m_prompt->welcome();
 
         QString line;
@@ -33,9 +33,8 @@ bool Shell::start()
 
             line = m_prompt->accept();
         } while (line.compare(Command::Exit) && line.compare(Command::Quit));
-
-        quit();
-//    });
+        exit();
+    });
 
     return true;
 }
