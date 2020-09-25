@@ -20,7 +20,7 @@ Config::Config(QString argument, QObject *parent)
 
 bool Config::execute() const
 {
-    qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
+    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
 
     bool ok = false;
 
@@ -34,12 +34,12 @@ bool Config::execute() const
         value = config.get(key);
         ok = true;
 
-        QTextStream(stdout) << "Current store " << key << " : " << value << endl;
+        QTextStream(stdout) << "Current store " << key << " : " << value << Qt::endl;
     }
     else
     {
         ok = config.set(key, value);
-        QTextStream(stdout) << "Store " << key << " set to : " << value << endl;
+        QTextStream(stdout) << "Store " << key << " set to : " << value << Qt::endl;
     }
 
     return ok;

@@ -12,14 +12,8 @@ Void::Void(QString argument, QObject *parent)
 
 }
 
-
 bool Void::execute() const
 {
-    qDebug() << "Invalid command to process. Please run help command to get help.";
+    QTextStream(stdout) << "Invalid command to process. Please run help command to get help." << Qt::endl;
     return false;
-}
-
-void Void::help() const
-{
-    qDebug() <<  "...";
 }

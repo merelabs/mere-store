@@ -7,7 +7,7 @@
 class MERE_STORE_UTILS_LIBSPEC MereStoreUtils
 {
 public:
-     MappedStoreUnit toMap(MereStoreUnit unit);
+     MappedStoreUnit toMap(Unit unit);
 //    static MereStoreUnit fromMap(const MappedStoreUnit &map);
 
 };

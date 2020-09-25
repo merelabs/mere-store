@@ -60,14 +60,14 @@ void Alias::show() const
     {
         it.next();
 
-        out << "- " << it.key() << " " << it.value() << endl;
+        out << "- " << it.key() << " " << it.value() << Qt::endl;
     }
 }
 
 void Alias::show(const QString &alias) const
 {
     QTextStream out(stdout);
-    out << "- " << alias << " " << this->alias(alias) << endl;
+    out << "- " << alias << " " << this->alias(alias) << Qt::endl;
 }
 
 void Alias::add(const QString &alias, const QString &command) const

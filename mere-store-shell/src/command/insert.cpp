@@ -23,8 +23,3 @@ bool Insert::execute() const
 
     return ok;
 }
-
-void Insert::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
-}

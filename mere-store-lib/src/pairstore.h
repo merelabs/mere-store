@@ -1,15 +1,20 @@
 #ifndef MERESIMPLE_H
 #define MERESIMPLE_H
 
-#include "../merebasestore.h"
+#include "basestore.h"
 
-class MERE_STORE_LIBSPEC MerePairStore : public MereBaseStore
+namespace Mere
+{
+namespace Store
+{
+
+class MERE_STORE_LIBSPEC PairStore : public BaseStore
 {
     Q_OBJECT
 public:
-    virtual ~MerePairStore();
-    explicit MerePairStore(const QString &store, QObject *parent = nullptr);
-    explicit MerePairStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+    virtual ~PairStore();
+    explicit PairStore(const QString &store, QObject *parent = nullptr);
+    explicit PairStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual int set(QVariant value) override;
     virtual int set(const QString key, QVariant value) override;
@@ -25,8 +30,11 @@ public:
     virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) override;
 
 private:
-    class MerePairStorePrivate;
-    MerePairStorePrivate *d_ptr;
+    class PairStorePrivate;
+    PairStorePrivate *d_ptr;
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MERESIMPLE_H

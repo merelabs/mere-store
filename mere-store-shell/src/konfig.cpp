@@ -1,6 +1,6 @@
 #include "konfig.h"
 
-#include "mere/store/format/mereunitstore.h"
+#include "mere/store/unitstore.h"
 
 Konfig::Konfig(QObject *parent) : QObject(parent)
 {
@@ -10,9 +10,9 @@ Konfig::Konfig(QObject *parent) : QObject(parent)
 QString Konfig::get(const QString &key) const
 {
     QString value;
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store("");
+    Mere::Store::UnitStore store("");
     s = &store;
 
     if (key.compare("path") == 0)

@@ -2,16 +2,22 @@
 #define MERESTOREUNITREF_H
 
 #include "merestoreglobal.h"
+#include "ref.h"
 
 #include <QUuid>
 
-typedef QMap<QString, QVariant> MereStoreUnitRefMap;
+namespace Mere
+{
+namespace Store
+{
 
-class MERE_STORE_LIBSPEC MereStoreUnitRef
+typedef QMap<QString, QVariant> UnitRefMap;
+
+class MERE_STORE_LIBSPEC UnitRef : public Ref
 {
 public:
-    ~MereStoreUnitRef();
-    explicit MereStoreUnitRef();
+    ~UnitRef();
+    explicit UnitRef();
 
     QString type() const;
     void setType(const QString type);
@@ -22,11 +28,14 @@ public:
     QString path() const;
     void setPath(const QString &path);
 
-    MereStoreUnitRefMap map() const;
+    UnitRefMap map() const;
 
 private:
-    class MereStoreUnitRefPrivate;
-    MereStoreUnitRefPrivate *d_ptr;
+    class UnitRefPrivate;
+    UnitRefPrivate *d_ptr;
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MERESTOREUNITREF_H

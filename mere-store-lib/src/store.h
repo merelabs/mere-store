@@ -2,34 +2,31 @@
 #define MERESTORE_H
 
 #include "merestoreglobal.h"
-#include "merestoreunit.h"
+#include "unit.h"
 
 #include <QMap>
 #include <QObject>
 #include <QVariant>
 
+class MereStoreConfig;
 
 namespace Mere
 {
-    namespace Store
-    {
-        namespace Type
-        {
-            const QString STORE = "store";
-            const QString SLICE = "slice";
-        }
-    }
+namespace Store
+{
+namespace Type
+{
+    const QString STORE = "store";
+    const QString SLICE = "slice";
 }
 
-class MereStoreConfig;
-
-class MERE_STORE_LIBSPEC MereStore : public QObject
+class MERE_STORE_LIBSPEC Store : public QObject
 {
     Q_OBJECT
 public:
-    virtual ~MereStore();
-    explicit MereStore(const QString &store, QObject *parent = nullptr);
-    explicit MereStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+    virtual ~Store();
+    explicit Store(const QString &store, QObject *parent = nullptr);
+    explicit Store(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual QString store() const;
     virtual QString slice() const;
@@ -67,16 +64,19 @@ signals:
     void removed(MereStoreUnitMap data);
     void matched(QList<MereStoreUnitMap> data);
 
-    void saved(MereStoreUnit &unit);
-    void created(MereStoreUnit &unit);
-    void updated(MereStoreUnit &unit);
-    void fetched(MereStoreUnit &unit);
-    void removed(MereStoreUnit &unit);
-    void matched(QList<MereStoreUnit> matches);
+    void saved(Unit &unit);
+    void created(Unit &unit);
+    void updated(Unit &unit);
+    void fetched(Unit &unit);
+    void removed(Unit &unit);
+    void matched(QList<Unit> matches);
 
 private:
-    class MereStorePrivate;
-    MereStorePrivate *d_ptr;
+    class StorePrivate;
+    StorePrivate *d_ptr;
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MERESTORE_H

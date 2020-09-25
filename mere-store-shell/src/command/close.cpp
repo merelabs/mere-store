@@ -41,8 +41,3 @@ QString Close::object() const
 
     return input.command();
 }
-
-void Close::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
-}

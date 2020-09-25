@@ -1,17 +1,17 @@
-#include "merestoreleveldbengine.h"
+#include "leveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
 #include <QDir>
 
-class MereStoreLevelDBEngine::MereStoreLevelDBEnginePrivate
+class Mere::Store::LevelDBEngine::LevelDBEnginePrivate
 {
 public:
-    ~MereStoreLevelDBEnginePrivate()
+    ~LevelDBEnginePrivate()
     {
         close();
     }
 
-    MereStoreLevelDBEnginePrivate(MereStoreLevelDBEngine *q)
+    LevelDBEnginePrivate(LevelDBEngine *q)
         : m_db(0),
           q_ptr(q)
     {
@@ -100,10 +100,10 @@ public:
 private:
     QString m_store;
     leveldb::DB* m_db;
-    MereStoreLevelDBEngine *q_ptr;
+    LevelDBEngine *q_ptr;
 };
 
-MereStoreLevelDBEngine::~MereStoreLevelDBEngine()
+Mere::Store::LevelDBEngine::~LevelDBEngine()
 {
     if (d_ptr)
     {
@@ -112,49 +112,49 @@ MereStoreLevelDBEngine::~MereStoreLevelDBEngine()
     }
 }
 
-MereStoreLevelDBEngine::MereStoreLevelDBEngine(QObject *parent)
-    : MereStoreEngine(parent),
-      d_ptr(new MereStoreLevelDBEnginePrivate(this))
+Mere::Store::LevelDBEngine::LevelDBEngine(QObject *parent)
+    : Engine(parent),
+      d_ptr(new LevelDBEnginePrivate(this))
 {
 
 }
 
-void MereStoreLevelDBEngine::setStore(const QString store)
+void Mere::Store::LevelDBEngine::setStore(const QString store)
 {
     d_ptr->setStore(store);
 }
 
-QString MereStoreLevelDBEngine::store() const
+QString Mere::Store::LevelDBEngine::store() const
 {
     return d_ptr->store();
 }
 
-int MereStoreLevelDBEngine::create()
+int Mere::Store::LevelDBEngine::create()
 {
     return d_ptr->create();
 }
 
-int MereStoreLevelDBEngine::open()
+int Mere::Store::LevelDBEngine::open()
 {
     return d_ptr->open();
 }
 
-int MereStoreLevelDBEngine::close()
+int Mere::Store::LevelDBEngine::close()
 {
     return d_ptr->close();
 }
 
-int MereStoreLevelDBEngine::remove()
+int Mere::Store::LevelDBEngine::remove()
 {
     return d_ptr->remove();
 }
 
-bool MereStoreLevelDBEngine::exists()
+bool Mere::Store::LevelDBEngine::exists()
 {
     return d_ptr->exists();
 }
 
-leveldb::DB* MereStoreLevelDBEngine::db()
+leveldb::DB* Mere::Store::LevelDBEngine::db()
 {
     return d_ptr->db();
 }

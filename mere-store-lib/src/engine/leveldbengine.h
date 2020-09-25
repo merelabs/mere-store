@@ -1,19 +1,24 @@
 #ifndef MERESTORELEVELDBENGINE_H
 #define MERESTORELEVELDBENGINE_H
 
-#include "../merestoreengine.h"
+#include "engine.h"
 
 #include <QDebug>
 
 #include "leveldb/db.h"
 #include "leveldb/cache.h"
 
-class MereStoreLevelDBEngine : public MereStoreEngine
+namespace Mere
+{
+namespace Store
+{
+
+class LevelDBEngine : public Engine
 {
     Q_OBJECT
 public:
-    virtual ~MereStoreLevelDBEngine();
-    explicit MereStoreLevelDBEngine(QObject *parent = nullptr);
+    virtual ~LevelDBEngine();
+    explicit LevelDBEngine(QObject *parent = nullptr);
 
     void setStore(const QString store);
     QString store() const;
@@ -28,8 +33,11 @@ public:
     leveldb::DB* db();
 
 private:
-    class MereStoreLevelDBEnginePrivate;
-    MereStoreLevelDBEnginePrivate *d_ptr;
+    class LevelDBEnginePrivate;
+    LevelDBEnginePrivate *d_ptr;
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MERESTORELEVELDBENGINE_H

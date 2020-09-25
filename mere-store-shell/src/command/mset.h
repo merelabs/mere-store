@@ -11,7 +11,6 @@ public:
     explicit MSet(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
 };
 
 #endif // MSET_H

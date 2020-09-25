@@ -13,7 +13,6 @@ public:
     explicit Insert(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
 };
 
 #endif // INSERT_H

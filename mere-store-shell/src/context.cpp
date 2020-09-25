@@ -1,6 +1,6 @@
 #include "context.h"
 
-#include "mere/store/merestore.h"
+#include "mere/store/store.h"
 
 Context::Context(QObject *parent)
     : QObject(parent),

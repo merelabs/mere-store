@@ -16,7 +16,6 @@ public:
     QString object() const;
 
     bool execute() const override;
-    void help() const override;
 };
 
 #endif // CLOSE_H

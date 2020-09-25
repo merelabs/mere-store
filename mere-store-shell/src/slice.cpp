@@ -1,8 +1,8 @@
 #include "slice.h"
 #include "store.h"
 
-#include "mere/store/format/mereunitstore.h"
-#include "mere/store/format/merepairstore.h"
+#include "mere/store/unitstore.h"
+#include "mere/store/pairstore.h"
 
 Slice::Slice(QObject *parent)
     : Slice("", "", parent)
@@ -20,9 +20,9 @@ Slice::Slice(const QString &store, const QString &slice, QObject *parent)
 
 bool Slice::create() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int ok = s->create();
@@ -33,9 +33,9 @@ bool Slice::create() const
 
 bool Slice::remove() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int ok = s->remove();
@@ -46,9 +46,9 @@ bool Slice::remove() const
 
 bool Slice::select() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int ok = s->open();
@@ -59,9 +59,9 @@ bool Slice::select() const
 
 bool Slice::close() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int ok = s->close();
@@ -72,9 +72,9 @@ bool Slice::close() const
 
 bool Slice::set(const QVariant &value)
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -88,9 +88,9 @@ bool Slice::set(const QVariant &value)
 
 bool Slice::set(const QString &key, const QVariant &value)
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -104,9 +104,9 @@ QVariant Slice::get(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -124,9 +124,9 @@ QVariant Slice::del(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore slice(m_store, m_slice);
+    Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -144,9 +144,9 @@ QVariant Slice::list()
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MerePairStore slice(m_store, m_slice);
+    Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -165,9 +165,9 @@ QVariant Slice::list(const uint &limit)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MerePairStore slice(m_store, m_slice);
+    Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -185,9 +185,9 @@ QVariant Slice::list(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MerePairStore slice(m_store, m_slice);
+    Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();
@@ -205,9 +205,9 @@ QVariant Slice::list(const QString &key, const uint &limit)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MerePairStore slice(m_store, m_slice);
+    Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
 
     int err = s->open();

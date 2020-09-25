@@ -16,35 +16,43 @@ DEFINES += LIB_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
 
 SOURCES +=  \
-    src/format/merejsonstore.cpp \
-    src/engine/merestoreengine.cpp \
-    src/engine/leveldb/merestoreleveldbengine.cpp \
-    src/format/meremapstore.cpp \
-    src/format/merepairstore.cpp \
-    src/format/mereunitstore.cpp \
-    src/merebasestore.cpp \
-    src/merestore.cpp \
+    src/basestore.cpp \
+    src/engine/engine.cpp \
+    src/engine/leveldbengine.cpp \
+    src/jsonstore.cpp \
+    src/mapstore.cpp \
+    src/pairstore.cpp \
+    src/store.cpp \
+    src/unitstore.cpp \
+    src/key.cpp \
     src/merestoreconfig.cpp \
     src/merestorefilter.cpp \
-    src/merestoreunit.cpp \
     src/merestoreunitdescriptor.cpp \
-    src/merestoreunitref.cpp
+    src/pair.cpp \
+    src/ref.cpp \
+    src/unit.cpp \
+    src/unitref.cpp \
+    src/value.cpp
 
 HEADERS +=  \
-    src/format/merejsonstore.h \
-    src/engine/merestoreengine.h \
-    src/engine/leveldb/merestoreleveldbengine.h \
-    src/format/meremapstore.h \
-    src/format/merepairstore.h \
-    src/format/mereunitstore.h \
-    src/merebasestore.h \
-    src/merestore.h \
+    src/basestore.h \
+    src/engine/engine.h \
+    src/engine/leveldbengine.h \
+    src/jsonstore.h \
+    src/mapstore.h \
+    src/pairstore.h \
+    src/unitstore.h \
+    src/key.h \
     src/merestoreconfig.h \
     src/merestorefilter.h \
     src/merestoreglobal.h \
-    src/merestoreunit.h \
     src/merestoreunitdescriptor.h \
-    src/merestoreunitref.h
+    src/pair.h \
+    src/ref.h \
+    src/store.h \
+    src/unit.h \
+    src/unitref.h \
+    src/value.h
 
 DESTDIR = $$PWD/../lib
 
@@ -54,24 +62,6 @@ INCLUDEPATH += /opt/local/include
 LIBS += -L/usr/local/lib
 LIBS += -L/opt/local/lib
 LIBS += -lleveldb
-
-#defineTest(copy) {
-#    source = $$1
-#    target = $$2
-
-#    for(file, source) {
-#        sdir = $${dirname(file)}
-#        sdir = $$replace(sdir, "src", "")
-#        path = $${target}$${sdir}
-
-#        QMAKE_POST_LINK += $$QMAKE_MKDIR $$quote($$path) $$escape_expand(\\n\\t)
-#        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$file) $$quote($$path) $$escape_expand(\\n\\t)
-#    }
-
-#    export(QMAKE_POST_LINK)
-#}
-
-#copy($$HEADERS, $$PWD/../include/mere/store)
 
 #
 # Install

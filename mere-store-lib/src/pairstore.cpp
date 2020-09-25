@@ -1,43 +1,43 @@
-#include "merepairstore.h"
-#include "../engine/leveldb/merestoreleveldbengine.h"
+#include "pairstore.h"
+#include "engine/leveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
 
 #include <QRegularExpression>
 
-class MerePairStore::MerePairStorePrivate
+class Mere::Store::PairStore::PairStorePrivate
 {
 public:
-    ~MerePairStorePrivate()
+    ~PairStorePrivate()
     {
     }
 
-    MerePairStorePrivate(MerePairStore *q)
+    PairStorePrivate(PairStore *q)
         : q_ptr(q)
     {
 
     }
 
 private:
-    MerePairStore *q_ptr;
+    PairStore *q_ptr;
 };
 
-MerePairStore::~MerePairStore()
+Mere::Store::PairStore::~PairStore()
 {
 }
 
-MerePairStore::MerePairStore(const QString &store, QObject *parent)
-    : MerePairStore(store, "", parent)
+Mere::Store::PairStore::PairStore(const QString &store, QObject *parent)
+    : PairStore(store, "", parent)
 {
 }
 
-MerePairStore::MerePairStore(const QString &store, const QString &slice, QObject *parent)
-    : MereBaseStore(store, slice, parent),
-      d_ptr(new MerePairStorePrivate(this))
+Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, QObject *parent)
+    : BaseStore(store, slice, parent),
+      d_ptr(new PairStorePrivate(this))
 {
 }
 
-int MerePairStore::set(QVariant value)
+int Mere::Store::PairStore::set(QVariant value)
 {
     if(!value.isValid())
         return 1;
@@ -55,7 +55,7 @@ int MerePairStore::set(QVariant value)
     return !status.ok();
 }
 
-int MerePairStore::set(const QString key, QVariant value)
+int Mere::Store::PairStore::set(const QString key, QVariant value)
 {
     if (MereStringUtils::isBlank(key))
         return 1;
@@ -74,7 +74,7 @@ int MerePairStore::set(const QString key, QVariant value)
     return !status.ok();
 }
 
-int MerePairStore::set(const QList<QPair<QString, QVariant>> &pairs)
+int Mere::Store::PairStore::set(const QList<QPair<QString, QVariant>> &pairs)
 {
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;
@@ -100,7 +100,7 @@ int MerePairStore::set(const QList<QPair<QString, QVariant>> &pairs)
     return !status.ok();
 }
 
-QVariant MerePairStore::get(const QString &key)
+QVariant Mere::Store::PairStore::get(const QString &key)
 {
     if (MereStringUtils::isBlank(key))
         return QVariant(QVariant::Invalid);
@@ -114,7 +114,7 @@ QVariant MerePairStore::get(const QString &key)
     return QString::fromStdString(value);
 }
 
-int MerePairStore::del(const QString &key)
+int Mere::Store::PairStore::del(const QString &key)
 {
     if (MereStringUtils::isBlank(key))
         return 1;
@@ -130,7 +130,7 @@ int MerePairStore::del(const QString &key)
     return !status.ok();
 }
 
-int MerePairStore::del(const QList<QString> &keys)
+int Mere::Store::PairStore::del(const QList<QString> &keys)
 {
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;
@@ -153,7 +153,7 @@ int MerePairStore::del(const QList<QString> &keys)
     return !status.ok();
 }
 
-QVariant MerePairStore::list(const uint &limit)
+QVariant Mere::Store::PairStore::list(const uint &limit)
 {
     QMap<QString, QVariant> records;
 
@@ -170,7 +170,7 @@ QVariant MerePairStore::list(const uint &limit)
     return records;
 }
 
-QVariant MerePairStore::list(const QString &key, const uint &limit)
+QVariant Mere::Store::PairStore::list(const QString &key, const uint &limit)
 {
     QMap<QString, QVariant> records;
 
@@ -213,7 +213,7 @@ QVariant MerePairStore::list(const QString &key, const uint &limit)
     return records;
 }
 
-QVariant MerePairStore::list(const QMap<QString, QVariant> &filter, const uint &limit)
+QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, const uint &limit)
 {
     QMap<QString, QVariant> records;
 

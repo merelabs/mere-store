@@ -37,7 +37,7 @@ bool Switch::execute() const
             message = "Did you mean to switch to store or slice?\nRun 'help switch' or 'help select' for more details.";
         }
 
-        QTextStream(stdout) << message << endl;
+        QTextStream(stdout) << message << Qt::endl;
 
         return false;
     }
@@ -52,8 +52,8 @@ bool Switch::execute() const
     }
     else
     {
-        QTextStream(stdout) << "Did you mean to switch to store or slice?" << endl <<
-                               "Run 'help switch' or 'help select' for more details." << endl;
+        QTextStream(stdout) << "Did you mean to switch to store or slice?" << Qt::endl
+                            << "Run 'help switch' or 'help select' for more details." << Qt::endl;
         return false;
     }
 

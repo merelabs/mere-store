@@ -33,7 +33,8 @@ bool History::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
 
     QTextStream out(stdout);
@@ -41,7 +42,7 @@ bool History::execute() const
     QListIterator<QString> it(History::m_history);
     while (it.hasNext())
     {
-        out << "- " << it.next() << endl;
+        out << "- " << it.next() << Qt::endl;
     }
 
     return ok;

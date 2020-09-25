@@ -5,7 +5,7 @@
 #include "../context.h"
 #include "../kvutils.h"
 
-#include "mere/store/merestore.h"
+#include "mere/store/store.h"
 #include "mere/utils/merestringutils.h"
 
 Remove::Remove(QObject *parent)
@@ -34,12 +34,13 @@ bool Remove::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
 
     if (blocks.size() == 0)
     {
-        QTextStream(stdout) << "Did you mean to remove store or slice? Run help remove for more information." << endl;
+        QTextStream(stdout) << "Did you mean to remove store or slice? Run help remove for more information." << Qt::endl;
         return ok;
     }
 
@@ -54,8 +55,8 @@ bool Remove::execute() const
         QString store = Shell::context()->store();
         if (MereStringUtils::isBlank(store))
         {
-            QTextStream(stdout) << "To delete a slice, select the store first." << endl
-                                << "Run 'help select' or 'help remove' for more information." << endl;
+            QTextStream(stdout) << "To delete a slice, select the store first." << Qt::endl
+                                << "Run 'help select' or 'help remove' for more information." << Qt::endl;
             return ok;
         }
 
@@ -64,7 +65,7 @@ bool Remove::execute() const
     }
     else
     {
-        QTextStream(stdout) << "Did you mean to remove store or slice? Run help remove for more information." << endl;
+        QTextStream(stdout) << "Did you mean to remove store or slice? Run help remove for more information." << Qt::endl;
     }
 
     return ok;
@@ -79,10 +80,10 @@ bool Remove::removeStore(const QString &store) const
 
     if (ok)
     {
-        qDebug() << "Store " << store << " remove successfully.";
+        QTextStream(stdout) << "Store " << store << " remove successfully." << Qt::endl;
     }
     else
-        qDebug() << "Store " << store << " does not exists.";
+        QTextStream(stdout) << "Store " << store << " does not exists." << Qt::endl;
 
     return ok;
 }
@@ -110,10 +111,10 @@ bool Remove::removeSlice(const QString &store, const QString &slice) const
 
     if (ok)
     {
-        qDebug() << "Slice " << slice << " of " << store << " removed successfully.";
+        QTextStream(stdout) << "Slice " << slice << " of " << store << " removed successfully." << Qt::endl;
     }
     else
-        qDebug() << "Slice " << slice << " of " << store << " does not exists.";
+        QTextStream(stdout) << "Slice " << slice << " of " << store << " does not exists." << Qt::endl;
 
     return ok;
 

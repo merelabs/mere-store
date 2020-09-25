@@ -33,9 +33,9 @@ bool MSet::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
-
 
     QString storeName = Shell::context()->store();
 
@@ -61,9 +61,4 @@ bool MSet::execute() const
     }
 
     return ok;
-}
-
-void MSet::help() const
-{
-    qDebug() <<  "THIS IS A TEST";
 }

@@ -1,28 +1,23 @@
-#include "mereunitstore.h"
-#include "../merestoreconfig.h"
+#include "unitstore.h"
+#include "merestoreconfig.h"
 
 #include "mere/utils/merestringutils.h"
 
 #include <QUuid>
 
-//QString MereUnitStore::UNIT_KEY      = "%1:uuid:%2:";
-//QString MereUnitStore::UNIT_META_KEY = "%1:uuid:%2:meta:%3";
-//QString MereUnitStore::UNIT_ATTR_KEY = "%1:uuid:%2:attr:%3";
-//QString MereUnitStore::UNIT_PROP_KEY = "%1:uuid:%2:prop:%3";
-
-MereUnitStore::~MereUnitStore()
+Mere::Store::UnitStore::~UnitStore()
 {
 
 }
 
-MereUnitStore::MereUnitStore(const QString &store, QObject *parent)
-    : MereUnitStore(store, "", parent)
+Mere::Store::UnitStore::UnitStore(const QString &store, QObject *parent)
+    : UnitStore(store, "", parent)
 {
 
 }
 
-MereUnitStore::MereUnitStore(const QString &store, const QString &slice, QObject *parent)
-    : MereMapStore(store, slice, parent)
+Mere::Store::UnitStore::UnitStore(const QString &store, const QString &slice, QObject *parent)
+    : MapStore(store, slice, parent)
 {
 
 }
@@ -58,7 +53,7 @@ MereUnitStore::MereUnitStore(const QString &store, const QString &slice, QObject
 //    return units;
 //}
 
-int MereUnitStore::create(MereStoreUnit &unit)
+int Mere::Store::UnitStore::create(Unit &unit)
 {
     //qDebug() << "Going to create..." << unit.type();
 
@@ -73,7 +68,7 @@ int MereUnitStore::create(MereStoreUnit &unit)
     return 0;
 }
 
-int MereUnitStore::update(MereStoreUnit &unit)
+int Mere::Store::UnitStore::update(Unit &unit)
 {
     //qDebug() << "Going to update...";
 
@@ -86,7 +81,7 @@ int MereUnitStore::update(MereStoreUnit &unit)
     return 0;
 }
 
-int MereUnitStore::fetch(MereStoreUnit &unit)
+int Mere::Store::UnitStore::fetch(Unit &unit)
 {
     qDebug() << "Going to fetch...";
     // Unit Type
@@ -123,7 +118,7 @@ int MereUnitStore::fetch(MereStoreUnit &unit)
     return 0;
 }
 
-int MereUnitStore::remove(MereStoreUnit &unit)
+int Mere::Store::UnitStore::remove(Unit &unit)
 {
 //    MereStoreUnit fetchedUnit = fetch(unit);
 
@@ -160,7 +155,7 @@ int MereUnitStore::remove(MereStoreUnit &unit)
     return 0;
 }
 
-QString MereUnitStore::key(const MereStoreUnit unit) const
+QString Mere::Store::UnitStore::key(const Unit unit) const
 {
     // Unit Type
     const QString type = unit.type();

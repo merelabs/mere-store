@@ -18,9 +18,9 @@ bool What::execute() const
 
     bool ok = true;
 
-    QTextStream(stdout) << "So, you want to know all about KKKKDB?" << endl
-                        << "Ok, it is a simple, small, fast storage system primarily focus on embedded use," << endl
-                        << "but not limited to that worth to mentioned" << endl
+    QTextStream(stdout) << "So, you want to know all about KKKKDB?" << Qt::endl
+                        << "Ok, it is a simple, small, fast storage system primarily focus on embedded use," << Qt::endl
+                        << "but not limited to that worth to mentioned" << Qt::endl
                         ;
 
     return ok;

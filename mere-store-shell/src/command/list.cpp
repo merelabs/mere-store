@@ -35,7 +35,8 @@ bool List::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
 
     if (blocks.size() == 0)

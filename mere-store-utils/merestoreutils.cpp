@@ -3,7 +3,7 @@
 #include "mere/store/merestoreunit.h"
 #include "mere/utils/merestringutils.h"
 
-MappedStoreUnit MereStoreUtils::toMap(MereStoreUnit unit)
+MappedStoreUnit MereStoreUtils::toMap(Unit unit)
 {
     MappedStoreUnit map;
 

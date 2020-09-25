@@ -5,7 +5,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/store/merestore.h"
+#include "mere/store/store.h"
 #include "mere/utils/merestringutils.h"
 
 Select::Select(QObject *parent)
@@ -32,20 +32,20 @@ bool Select::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
         return false;
     }
 
 
     if (blocks.size() == 0)
     {
-        QTextStream(stdout) << "Did you mean to select store or slice? Run 'help select' for more information." << endl;
+        QTextStream(stdout) << "Did you mean to select store or slice? Run 'help select' for more information." << Qt::endl;
         return false;
     }
 
     if (blocks.size() > 2)
     {
-        QTextStream(stdout) << "Too many arguments to select store or slice. Run 'help select' for more information." << endl;
+        QTextStream(stdout) << "Too many arguments to select store or slice. Run 'help select' for more information." << Qt::endl;
         return false;
     }
 
@@ -63,7 +63,7 @@ bool Select::execute() const
     }
     else
     {
-        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << endl;
+        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << Qt::endl;
     }
 
     return ok;
@@ -78,12 +78,12 @@ bool Select::selectStore(const QString &store) const
 
     if (ok)
     {
-        qDebug() << "Store " << store << " selected successfully.";
+        QTextStream(stdout) << "Store " << store << " selected successfully." << Qt::endl;
         s.close();
         emit selected(Mere::Store::Type::STORE, store);
     }
     else
-        qDebug() << "Store " << store << " does not exists.";
+        QTextStream(stdout) << "Store " << store << " does not exists." << Qt::endl;
 
     return ok;
 }
@@ -97,12 +97,12 @@ bool Select::selectSlice(const QString &store, const QString &slice) const
 
     if (ok)
     {
-        qDebug() << "Slice " << slice << " selected successfully.";
+        QTextStream(stdout) << "Slice " << slice << " selected successfully." << Qt::endl;
         s.close();
         emit selected(Mere::Store::Type::SLICE, slice);
     }
     else
-        qDebug() << "Slice " << slice << " does not exists.";
+        QTextStream(stdout) << "Slice " << slice << " does not exists." << Qt::endl;
 
     return ok;
 }

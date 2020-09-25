@@ -3,11 +3,16 @@
 
 #include <QObject>
 
-class MereStoreEngine : public QObject
+namespace Mere
+{
+namespace Store
+{
+
+class Engine : public QObject
 {
     Q_OBJECT
 public:
-    explicit MereStoreEngine(QObject *parent = nullptr);
+    explicit Engine(QObject *parent = nullptr);
 
     //virtual void init() = 0;
     virtual int create() = 0;
@@ -22,5 +27,8 @@ signals:
     void closed();
     void removed();
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MERESTOREENGINE_H

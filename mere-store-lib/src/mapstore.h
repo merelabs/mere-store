@@ -1,19 +1,23 @@
 #ifndef MEREMAPSTORE_H
 #define MEREMAPSTORE_H
 
-#include "merepairstore.h"
+#include "pairstore.h"
 
 #include "leveldb/cache.h"
 #include "leveldb/write_batch.h"
 
-//class MERE_STORE_LIBSPEC MereMapStore : public MereJsonStore
-class MERE_STORE_LIBSPEC MereMapStore : public MerePairStore
+namespace Mere
+{
+namespace Store
+{
+
+class MERE_STORE_LIBSPEC MapStore : public PairStore
 {
     Q_OBJECT
 public:
-    virtual ~MereMapStore();
-    explicit MereMapStore(const QString &store, QObject *parent = nullptr);
-    explicit MereMapStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+    virtual ~MapStore();
+    explicit MapStore(const QString &store, QObject *parent = nullptr);
+    explicit MapStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual void save(MereStoreUnitMap &unit);
     virtual int create(MereStoreUnitMap &unit);
@@ -31,8 +35,8 @@ protected:
     int remove(const QString pkey);
 
 //    QString key(const MereStoreUnit unit) const;
-    using MereBaseStore::create;
-    using MereBaseStore::remove;
+    using BaseStore::create;
+    using BaseStore::remove;
 
 protected:
     static QString UNIT_KEY;
@@ -42,5 +46,8 @@ protected:
 
 private:
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MEREMAPSTORE_H

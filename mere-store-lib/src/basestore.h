@@ -1,17 +1,22 @@
 #ifndef MEREABSTRACTSTORE_H
 #define MEREABSTRACTSTORE_H
 
-#include "merestore.h"
+#include "store.h"
 #include "leveldb/db.h"
 #include "leveldb/write_batch.h"
 
-class MERE_STORE_LIBSPEC MereBaseStore : public MereStore
+namespace Mere
+{
+namespace Store
+{
+
+class MERE_STORE_LIBSPEC BaseStore : public Store
 {
     Q_OBJECT
 public:
-    virtual ~MereBaseStore();
-    explicit MereBaseStore(const QString &store, QObject *parent = nullptr);
-    explicit MereBaseStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+    virtual ~BaseStore();
+    explicit BaseStore(const QString &store, QObject *parent = nullptr);
+    explicit BaseStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual void init() override;
     virtual QString path() const override;
@@ -25,8 +30,11 @@ public:
     leveldb::DB* db();
 
 private:
-    class MereBaseStorePrivate;
-    MereBaseStorePrivate *d_ptr;
+    class BaseStorePrivate;
+    BaseStorePrivate *d_ptr;
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MEREABSTRACTSTORE_H

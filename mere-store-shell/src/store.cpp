@@ -1,6 +1,6 @@
 #include "store.h"
 
-#include "mere/store/format/mereunitstore.h"
+#include "mere/store/unitstore.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -21,9 +21,9 @@ Store::Store(QString store, QObject *parent)
 
 bool Store::create() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int ok = s->create();
@@ -34,9 +34,9 @@ bool Store::create() const
 
 bool Store::select() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int ok = s->open();
@@ -47,9 +47,9 @@ bool Store::select() const
 
 bool Store::close() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int ok = s->close();
@@ -61,9 +61,9 @@ bool Store::close() const
 
 bool Store::remove() const
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int ok = s->remove();
@@ -74,9 +74,9 @@ bool Store::remove() const
 
 bool Store::set(const QVariant &value)
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -90,9 +90,9 @@ bool Store::set(const QVariant &value)
 
 bool Store::set(const QString &key, const QVariant &value)
 {
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -108,9 +108,9 @@ QVariant Store::get(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -128,9 +128,9 @@ QVariant Store::del(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -149,9 +149,9 @@ QVariant Store::list()
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -169,9 +169,9 @@ QVariant Store::list(const uint &limit)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -189,9 +189,9 @@ QVariant Store::list(const QString &key)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();
@@ -209,9 +209,9 @@ QVariant Store::list(const QString &key, const uint &limit)
 {
     QVariant value;
 
-    MereStore *s;
+    Mere::Store::Store *s;
 
-    MereUnitStore store(m_store);
+    Mere::Store::UnitStore store(m_store);
     s = &store;
 
     int err = s->open();

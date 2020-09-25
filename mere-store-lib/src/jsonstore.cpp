@@ -1,23 +1,23 @@
-#include "merejsonstore.h"
+#include "jsonstore.h"
 
-MereJsonStore::~MereJsonStore()
+Mere::Store::JsonStore::~JsonStore()
 {
 
 }
 
-MereJsonStore::MereJsonStore(const QString &store, QObject *parent)
-    : MereJsonStore(store, "", parent)
-{
-    //qDebug() << "MereJsonStore::...." << store;
-}
-
-MereJsonStore::MereJsonStore(const QString &store, const QString &slice, QObject *parent)
-    : MerePairStore(store, slice, parent)
+Mere::Store::JsonStore::JsonStore(const QString &store, QObject *parent)
+    : JsonStore(store, "", parent)
 {
     //qDebug() << "MereJsonStore::...." << store;
 }
 
-void MereJsonStore::save(QJsonObject unit)
+Mere::Store::JsonStore::JsonStore(const QString &store, const QString &slice, QObject *parent)
+    : PairStore(store, slice, parent)
+{
+    //qDebug() << "MereJsonStore::...." << store;
+}
+
+void Mere::Store::JsonStore::save(QJsonObject unit)
 {
    // qDebug() << "Going to save...";
 
@@ -28,7 +28,7 @@ void MereJsonStore::save(QJsonObject unit)
 //        create(unit);
 }
 
-void MereJsonStore::create(QJsonObject unit)
+void Mere::Store::JsonStore::create(QJsonObject unit)
 {
     qDebug() << "Going to create..." << unit.value("type");
 
@@ -61,7 +61,7 @@ void MereJsonStore::create(QJsonObject unit)
 }
 
 
-void MereJsonStore::update(QJsonObject unit)
+void Mere::Store::JsonStore::update(QJsonObject unit)
 {
     qDebug() << "Going to update...";
 
@@ -98,7 +98,7 @@ void MereJsonStore::update(QJsonObject unit)
 }
 
 
-void MereJsonStore::fetch(QJsonObject unit)
+void Mere::Store::JsonStore::fetch(QJsonObject unit)
 {
     qDebug() << "Going to fetch...";
 //    // Unit Type
@@ -134,7 +134,7 @@ void MereJsonStore::fetch(QJsonObject unit)
 }
 
 
-void MereJsonStore::remove(QJsonObject unit)
+void Mere::Store::JsonStore::remove(QJsonObject unit)
 {
     qDebug() << "Going to remove...";
 
@@ -168,7 +168,7 @@ void MereJsonStore::remove(QJsonObject unit)
 }
 
 
-void MereJsonStore::search(QJsonObject query)
+void Mere::Store::JsonStore::search(QJsonObject query)
 {
     qDebug() << "Search for path:" << query.value("path").toString();
     qDebug() << "Search for type:" << query.value("type").toString();

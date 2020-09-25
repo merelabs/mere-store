@@ -1,20 +1,25 @@
 #ifndef MEREJSONSTORE_H
 #define MEREJSONSTORE_H
 
-#include "merepairstore.h"
+#include "pairstore.h"
 
 #include "leveldb/cache.h"
 #include "leveldb/write_batch.h"
 
 #include <QJsonObject>
 
-class MERE_STORE_LIBSPEC MereJsonStore : public MerePairStore
+namespace Mere
+{
+namespace Store
+{
+
+class MERE_STORE_LIBSPEC JsonStore : public PairStore
 {
     Q_OBJECT
 public:
-    virtual ~MereJsonStore();
-    explicit MereJsonStore(const QString &store, QObject *parent = nullptr);
-    explicit MereJsonStore(const QString &store, const QString &slice, QObject *parent = nullptr);
+    virtual ~JsonStore();
+    explicit JsonStore(const QString &store, QObject *parent = nullptr);
+    explicit JsonStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual void save(QJsonObject unit) ;
     virtual void create(QJsonObject unit) ;
@@ -39,5 +44,8 @@ signals:
 
 
 };
+
+} // namespace Store
+} // namespace Mere
 
 #endif // MEREJSONSTORE_H

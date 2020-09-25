@@ -1,14 +1,14 @@
-#include "merestoreunitref.h"
+#include "unitref.h"
 
-class MereStoreUnitRef::MereStoreUnitRefPrivate
+class Mere::Store::UnitRef::UnitRefPrivate
 {
 public:
-    ~MereStoreUnitRefPrivate()
+    ~UnitRefPrivate()
     {
 
     }
 
-    MereStoreUnitRefPrivate(MereStoreUnitRef *q)
+    UnitRefPrivate(UnitRef *q)
         : m_path(""),
           m_type(""),
           m_uuid(0),
@@ -47,9 +47,9 @@ public:
         m_path = path;
     }
 
-    MereStoreUnitRefMap map() const
+    UnitRefMap map() const
     {
-        MereStoreUnitRefMap ref;
+        UnitRefMap ref;
 
         ref.insert("path", path());
         ref.insert("type", type());
@@ -63,51 +63,51 @@ private:
     QString   m_type;
     QUuid     m_uuid;
 
-    MereStoreUnitRef *q_ptr;
+    UnitRef *q_ptr;
 };
 
-MereStoreUnitRef::~MereStoreUnitRef()
+Mere::Store::UnitRef::~UnitRef()
 {
 
 }
 
-MereStoreUnitRef::MereStoreUnitRef()
-    : d_ptr(new MereStoreUnitRefPrivate(this))
+Mere::Store::UnitRef::UnitRef()
+    : d_ptr(new UnitRefPrivate(this))
 {
 
 }
 
-QString MereStoreUnitRef::type() const
+QString Mere::Store::UnitRef::type() const
 {
     return d_ptr->type();
 }
 
-void MereStoreUnitRef::setType(const QString type)
+void Mere::Store::UnitRef::setType(const QString type)
 {
     return d_ptr->setType(type);
 }
 
-QUuid MereStoreUnitRef::uuid() const
+QUuid Mere::Store::UnitRef::uuid() const
 {
     return d_ptr->uuid();
 }
 
-void MereStoreUnitRef::setUuid(const QUuid &uuid)
+void Mere::Store::UnitRef::setUuid(const QUuid &uuid)
 {
     return d_ptr->setUuid(uuid);
 }
 
-QString MereStoreUnitRef::path() const
+QString Mere::Store::UnitRef::path() const
 {
     return d_ptr->path();
 }
 
-void MereStoreUnitRef::setPath(const QString &path)
+void Mere::Store::UnitRef::setPath(const QString &path)
 {
     return d_ptr->setPath(path);
 }
 
-MereStoreUnitRefMap MereStoreUnitRef::map() const
+Mere::Store::UnitRefMap Mere::Store::UnitRef::map() const
 {
     return d_ptr->map();
 }

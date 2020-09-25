@@ -34,7 +34,8 @@ bool Get::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
 
     QListIterator<QString> it(keys);
@@ -42,7 +43,7 @@ bool Get::execute() const
     {
         QString key    = it.next();
         QVariant value = get(key);
-        QTextStream(stdout) << "- " << key << " : " << value.toString() << endl;
+        QTextStream(stdout) << "- " << key << " : " << value.toString() << Qt::endl;
     }
 
     return ok;

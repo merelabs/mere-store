@@ -33,9 +33,9 @@ bool MGet::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
-
 
     QString storeName = Shell::context()->store();
     Store store(storeName);
@@ -45,7 +45,7 @@ bool MGet::execute() const
     {
         QString key = it.next();
         QVariant value = store.get(key);
-        qDebug() << "-" << key << value.toString();
+        QTextStream(stdout) << "-" << key << value.toString() << Qt::endl;
     }
 
     return ok;

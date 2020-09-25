@@ -1,25 +1,25 @@
-#include "meremapstore.h"
+#include "mapstore.h"
 
 #include "mere/utils/merestringutils.h"
 
-QString MereMapStore::UNIT_KEY      = "type:%1:uuid:%2:";
-QString MereMapStore::UNIT_META_KEY = UNIT_KEY + "meta:%3";
-QString MereMapStore::UNIT_ATTR_KEY = UNIT_KEY + "attr:%3";
-QString MereMapStore::UNIT_LINK_KEY = UNIT_KEY + "link:%3:" + UNIT_KEY;
+QString Mere::Store::MapStore::UNIT_KEY      = "path:%1:type:%2:uuid:%3:";
+QString Mere::Store::MapStore::UNIT_META_KEY = UNIT_KEY + "meta:%4";
+QString Mere::Store::MapStore::UNIT_ATTR_KEY = UNIT_KEY + "attr:%4";
+QString Mere::Store::MapStore::UNIT_LINK_KEY = UNIT_KEY + "link:%4:path:%5:type:%6:uuid:%7:";
 
-MereMapStore::~MereMapStore()
+Mere::Store::MapStore::~MapStore()
 {
 
 }
 
-MereMapStore::MereMapStore(const QString &store, QObject *parent)
-    : MereMapStore(store, "", parent)
+Mere::Store::MapStore::MapStore(const QString &store, QObject *parent)
+    : MapStore(store, "", parent)
 {
     //qDebug() << "MereDefaultStore::...." << store;
 }
 
-MereMapStore::MereMapStore(const QString &store, const QString &slice, QObject *parent)
-    : MerePairStore(store, slice, parent)
+Mere::Store::MapStore::MapStore(const QString &store, const QString &slice, QObject *parent)
+    : PairStore(store, slice, parent)
 {
     //qDebug() << "MereDefaultStore::...." << store;
 }
@@ -65,7 +65,7 @@ QVariant MereMapStore::list()
     return results;
 }
 */
-void MereMapStore::save(MereStoreUnitMap &unit)
+void Mere::Store::MapStore::save(MereStoreUnitMap &unit)
 {
     //qDebug() << "Going to save...";
 
@@ -76,7 +76,7 @@ void MereMapStore::save(MereStoreUnitMap &unit)
         create(unit);
 }
 
-int MereMapStore::create(MereStoreUnitMap &unit)
+int Mere::Store::MapStore::create(MereStoreUnitMap &unit)
 {
     //qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXX Going to create..." << unit.value("type");
 
@@ -118,7 +118,7 @@ int MereMapStore::create(MereStoreUnitMap &unit)
 }
 
 
-int MereMapStore::update(MereStoreUnitMap &unit)
+int Mere::Store::MapStore::update(MereStoreUnitMap &unit)
 {
     //qDebug() << "Going to update...";
 
@@ -158,7 +158,7 @@ int MereMapStore::update(MereStoreUnitMap &unit)
 }
 
 
-void MereMapStore::fetch(MereStoreUnitMap unit)
+void Mere::Store::MapStore::fetch(MereStoreUnitMap unit)
 {
     qDebug() << "Going to fetch...";
     // Unit Type
@@ -194,7 +194,7 @@ void MereMapStore::fetch(MereStoreUnitMap unit)
 }
 
 
-void MereMapStore::remove(MereStoreUnitMap unit)
+void Mere::Store::MapStore::remove(MereStoreUnitMap unit)
 {
     qDebug() << "Going to remove...";
 
@@ -228,7 +228,7 @@ void MereMapStore::remove(MereStoreUnitMap unit)
 }
 
 
-void MereMapStore::search(MereStoreUnitMap query)
+void Mere::Store::MapStore::search(MereStoreUnitMap query)
 {
     //qDebug() << "Search for path:" << query.value("path").toString();
     //qDebug() << "Search for type:" << query.value("type").toString();
@@ -284,7 +284,7 @@ void MereMapStore::search(MereStoreUnitMap query)
 ////    }
 //}
 
-int MereMapStore::read(const QString pkey, MereStoreUnitMap &map)
+int Mere::Store::MapStore::read(const QString pkey, MereStoreUnitMap &map)
 {
     QStringList parts = pkey.split(":");
     if (parts.size() >= 2)
@@ -348,7 +348,7 @@ int MereMapStore::read(const QString pkey, MereStoreUnitMap &map)
     return 0;
 }
 
-int MereMapStore::write(const QString type, const QUuid uuid, const MereStoreUnitMap &data)
+int Mere::Store::MapStore::write(const QString type, const QUuid uuid, const MereStoreUnitMap &data)
 {
     //qDebug() << "ADDING DATA" << uuid << data;
     leveldb::WriteOptions writeOptions;
@@ -374,7 +374,7 @@ int MereMapStore::write(const QString type, const QUuid uuid, const MereStoreUni
     return 0;
 }
 
-int MereMapStore::remove(const QString pkey)
+int Mere::Store::MapStore::remove(const QString pkey)
 {
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;

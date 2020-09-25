@@ -5,7 +5,7 @@
 #include "../context.h"
 #include "../kvutils.h"
 
-#include "mere/store/merestore.h"
+#include "mere/store/store.h"
 #include "mere/utils/merestringutils.h"
 
 Create::Create(QObject *parent)
@@ -34,12 +34,13 @@ bool Create::execute() const
     }
     catch (...)
     {
-        qDebug() << "Exception....";
+        QTextStream(stdout) << "Exception...." << Qt::endl;
+        return false;
     }
 
     if (blocks.size() == 0)
     {
-        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << endl;
+        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << Qt::endl;
         return ok;
     }
 
@@ -57,7 +58,7 @@ bool Create::execute() const
     }
     else
     {
-        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << endl;
+        QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << Qt::endl;
     }
 
     return ok;
@@ -72,11 +73,11 @@ bool Create::createStore(const QString &store) const
 
     if (ok)
     {
-        qDebug() << "Store " << store << " created successfully.";
+        QTextStream(stdout) << "Store " << store << " created successfully." << Qt::endl;
         s.close();
     }
     else
-        qDebug() << "Store " << store << " already exists.";
+        QTextStream(stdout) << "Store " << store << " already exists." << Qt::endl;
 
     return ok;
 }
@@ -104,10 +105,10 @@ bool Create::createSlice(const QString &store, const QString &slice) const
 
     if (ok)
     {
-        qDebug() << "Slice " << slice << " of " << store << " created successfully.";
+        QTextStream(stdout) << "Slice " << slice << " of " << store << " created successfully." << Qt::endl;
     }
     else
-        qDebug() << "Slice " << slice << " of " << store << " already exists.";
+        QTextStream(stdout) << "Slice " << slice << " of " << store << " already exists." << Qt::endl;
 
     return ok;
 
@@ -119,8 +120,8 @@ bool Create::createSlices(const QString &store, const QList<QString> &slices) co
 
     if (MereStringUtils::isBlank(store))
     {
-        QTextStream(stdout) << "Slice is a part of a store, select a store before creating a slice." << endl
-                            << "Run 'help create' or 'help select' for more information." << endl;
+        QTextStream(stdout) << "Slice is a part of a store, select a store before creating a slice." << Qt::endl
+                            << "Run 'help create' or 'help select' for more information." << Qt::endl;
 
         return ok;
     }

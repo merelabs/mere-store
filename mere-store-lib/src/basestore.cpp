@@ -1,16 +1,16 @@
-#include "merebasestore.h"
+#include "basestore.h"
 #include "merestoreconfig.h"
-#include "engine/leveldb/merestoreleveldbengine.h"
+#include "engine/leveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
 
 #include <QDir>
 #include <QFile>
 
-class MereBaseStore::MereBaseStorePrivate
+class Mere::Store::BaseStore::BaseStorePrivate
 {
 public:
-    ~MereBaseStorePrivate()
+    ~BaseStorePrivate()
     {
         if (m_engine)
         {
@@ -19,9 +19,9 @@ public:
         }
     }
 
-    MereBaseStorePrivate(MereBaseStore *q)
+    BaseStorePrivate(BaseStore *q)
         : q_ptr(q),
-          m_engine(new MereStoreLevelDBEngine())
+          m_engine(new LevelDBEngine())
     {
 
     };
@@ -168,11 +168,11 @@ private:
     }
 
 private:
-    MereBaseStore *q_ptr;
-    MereStoreLevelDBEngine *m_engine;
+    BaseStore *q_ptr;
+    LevelDBEngine *m_engine;
 };
 
-MereBaseStore::~MereBaseStore()
+Mere::Store::BaseStore::~BaseStore()
 {
     if (d_ptr)
     {
@@ -181,59 +181,59 @@ MereBaseStore::~MereBaseStore()
     }
 }
 
-MereBaseStore::MereBaseStore(const QString &store, QObject *parent)
-    : MereBaseStore(store, "", parent)
+Mere::Store::BaseStore::BaseStore(const QString &store, QObject *parent)
+    : BaseStore(store, "", parent)
 {
 
 }
 
-MereBaseStore::MereBaseStore(const QString &store, const QString &slice, QObject *parent)
-    : MereStore(store, slice, parent),
-      d_ptr(new MereBaseStorePrivate(this))
+Mere::Store::BaseStore::BaseStore(const QString &store, const QString &slice, QObject *parent)
+    : Store(store, slice, parent),
+      d_ptr(new BaseStorePrivate(this))
 {
 
 }
 
-void MereBaseStore::init()
+void Mere::Store::BaseStore::init()
 {
     d_ptr->init();
 }
 
-QString MereBaseStore::path() const
+QString Mere::Store::BaseStore::path() const
 {
     MereStoreConfig *config = MereStoreConfig::instance();
 
     return config->path();
 }
 
-QString MereBaseStore::mime() const
+QString Mere::Store::BaseStore::mime() const
 {
     MereStoreConfig *config = MereStoreConfig::instance();
 
     return config->mime();
 }
 
-int MereBaseStore::create()
+int Mere::Store::BaseStore::create()
 {
     return d_ptr->create();
 }
 
-int MereBaseStore::open()
+int Mere::Store::BaseStore::open()
 {
     return d_ptr->open();
 }
 
-int MereBaseStore::close()
+int Mere::Store::BaseStore::close()
 {
     return d_ptr->close();
 }
 
-int MereBaseStore::remove()
+int Mere::Store::BaseStore::remove()
 {
     return d_ptr->remove();
 }
 
-leveldb::DB* MereBaseStore::db()
+leveldb::DB* Mere::Store::BaseStore::db()
 {
     return d_ptr->db();
 }

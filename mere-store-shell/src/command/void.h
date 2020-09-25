@@ -13,10 +13,6 @@ public:
     explicit Void(QString argument,  QObject *parent = nullptr);
 
     bool execute() const override;
-    void help() const override;
-
-signals:
-
 };
 
 #endif // VOID_H
