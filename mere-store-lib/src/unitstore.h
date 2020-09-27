@@ -23,7 +23,8 @@ public:
     virtual int fetch(Unit &unit) ;
     virtual int remove(Unit &unit) ;
 
-    //virtual QVariant list() override;
+    virtual QVariant list(const int &limit = 25) override;
+//    virtual QVariant list(const QString &key, const int &limit = 25) override;
 
 private:
     // Just to tell compiler to avoid warning!

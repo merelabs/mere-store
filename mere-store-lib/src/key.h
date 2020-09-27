@@ -12,6 +12,9 @@ class Key : public QString
 {
 public:
     Key(const QString &key);
+
+protected:
+    static QChar SEPARATOR;
 };
 
 } // namespace Store

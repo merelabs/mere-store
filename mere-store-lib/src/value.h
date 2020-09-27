@@ -8,7 +8,7 @@ namespace Mere
 namespace Store
 {
 
-class Value : QVariant
+class Value : public QVariant
 {
 public:
     Value(const QVariant &value);

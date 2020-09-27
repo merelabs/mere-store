@@ -1,5 +1,7 @@
 #include "unitref.h"
 
+#include "mere/utils/merestringutils.h"
+
 class Mere::Store::UnitRef::UnitRefPrivate
 {
 public:
@@ -15,6 +17,16 @@ public:
           q_ptr(q)
     {
 
+    }
+
+    QString path() const
+    {
+        return m_path;
+    }
+
+    void setPath(const QString &path)
+    {
+        m_path = path;
     }
 
     QString type() const
@@ -37,16 +49,6 @@ public:
         m_uuid = uuid;
     }
 
-    QString path() const
-    {
-        return m_path;
-    }
-
-    void setPath(const QString &path)
-    {
-        m_path = path;
-    }
-
     UnitRefMap map() const
     {
         UnitRefMap ref;
@@ -63,6 +65,8 @@ private:
     QString   m_type;
     QUuid     m_uuid;
 
+    bool      m_valid;
+
     UnitRef *q_ptr;
 };
 
@@ -75,6 +79,24 @@ Mere::Store::UnitRef::UnitRef()
     : d_ptr(new UnitRefPrivate(this))
 {
 
+}
+
+Mere::Store::UnitRef::UnitRef(const QString &ref)
+    : d_ptr(new UnitRefPrivate(this))
+{
+    QVector<QStringRef> parts = ref.splitRef(":");
+
+    setPath(parts.at(1).toString());
+    setType(parts.at(3).toString());
+    setUuid(parts.at(5).toString());
+}
+
+Mere::Store::UnitRef::UnitRef(const QMap<QString, QVariant> &map)
+    : d_ptr(new UnitRefPrivate(this))
+{
+    setPath(map.value("path").toString());
+    setType(map.value("type").toString());
+    setUuid(map.value("uuid").toString());
 }
 
 QString Mere::Store::UnitRef::type() const
@@ -105,6 +127,20 @@ QString Mere::Store::UnitRef::path() const
 void Mere::Store::UnitRef::setPath(const QString &path)
 {
     return d_ptr->setPath(path);
+}
+
+bool Mere::Store::UnitRef::isValid() const
+{
+    if (MereStringUtils::isBlank(path()))
+        return false;
+
+    if (MereStringUtils::isBlank(type()))
+        return false;
+
+    if (uuid().isNull())
+        return false;
+
+    return true;
 }
 
 Mere::Store::UnitRefMap Mere::Store::UnitRef::map() const

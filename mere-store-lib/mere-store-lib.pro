@@ -19,10 +19,15 @@ SOURCES +=  \
     src/basestore.cpp \
     src/engine/engine.cpp \
     src/engine/leveldbengine.cpp \
+    src/groupstore.cpp \
     src/jsonstore.cpp \
+    src/link.cpp \
     src/mapstore.cpp \
+    src/pairkey.cpp \
     src/pairstore.cpp \
+    src/pairvalue.cpp \
     src/store.cpp \
+    src/unitkey.cpp \
     src/unitstore.cpp \
     src/key.cpp \
     src/merestoreconfig.cpp \
@@ -38,9 +43,14 @@ HEADERS +=  \
     src/basestore.h \
     src/engine/engine.h \
     src/engine/leveldbengine.h \
+    src/groupstore.h \
     src/jsonstore.h \
+    src/link.h \
     src/mapstore.h \
+    src/pairkey.h \
     src/pairstore.h \
+    src/pairvalue.h \
+    src/unitkey.h \
     src/unitstore.h \
     src/key.h \
     src/merestoreconfig.h \

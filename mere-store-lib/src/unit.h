@@ -3,6 +3,7 @@
 
 #include "merestoreglobal.h"
 #include "unitref.h"
+#include "link.h"
 //#include "merestoreunitdescriptor.h"
 
 #include <QMap>
@@ -15,13 +16,14 @@ namespace Store
 
 typedef QMap<QString, QVariant> MereStoreUnitMap;
 typedef QMap<QString, QVariant> MereStoreUnitAttributes;
-typedef QMap<QString, QList<Mere::Store::UnitRef>> MereStoreUnitLinks;
+typedef QList<Link> MereStoreUnitLinks;
 
 class MERE_STORE_LIBSPEC Unit : public UnitRef
 {
 public:
     virtual ~Unit();
     explicit Unit(const QString &type);
+    explicit Unit(const QMap<QString, QVariant> &map);
 
     Unit() = default;
     Unit(const Unit &other) = default;
@@ -33,10 +35,14 @@ public:
     virtual void addAttributes(MereStoreUnitAttributes attributes);
 
     virtual MereStoreUnitLinks links() const;
-    virtual void setLink(const QString &link, const UnitRef &ref);
-    virtual void setLinks(const QString &link, const QList<UnitRef> &refs);
 
-    virtual void addLink(const QString &link, const UnitRef &ref);
+    virtual void setLink(const QString &name, const UnitRef &ref);
+    virtual void setLinks(const QString &name, const QList<UnitRef> &refs);
+
+    virtual void setLink(const Link &name);
+    virtual void setLinks(const QList<Link> &links);
+
+    virtual void addLink(const QString &name, const UnitRef &ref);
     virtual void addLinks(const QString &link, const QList<UnitRef> &refs);
 
     MereStoreUnitMap map() const;

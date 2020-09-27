@@ -16,8 +16,6 @@ QList<QPair<QString, QString>> KVUtils::pairs(const QString &input, const QStrin
         pairs.append(pair);
     }
 
-    //qDebug() << "Pairs:" << pairs;
-
     return pairs;
 }
 
@@ -32,8 +30,6 @@ QList<QString> KVUtils::blocks(const QString &input, const QString &delim)
 
         blocks.append(block);
     }
-
-    //qDebug() << "Blocks:" << blocks;
 
     return blocks;
 }

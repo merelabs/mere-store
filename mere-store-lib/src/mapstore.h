@@ -20,23 +20,26 @@ public:
     explicit MapStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
     virtual void save(MereStoreUnitMap &unit);
-    virtual int create(MereStoreUnitMap &unit);
-    virtual int update(MereStoreUnitMap &unit);
-    virtual void fetch(MereStoreUnitMap unit);
+    virtual int create(MereStoreUnitMap &map);
+    virtual int update(MereStoreUnitMap &map);
+    virtual int fetch(MereStoreUnitMap &map);
     virtual void remove(MereStoreUnitMap unit);
 
     virtual void search(MereStoreUnitMap query);
-//    virtual void list(MereStoreUnitMap criteria);
-//    virtual QVariant list() override;
+    virtual QVariant list(const int &limit = 25) override;
 
 protected:
+    int read(MereStoreUnitMap &map);
+    int write(const MereStoreUnitMap &map);
+
     int read(const QString pkey, MereStoreUnitMap &map);
-    int write(const QString type, const QUuid uuid, const MereStoreUnitMap &data);
     int remove(const QString pkey);
 
 //    QString key(const MereStoreUnit unit) const;
     using BaseStore::create;
     using BaseStore::remove;
+
+private:
 
 protected:
     static QString UNIT_KEY;

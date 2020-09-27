@@ -1,7 +1,7 @@
 #include "pair.h"
 
 Mere::Store::Pair::Pair(const QString &key, const QVariant &value)
-    : Pair(Key(key), Value(value))
+    : Pair(PairKey(key), PairValue(value))
 {
 
 }

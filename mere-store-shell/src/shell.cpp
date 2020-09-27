@@ -25,14 +25,16 @@ bool Shell::start()
     QTimer::singleShot(0, [this](){
         m_prompt->welcome();
 
-        QString line;
-        do
+        while (1)
         {
+            QString line = m_prompt->accept();
+
+            if (line.compare(Command::Exit) == 0 | line.compare(Command::Quit) == 0)
+                break;
+
             Input input(line);
             input.process();
-
-            line = m_prompt->accept();
-        } while (line.compare(Command::Exit) && line.compare(Command::Quit));
+        }
         exit();
     });
 

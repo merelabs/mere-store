@@ -18,7 +18,6 @@ Input::Input(const QString &input, QObject *parent)
 
 bool Input::process()
 {
-    //qDebug() << "Going to process " << this->command();
     if (MereStringUtils::isBlank(this->input()))
         return false;
 

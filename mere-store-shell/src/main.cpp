@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+    qDebug() <<"HELLOW";
     Shell shell(argc, argv);
     shell.init();
     shell.start();

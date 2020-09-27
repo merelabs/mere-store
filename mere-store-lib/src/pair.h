@@ -1,8 +1,8 @@
 #ifndef PAIR_H
 #define PAIR_H
 
-#include "key.h"
-#include "value.h"
+#include "pairkey.h"
+#include "pairvalue.h"
 
 #include <QPair>
 
@@ -21,8 +21,8 @@ class Pair
         QVariant value() const;
 
     private:
-        Key m_key;
-        Value m_value;
+        PairKey m_key;
+        PairValue m_value;
 };
 
 } // namespace Store

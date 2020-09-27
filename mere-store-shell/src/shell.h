@@ -2,6 +2,7 @@
 #define MERESTORECLI_H
 
 #include <QCoreApplication>
+#include <QDebug>
 
 class Prompt;
 class Context;

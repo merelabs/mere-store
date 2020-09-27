@@ -25,8 +25,6 @@ bool List::execute() const
 
     bool ok = false;
 
-    QVariant list;
-
     QList<QString> blocks;
 
     try
@@ -38,6 +36,8 @@ bool List::execute() const
         QTextStream(stdout) << "Exception...." << Qt::endl;
         return false;
     }
+
+    QVariant list;
 
     if (blocks.size() == 0)
     {

@@ -39,50 +39,89 @@ public:
         }
     }
 
-    MereStoreUnitLinks links() const
-        {
-            return m_links;
-        }
+    QList<Link> links() const
+    {
+        return m_links;
+    }
 
-        void setLink(const QString &link, const UnitRef &ref)
-        {
-            m_links.insert(link, QList<UnitRef>({ref}));
-        }
+    void setLink(const QString &name, const UnitRef &ref)
+    {
+        setLink(Link(name, ref));
+    }
 
-        void setLinks(const QString &link, const QList<UnitRef> &refs)
-        {
-            m_links.insert(link, refs);
-        }
+    void setLinks(const QString &name, const QList<UnitRef> &refs)
+    {
+        setLink(Link(name, refs));
+    }
 
-        void addLink(const QString &link, const UnitRef &ref)
+    void addLink(const QString &name, const UnitRef &ref)
+    {
+        bool found = false;
+
+        QList<Link> links = this->links();
+        QListIterator<Link> it(links);
+        while (it.hasNext())
         {
-            if (m_links.contains(link))
+            Link link = it.next();
+            if (name.compare(link.name()) == 0)
             {
-                QList<UnitRef> refs = m_links.value(link);
-                refs.append(ref);
-
-                m_links.insert(link, refs);
-            }
-            else
-            {
-                m_links.insert(link, QList<UnitRef>({ref}));
-            }
-        }
-
-        void addLinks(const QString &link, const QList<UnitRef> &refs)
-        {
-            if (m_links.contains(link))
-            {
-                QList<UnitRef> _refs = m_links.value(link);
-                _refs.append(refs);
-
-                m_links.insert(link, _refs);
-            }
-            else
-            {
-                m_links.insert(link, refs);
+                link.addUnit(ref);
+                found = true;
+                break;
             }
         }
+
+        if (!found)
+        {
+            Link link(name, ref);
+            addLink(link);
+        }
+    }
+
+    void addLinks(const QString &name, const QList<UnitRef> &refs)
+    {
+        bool found = false;
+        QList<Link> links = this->links();
+        QListIterator<Link> it(links);
+        while (it.hasNext())
+        {
+            Link link = it.next();
+            if (name.compare(link.name()) == 0)
+            {
+                link.addUnits(refs);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            Link link(name, refs);
+            addLink(link);
+        }
+    }
+
+    void setLink(const Link &link)
+    {
+        m_links.clear();
+        addLink(link);
+    }
+
+    void setLinks(const QList<Link> &links)
+    {
+        m_links.clear();
+        addLinks(links);
+    }
+
+    void addLink(const Link &link)
+    {
+        m_links.append(link);
+    }
+
+    void addLinks(const QList<Link> &links)
+    {
+        m_links.append(links);
+    }
 
 private:
     MereStoreUnitAttributes m_attributes;
@@ -100,7 +139,42 @@ Mere::Store::Unit::~Unit()
 Mere::Store::Unit::Unit(const QString &type)
     : d_ptr(new UnitPrivate(this))
 {
+    setPath(".");
     setType(type);
+}
+
+Mere::Store::Unit::Unit(const QMap<QString, QVariant> &map)
+    : d_ptr(new UnitPrivate(this))
+{
+    QString path = map.value("path").toString();
+    QString type = map.value("type").toString();
+    QString uuid = map.value("uuid").toString();
+
+    setPath(path);
+    setType(type);
+    setUuid(QUuid::fromString(uuid));
+
+    // Attributes
+    MereStoreUnitAttributes attrs = map.value("attr").toMap();
+    setAttributes(attrs);
+
+    // Links
+    QMap<QString, QVariant> links = map.value("link").toMap();
+    QMapIterator<QString, QVariant> lit(links);
+    while (lit.hasNext())
+    {
+        lit.next();
+
+        QList<QVariant> list = lit.value().toList();
+        QListIterator<QVariant> listIt(list);
+        while (listIt.hasNext())
+        {
+            QMap<QString, QVariant> map = listIt.next().toMap();
+            UnitRef ref(map);
+
+            addLink(lit.key(), ref);
+        }
+    }
 }
 
 Mere::Store::MereStoreUnitAttributes Mere::Store::Unit::attributes() const
@@ -123,24 +197,34 @@ void Mere::Store::Unit::addAttributes(MereStoreUnitAttributes attributes)
     return d_ptr->addAttributes(attributes);
 }
 
-Mere::Store::MereStoreUnitLinks Mere::Store::Unit::links() const
+QList<Mere::Store::Link> Mere::Store::Unit::links() const
 {
     return d_ptr->links();
 }
 
-void Mere::Store::Unit::setLink(const QString &link, const UnitRef &ref)
+void Mere::Store::Unit::setLink(const QString &name, const UnitRef &ref)
 {
-    return d_ptr->setLink(link, ref);
+    return d_ptr->setLink(name, ref);
 }
 
-void Mere::Store::Unit::setLinks(const QString &link, const QList<UnitRef> &refs)
+void Mere::Store::Unit::setLinks(const QString &name, const QList<UnitRef> &refs)
 {
-    return d_ptr->setLinks(link, refs);
+    return d_ptr->setLinks(name, refs);
 }
 
-void Mere::Store::Unit::addLink(const QString &link, const UnitRef &ref)
+void Mere::Store::Unit::setLink(const Link &link)
 {
-    return d_ptr->addLink(link, ref);
+    return d_ptr->setLink(link);
+}
+
+void Mere::Store::Unit::setLinks(const QList<Link> &links)
+{
+    return d_ptr->setLinks(links);
+}
+
+void Mere::Store::Unit::addLink(const QString &name, const UnitRef &ref)
+{
+    return d_ptr->addLink(name, ref);
 }
 
 void Mere::Store::Unit::addLinks(const QString &link, const QList<UnitRef> &refs)
@@ -155,31 +239,32 @@ Mere::Store::MereStoreUnitMap Mere::Store::Unit::map() const
     unit.insert("path", path());
     unit.insert("type", type());
     unit.insert("uuid", uuid());
+
+    // attributes
     unit.insert("attr", attributes());
+
+    // links
+//    unit.insert("link", links());
 
     QList<QVariant> _refs;
     QMap<QString, QVariant> _links;
 
-    MereStoreUnitLinks links = this->links();
-    QMapIterator<QString, QList<UnitRef>> it(links);
+    QList<Link> links = this->links();
+    QListIterator<Link> it(links);
     while (it.hasNext())
     {
-        it.next();
+        Link link = it.next();
 
-        QString link = it.key();
+        QList<UnitRef> refs = link.units();
 
-        QList<UnitRef> refs = it.value();
         QListIterator<UnitRef> i(refs);
         while (i.hasNext())
         {
             UnitRef ref = i.next();
-
-            Mere::Store::UnitRefMap map = ref.map();
-
-            _refs.append(map);
+            _refs.append(ref.map());
         }
 
-        _links.insert(link, _refs);
+        _links.insert(link.name(), _refs);
     }
 
     unit.insert("link", _links);
