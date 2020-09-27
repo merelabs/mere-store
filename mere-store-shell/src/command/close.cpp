@@ -15,14 +15,6 @@ Close::Close(QString argument, QObject *parent)
 
 bool Close::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
-
-    if (this->object().compare("store") == 0)
-    {
-//        Store store(this->subject());
-//        store.create();
-    }
-
     return false;
 }
 

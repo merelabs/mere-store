@@ -22,8 +22,6 @@ Create::Create(QString argument, QObject *parent)
 
 bool Create::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
-
     bool ok = false;
 
     QList<QString> blocks;

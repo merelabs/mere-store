@@ -1,7 +1,7 @@
 #ifndef MERESTOREUNIT_H
 #define MERESTOREUNIT_H
 
-#include "merestoreglobal.h"
+#include "global.h"
 #include "unitref.h"
 #include "link.h"
 //#include "merestoreunitdescriptor.h"

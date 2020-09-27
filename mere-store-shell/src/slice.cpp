@@ -94,7 +94,7 @@ bool Slice::set(const QString &key, const QVariant &value)
     return err == 0;
 }
 
-QVariant Slice::get(const QString &key)
+QVariant Slice::get(const QString &key) const
 {
     QVariant value(QVariant::Invalid);
 
@@ -110,7 +110,7 @@ QVariant Slice::get(const QString &key)
     return value;
 }
 
-QVariant Slice::del(const QString &key)
+QVariant Slice::get(const QList<QString> &keys) const
 {
     QVariant value(QVariant::Invalid);
 
@@ -121,9 +121,41 @@ QVariant Slice::del(const QString &key)
 
     int err = s->open();
     if (!err)
-        value = s->del(key);
+        value = s->get(keys);
 
     return value;
+}
+
+bool Slice::del(const QString &key) const
+{
+    bool ok = false;
+
+    Mere::Store::Store *s;
+
+    Mere::Store::UnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    if (!err)
+        ok = s->del(key);
+
+    return ok;
+}
+
+bool Slice::del(const QList<QString> &keys) const
+{
+    bool ok = false;
+
+    Mere::Store::Store *s;
+
+    Mere::Store::UnitStore slice(m_store, m_slice);
+    s = &slice;
+
+    int err = s->open();
+    if (!err)
+        ok = s->del(keys);
+
+    return ok;
 }
 
 QVariant Slice::list()

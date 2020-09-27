@@ -16,23 +16,26 @@ DEFINES += LIB_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
 
 SOURCES +=  \
-    src/basestore.cpp \
+    src/config/config.cpp \
+    src/filter/filter.cpp \
+    src/group.cpp \
+    src/store/basestore.cpp \
     src/engine/engine.cpp \
     src/engine/leveldbengine.cpp \
-    src/groupstore.cpp \
-    src/jsonstore.cpp \
+    src/groupkey.cpp \
+    src/store/groupstore.cpp \
+    src/store/hexastore.cpp \
+    src/store/jsonstore.cpp \
     src/link.cpp \
-    src/mapstore.cpp \
+    src/store/mapstore.cpp \
     src/pairkey.cpp \
-    src/pairstore.cpp \
+    src/store/pairstore.cpp \
     src/pairvalue.cpp \
-    src/store.cpp \
+    src/store/store.cpp \
+    src/unitdescriptor.cpp \
     src/unitkey.cpp \
-    src/unitstore.cpp \
+    src/store/unitstore.cpp \
     src/key.cpp \
-    src/merestoreconfig.cpp \
-    src/merestorefilter.cpp \
-    src/merestoreunitdescriptor.cpp \
     src/pair.cpp \
     src/ref.cpp \
     src/unit.cpp \
@@ -40,26 +43,29 @@ SOURCES +=  \
     src/value.cpp
 
 HEADERS +=  \
-    src/basestore.h \
+    src/config/config.h \
+    src/filter/filter.h \
+    src/global.h \
+    src/group.h \
+    src/store/basestore.h \
     src/engine/engine.h \
     src/engine/leveldbengine.h \
-    src/groupstore.h \
-    src/jsonstore.h \
+    src/groupkey.h \
+    src/store/groupstore.h \
+    src/store/hexastore.h \
+    src/store/jsonstore.h \
     src/link.h \
-    src/mapstore.h \
+    src/store/mapstore.h \
     src/pairkey.h \
-    src/pairstore.h \
+    src/store/pairstore.h \
     src/pairvalue.h \
+    src/unitdescriptor.h \
     src/unitkey.h \
-    src/unitstore.h \
+    src/store/unitstore.h \
     src/key.h \
-    src/merestoreconfig.h \
-    src/merestorefilter.h \
-    src/merestoreglobal.h \
-    src/merestoreunitdescriptor.h \
     src/pair.h \
     src/ref.h \
-    src/store.h \
+    src/store/store.h \
     src/unit.h \
     src/unitref.h \
     src/value.h

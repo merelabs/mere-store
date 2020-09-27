@@ -13,6 +13,8 @@ public:
     QString store() const;
     QString slice() const;
 
+    QString context() const;
+
 public slots:
     void switched(const QString &value);
     void selected(const QString &context, const QString &value);

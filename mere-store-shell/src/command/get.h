@@ -16,6 +16,10 @@ private:
     QVariant get(const QString &key) const;
     QVariant getStore(const QString &key) const;
     QVariant getSlice(const QString &key) const;
+
+    QVariant get(const QList<QString> &keys) const;
+    QVariant getStore(const QList<QString> &keys) const;
+    QVariant getSlice(const QList<QString> &keys) const;
 };
 
 #endif // GET_H

@@ -24,26 +24,29 @@ bool Set::execute() const
 
     bool ok = false;
 
-//    QString store = Shell::context()->store();
-//    if (MereStringUtils::isBlank(store))
-//    {
-//        QTextStream(stdout) << "Did you mean to set key/value to a store or a slice?" << endl
-//                            << "Run 'help set' for more information." << endl;
-//        return ok;
-//    }
+    QString store = Shell::context()->store();
+    if (MereStringUtils::isBlank(store))
+    {
+        QString slice = Shell::context()->slice();
+        if (MereStringUtils::isBlank(slice))
+        {
+            QTextStream(stdout) << "Did you mean to set key/value from a store or a slice?" << Qt::endl
+                                << "Run 'help set' for more information." << Qt::endl;
+        }
+        return ok;
+    }
 
-    QString type  = this->type();
     QString key   = this->key();
     QString value = this->value();
 
     if (MereStringUtils::isBlank(key) && MereStringUtils::isBlank(value))
     {
-        QTextStream(stdout) << "Did you mean to set key/value for a store or a slice?" << endl
-                            << "Please provide key and value to persist to the store or slice." << endl
-                            << "Run 'help set' for more information." << endl;
+        QTextStream(stdout) << "Please provide key and value to persist to the store or slice." << Qt::endl
+                            << "Run 'help set' for more information." << Qt::endl;
         return ok;
     }
 
+    QString type  = this->type();
     ok = set(key, value, type);
 
     return ok;

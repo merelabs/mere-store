@@ -20,8 +20,6 @@ Config::Config(QString argument, QObject *parent)
 
 bool Config::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
-
     bool ok = false;
 
     QString key = this->key();

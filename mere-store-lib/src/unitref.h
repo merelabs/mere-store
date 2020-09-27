@@ -1,7 +1,7 @@
 #ifndef MERESTOREUNITREF_H
 #define MERESTOREUNITREF_H
 
-#include "merestoreglobal.h"
+#include "global.h"
 #include "ref.h"
 
 #include <QUuid>

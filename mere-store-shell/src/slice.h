@@ -17,8 +17,12 @@ public:
 
     bool set(const QVariant &value);
     bool set(const QString &key, const QVariant &value);
-    QVariant get(const QString &key);
-    QVariant del(const QString &key);
+
+    QVariant get(const QString &key) const;
+    QVariant get(const QList<QString> &keys) const;
+
+    bool del(const QString &key) const;
+    bool del(const QList<QString> &keys) const;
 
     QVariant list();
     QVariant list(const uint &limit);

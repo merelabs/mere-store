@@ -25,6 +25,18 @@ bool List::execute() const
 
     bool ok = false;
 
+    QString store = Shell::context()->store();
+    if (MereStringUtils::isBlank(store))
+    {
+        QString slice = Shell::context()->slice();
+        if (MereStringUtils::isBlank(slice))
+        {
+            QTextStream(stdout) << "Did you mean to list from a store or a slice?" << Qt::endl
+                                << "Run 'help list' for more information." << Qt::endl;
+        }
+        return ok;
+    }
+
     QList<QString> blocks;
 
     try

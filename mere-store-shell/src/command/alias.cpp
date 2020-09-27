@@ -20,8 +20,6 @@ Alias::Alias(QString argument, QObject *parent)
 
 bool Alias::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
-
     bool ok = true;
 
     if (!MereStringUtils::isBlank(this->argument()))

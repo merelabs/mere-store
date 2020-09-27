@@ -94,7 +94,7 @@ bool Store::set(const QString &key, const QVariant &value)
     return err == 0;
 }
 
-QVariant Store::get(const QString &key)
+QVariant Store::get(const QString &key) const
 {
     QVariant value(QVariant::Invalid);
 
@@ -110,7 +110,7 @@ QVariant Store::get(const QString &key)
     return value;
 }
 
-QVariant Store::del(const QString &key)
+QVariant Store::get(const QList<QString> &keys) const
 {
     QVariant value(QVariant::Invalid);
 
@@ -121,9 +121,41 @@ QVariant Store::del(const QString &key)
 
     int err = s->open();
     if (!err)
-        value = s->del(key);
+        value = s->get(keys);
 
     return value;
+}
+
+bool Store::del(const QString &key) const
+{
+    bool ok = false;
+
+    Mere::Store::Store *s;
+
+    Mere::Store::UnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    if (!err)
+        ok = s->del(key);
+
+    return ok;
+}
+
+bool Store::del(const QList<QString> &keys) const
+{
+    bool ok = false;
+
+    Mere::Store::Store *s;
+
+    Mere::Store::UnitStore store(m_store);
+    s = &store;
+
+    int err = s->open();
+    if (!err)
+        ok = s->del(keys);
+
+    return ok;
 }
 
 QVariant Store::list()

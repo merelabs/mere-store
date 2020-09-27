@@ -6,11 +6,11 @@
 #include <QVariant>
 #include <QDateTime>
 
-class MereStoreUnitDescriptor
+class UnitDescriptor
 {
 public:
-    virtual ~MereStoreUnitDescriptor();
-    MereStoreUnitDescriptor();
+    virtual ~UnitDescriptor();
+    UnitDescriptor();
 
     QUuid uuid() const;
     void setUuid(QUuid uuid);

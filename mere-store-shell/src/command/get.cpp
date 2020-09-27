@@ -22,8 +22,6 @@ Get::Get(QString argument, QObject *parent)
 
 bool Get::execute() const
 {
-    //qDebug() << "Going to run " << this->command() << " with the arguments " << this->argument();
-
     bool ok = false;
 
     QList<QString> keys;
@@ -38,13 +36,20 @@ bool Get::execute() const
         return false;
     }
 
-    QListIterator<QString> it(keys);
-    while(it.hasNext())
-    {
-        QString key    = it.next();
-        QVariant value = get(key);
-        QTextStream(stdout) << "- " << key << " : " << value.toString() << Qt::endl;
-    }
+    QVariant value(QVariant::Invalid);
+
+    if(keys.size() == 1)
+        value = get(keys.at(0));
+    else
+        value = get(keys);
+
+//    QListIterator<QString> it(keys);
+//    while(it.hasNext())
+//    {
+//        QString key    = it.next();
+//        QVariant value = get(key);
+//        QTextStream(stdout) << "- " << key << " : " << value.toString() << Qt::endl;
+//    }
 
     return ok;
 }
@@ -78,4 +83,41 @@ QVariant Get::getSlice(const QString &key) const
     Slice slice(storeName, sliceName);
 
     return slice.get(key);
+}
+
+QVariant Get::get(const QList<QString> &keys) const
+{
+    QVariant value(QVariant::Invalid);
+
+    if (MereStringUtils::isBlank(Shell::context()->slice()))
+        value = getStore(keys);
+    else
+        value = getSlice(keys);
+
+    return value;
+}
+
+QVariant Get::getStore(const QList<QString> &keys) const
+{
+    QVariant value(QVariant::Invalid);
+
+    QString storeName = Shell::context()->store();
+    Store store(storeName);
+
+    value = store.get(keys);
+
+    return value;
+}
+
+QVariant Get::getSlice(const QList<QString> &keys) const
+{
+    QVariant value(QVariant::Invalid);
+
+    QString storeName = Shell::context()->store();
+    QString sliceName = Shell::context()->slice();
+    Slice slice(storeName, sliceName);
+
+    value = slice.get(keys);
+
+    return value;
 }
