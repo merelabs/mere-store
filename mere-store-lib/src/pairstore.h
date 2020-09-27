@@ -18,16 +18,18 @@ public:
 
     virtual int set(QVariant value) override;
     virtual int set(const QString key, QVariant value) override;
+    virtual int set(const QMap<QString, QVariant> &pairs) override;
     virtual int set(const QList<QPair<QString, QVariant> > &pairs) override;
 
     virtual QVariant get(const QString &key) override;
+    virtual QVariant get(const QList<QString> &keys) override;
 
     virtual int del(const QString &key) override;
     virtual int del(const QList<QString> &keys) override;
 
-    virtual QVariant list(const uint &limit = 25) override;
-    virtual QVariant list(const QString &key, const uint &limit = 25) override;
-    virtual QVariant list(const QMap<QString, QVariant> &filter, const uint &limit = 25) override;
+    virtual QVariant list(const int &limit = 25) override;
+    virtual QVariant list(const QString &key, const int &limit = 25) override;
+    virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25) override;
 
 private:
     class PairStorePrivate;

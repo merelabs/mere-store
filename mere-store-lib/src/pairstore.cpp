@@ -74,6 +74,32 @@ int Mere::Store::PairStore::set(const QString key, QVariant value)
     return !status.ok();
 }
 
+int Mere::Store::PairStore::set(const QMap<QString, QVariant> &pairs)
+{
+    leveldb::WriteOptions writeOptions;
+    leveldb::WriteBatch batch;
+
+    QMapIterator<QString, QVariant> it(pairs);
+    while (it.hasNext())
+    {
+        it.next();
+
+        QString key = it.key();
+        if (MereStringUtils::isBlank(key))
+            continue;
+
+        QVariant val = it.value();
+        if (!val.isValid())
+            continue;
+
+        batch.Put(key.toStdString(), val.toString().toStdString());
+    }
+
+    leveldb::Status status = db()->Write(writeOptions, &batch);
+
+    return !status.ok();
+}
+
 int Mere::Store::PairStore::set(const QList<QPair<QString, QVariant>> &pairs)
 {
     leveldb::WriteOptions writeOptions;
@@ -112,6 +138,28 @@ QVariant Mere::Store::PairStore::get(const QString &key)
     leveldb::Status s = db()->Get(readOptions, key.toStdString(), &value);
 
     return QString::fromStdString(value);
+}
+
+QVariant Mere::Store::PairStore::get(const QList<QString> &keys)
+{
+    if (keys.isEmpty())
+        return QVariant(QVariant::Invalid);
+
+    std::string value;
+    leveldb::ReadOptions readOptions;
+
+    QMap<QString, QVariant> rows;
+
+    QListIterator<QString> it(keys);
+    while (it.hasNext())
+    {
+        QString key = it.next();
+        leveldb::Status s = db()->Get(readOptions, key.toStdString(), &value);
+
+        rows.insert(key, QString::fromStdString(value));
+    }
+
+    return rows;
 }
 
 int Mere::Store::PairStore::del(const QString &key)
@@ -153,7 +201,7 @@ int Mere::Store::PairStore::del(const QList<QString> &keys)
     return !status.ok();
 }
 
-QVariant Mere::Store::PairStore::list(const uint &limit)
+QVariant Mere::Store::PairStore::list(const int &limit)
 {
     QMap<QString, QVariant> records;
 
@@ -170,7 +218,7 @@ QVariant Mere::Store::PairStore::list(const uint &limit)
     return records;
 }
 
-QVariant Mere::Store::PairStore::list(const QString &key, const uint &limit)
+QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
 {
     QMap<QString, QVariant> records;
 
@@ -195,7 +243,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const uint &limit)
     std::string ekey = skey + "~";
 
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey && count; it->Next())
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
     {
         QString _key = QString::fromStdString(it->key().ToString());
         QString _val = QString::fromStdString(it->value().ToString());
@@ -204,7 +252,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const uint &limit)
         if(!match.hasMatch())
             continue;
 
-        //records.insert(_key, _val);
+        records.insert(_key, _val);
         count--;
     }
 
@@ -213,7 +261,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const uint &limit)
     return records;
 }
 
-QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, const uint &limit)
+QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, const int &limit)
 {
     QMap<QString, QVariant> records;
 
