@@ -17,8 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS MERE_STORE_LIB
 
 SOURCES +=  \
     src/config/config.cpp \
+    src/config/indexconfig.cpp \
+    src/config/sliceconfig.cpp \
+    src/config/storeconfig.cpp \
+    src/entry.cpp \
     src/filter/filter.cpp \
     src/group.cpp \
+    src/index/index.cpp \
+    src/index/indexer.cpp \
     src/store/basestore.cpp \
     src/engine/engine.cpp \
     src/engine/leveldbengine.cpp \
@@ -44,9 +50,15 @@ SOURCES +=  \
 
 HEADERS +=  \
     src/config/config.h \
+    src/config/indexconfig.h \
+    src/config/sliceconfig.h \
+    src/config/storeconfig.h \
+    src/entry.h \
     src/filter/filter.h \
     src/global.h \
     src/group.h \
+    src/index/index.h \
+    src/index/indexer.h \
     src/store/basestore.h \
     src/engine/engine.h \
     src/engine/leveldbengine.h \

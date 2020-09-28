@@ -54,6 +54,12 @@ bool Create::execute() const
         QString store = Shell::context()->store();
         ok = createSlices(store, blocks);
     }
+    else if (QString("index").compare(object) == 0)
+    {
+        blocks.removeFirst();
+//        QString store = Shell::context()->store();
+//        ok = createIndex(store, blocks);
+    }
     else
     {
         QTextStream(stdout) << "Did you mean to create store or slice? Run help create for more information." << Qt::endl;
@@ -132,4 +138,10 @@ bool Create::createSlices(const QString &store, const QList<QString> &slices) co
     }
 
     return ok;
+}
+
+bool Create::createIndex(const QString &name, const QList<QString> &attriutes) const
+{
+    QString store = Shell::context()->store();
+    QString slice = Shell::context()->slice();
 }

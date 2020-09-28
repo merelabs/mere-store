@@ -21,6 +21,8 @@ private:
 
     bool createSlice(const QString &store, const QString &slice) const;
     bool createSlices(const QString &store, const QList<QString> &slices) const;
+
+    bool createIndex(const QString &name, const QList<QString> &attriutes) const;
 };
 
 #endif // CREATECOMMAND_H
