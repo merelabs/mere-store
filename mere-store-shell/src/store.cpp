@@ -1,6 +1,7 @@
 #include "store.h"
 
-#include "mere/store/unitstore.h"
+#include "mere/store/store/basestore.h"
+#include "mere/store/store/unitstore.h"
 
 #include <QFileInfo>
 
@@ -24,9 +25,17 @@ bool Store::create() const
     Mere::Store::UnitStore store(m_store);
     s = &store;
 
-    int ok = s->create();
+    int err = s->create();
 
-    return ok == 0;
+    return err == 0;
+}
+
+bool Store::create(const Mere::Store::Index &index) const
+{
+    Mere::Store::BaseStore s(m_store);
+    int err = s.create(index);
+
+    return err == 0;
 }
 
 bool Store::select() const
@@ -68,7 +77,7 @@ bool Store::remove() const
 
 bool Store::set(const QVariant &value)
 {
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -82,7 +91,7 @@ bool Store::set(const QVariant &value)
 
 bool Store::set(const QString &key, const QVariant &value)
 {
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -98,7 +107,7 @@ QVariant Store::get(const QString &key) const
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -114,7 +123,7 @@ QVariant Store::get(const QList<QString> &keys) const
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -130,7 +139,7 @@ bool Store::del(const QString &key) const
 {
     bool ok = false;
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -146,7 +155,7 @@ bool Store::del(const QList<QString> &keys) const
 {
     bool ok = false;
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -162,7 +171,7 @@ QVariant Store::list()
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -178,7 +187,7 @@ QVariant Store::list(const uint &limit)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -194,7 +203,7 @@ QVariant Store::list(const QString &key)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;
@@ -210,7 +219,7 @@ QVariant Store::list(const QString &key, const uint &limit)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore store(m_store);
     s = &store;

@@ -1,6 +1,8 @@
 #ifndef SLICE_H
 #define SLICE_H
 
+#include "mere/store/index/index.h"
+
 #include <QObject>
 
 class Slice : public QObject
@@ -14,6 +16,8 @@ public:
     bool select() const;
     bool close() const;
     bool remove() const;
+
+    bool create(const Mere::Store::Index &index) const;
 
     bool set(const QVariant &value);
     bool set(const QString &key, const QVariant &value);

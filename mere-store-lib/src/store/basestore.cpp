@@ -1,5 +1,8 @@
 #include "basestore.h"
+#include "indexstore.h"
 #include "../config/config.h"
+#include "../config/sliceconfig.h"
+#include "../config/indexconfig.h"
 #include "../engine/leveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
@@ -10,12 +13,12 @@
 class Mere::Store::BaseStore::BaseStorePrivate
 {
 public:
-    ~BaseStorePrivate()
+    virtual ~BaseStorePrivate()
     {
         if (m_engine)
         {
             delete m_engine;
-            m_engine = 0;
+            m_engine = nullptr;
         }
     }
 
@@ -26,9 +29,28 @@ public:
 
     };
 
+    virtual QString type() const
+    {
+        return Mere::Store::Type::STORE;
+    }
+
     void init()
     {
+//        Config *config = q_ptr->config();
+//        if (q_ptr->type().compare("slice") == 0)
+//        {
+//            SliceConfig sliceConfig = config->slice(q_ptr->slice());
+//            IndexConfig indexConfig = sliceConfig.index();
 
+//            QList<Index> indexes = indexConfig.indexes();
+//            QListIterator<Index> it(indexes);
+//            while (it.hasNext())
+//            {
+//                Index index = it.next();
+//                qDebug() << "Index name:" << index.name();
+//                createIndex(*q_ptr, index);
+//            }
+//        }
     };
 
     /*
@@ -54,9 +76,20 @@ public:
      * 18.                                                       |- master
      * 19                                                        |- .index
      *
+     * base - base location where our stores are stored specified in configuratio
+     *        file as mere.store.path
+     *        Example: (1)
+     *
+     * path - defined in the configuration file as mere.store.path; also known as
+     *        'base' location of the system
+     *        Example: (1)
+     *
+     * home - location of the store or slice
+     *        Example: (2), (7), (12) and (17) respectivly home of the store, index of
+     *        the store(2), slice and index of the slice(12).
      */
 
-    int create()
+    virtual int create()
     {
         int err = layout();
         if (err) return err;
@@ -94,6 +127,25 @@ public:
         return 0;
     };
 
+    QString home()
+    {
+        QString home = "";
+
+        QString store = q_ptr->store();
+        QFileInfo info(store);
+        if (info.isAbsolute())
+            home = store;
+        else
+            home = path() + store;
+
+        return home;
+    }
+
+    int create(const Index &index)
+    {
+        return createIndex(index);
+    }
+
     leveldb::DB* db()
     {
         return m_engine->db();
@@ -110,93 +162,188 @@ private:
         return path;
     }
 
-    QString base()
-    {
-        return base(path());
-    }
-
-    QString base(const QString &path)
-    {
-        return path + q_ptr->store();
-    }
-
-    QString home()
-    {
-        return this->home(this->base());
-    }
-
-    QString home(const QString &base)
-    {
-        return MereStringUtils::isBlank(q_ptr->slice()) ? base : (base + "/slices/" + q_ptr->slice());
-    }
-
     void store()
     {
-        m_engine->setStore(this->home() + "/master");
+        store(this->home());
     }
 
     void store(const QString &home)
     {
+        QTextStream(stdout) << "HOME:" << home << Qt::endl;
         m_engine->setStore(home + "/master");
     }
 
     int layout()
     {
-        QString path = this->path();
-
-        if (!QDir(path).exists() && !QDir().mkpath(path))
-            return 1;
-
-        QString base = this->base(path);
-        QString home = this->home(base);
+        QString home = this->home();
 
         if (QDir(home).exists())
+        {
+            QTextStream(stdout) << "An entry is already there; please choose a different path."
+                                << Qt::endl;
             return 2;
+        }
 
         // Create HOME of the store and/or slice
-        if(!QDir().mkdir(home))
+        if(!QDir().mkpath(home))
+        {
+            QTextStream(stdout) << "System failed to create required path:" << Qt::endl
+                                << home
+                                << "Please check for the permission of the path."
+                                << Qt::endl;
+            return 3;
+        }
+
+        // Create a hidden file named .store
+        if (q_ptr->type().compare(Mere::Store::Type::STORE) == 0)
+        {
+            QFile hidden(home + "/.store");
+            if (!hidden.open(QIODevice::ReadWrite))
+                return 4;
+            hidden.close();
+        }
+
+        return 0;
+    }
+
+    int createIndex(const Index &index)
+    {
+        qDebug() << "INDEX : " <<q_ptr->store();
+
+        BaseStore store(q_ptr->store(), index);
+        int err = store.create();
+
+        /*
+        QString indexBase = q_ptr->home() + "/indexes";
+        QString indexHome = indexBase + "/" + index.name();
+
+        if (!QDir(q_ptr->home()).exists())
+        {
+            return 1;
+        }
+
+
+        if (!QDir(indexBase).exists())
+        {
+            if(!QDir().mkdir(indexBase))
+                return 2;
+
+            // Create a hidden file named indexes
+            QFile hidden(indexBase + "/.indexes");
+            if (!hidden.open(QIODevice::ReadWrite))
+                return 3;
+
+            hidden.close();
+        }
+
+        if(!QDir().mkdir(indexHome))
             return 3;
 
-        // Create a hidden file named .store/.slice
-        QString file = MereStringUtils::isBlank(q_ptr->slice()) ? ".store" : ".slice";
-        QFile hidden(home + "/" + file);
+        QFile hidden(indexHome + "/.index");
         if (!hidden.open(QIODevice::ReadWrite))
             return 4;
 
         hidden.close();
 
-        // its store
-        if (MereStringUtils::isBlank(q_ptr->slice()))
+        LevelDBEngine engine;
+        engine.setStore(indexHome + "/master");
+        int err = engine.create();
+        if (err)
         {
-            // Create HOME of the Slices
-            if(!QDir().mkdir(home + "/slices"))
-                return 5;
-
-            // Create a hidden file named slices
-            QFile slices(home + "/slices/.slices");
-            if (!slices.open(QIODevice::ReadWrite))
-                return 6;
-
-            slices.close();
-        }
-
-        // Create HOME of the Indexes for store and/or slice
-        if(!QDir().mkdir(home + "/indexes"))
+            qDebug() << "Failed to create index " << index.name() << " for " << q_ptr->store();
             return 5;
+        }
+        */
 
-        // Create a hidden file named indexes
-        QFile indexes(home + "/indexes/.indexes");
-        if (!indexes.open(QIODevice::ReadWrite))
-            return 6;
+        return err;
 
-        indexes.close();
-
-        return 0;
     }
 
 private:
     BaseStore *q_ptr;
     LevelDBEngine *m_engine;
+
+    class BaseIndexPrivate;
+    friend class BaseIndexPrivate;
+};
+
+class Mere::Store::BaseStore::BaseSlicePrivate : public Mere::Store::BaseStore::BaseStorePrivate
+{
+public:
+    virtual ~BaseSlicePrivate()
+    {
+
+    }
+
+    BaseSlicePrivate(BaseStore *q)
+        : BaseStorePrivate(q)
+    {
+    }
+
+    QString type() const override
+    {
+        return Mere::Store::Type::SLICE;
+    }
+
+    int create() override
+    {
+        int err = BaseStorePrivate::create();
+        if (!err)
+        {
+            QFile hidden(this->home() + "/.slice");
+            if (!hidden.open(QIODevice::ReadWrite))
+                return 1;
+            hidden.close();
+
+        }
+
+        return err;
+    }
+};
+
+class Mere::Store::BaseStore::BaseIndexPrivate : public Mere::Store::BaseStore::BaseStorePrivate
+{
+public:
+    virtual ~BaseIndexPrivate()
+    {
+
+    }
+
+    BaseIndexPrivate(BaseStore *q)
+        : BaseStorePrivate(q)
+    {
+    };
+
+    BaseIndexPrivate(const Index &index, BaseStore *q)
+        : BaseStorePrivate(q),
+          m_index(index)
+    {
+    };
+
+    QString type() const override
+    {
+        return Mere::Store::Type::INDEX;
+    }
+
+    int create() override
+    {
+        int err = BaseStorePrivate::create();
+        if (!err)
+        {
+            QFile hidden(this->home() + "/.index");
+            if (!hidden.open(QIODevice::ReadWrite))
+                return 1;
+            hidden.close();
+
+        }
+
+        return err;
+    }
+
+private:
+    Index m_index;
+
+    friend class BaseStorePrivate;
 };
 
 Mere::Store::BaseStore::~BaseStore()
@@ -204,21 +351,48 @@ Mere::Store::BaseStore::~BaseStore()
     if (d_ptr)
     {
         delete d_ptr;
-        d_ptr = 0;
+        d_ptr = nullptr;
     }
 }
 
 Mere::Store::BaseStore::BaseStore(const QString &store, QObject *parent)
-    : BaseStore(store, "", parent)
+    : Store(store),
+      d_ptr(new BaseStorePrivate(this))
 {
 
 }
 
-Mere::Store::BaseStore::BaseStore(const QString &store, const QString &slice, QObject *parent)
-    : Store(store, slice, parent),
-      d_ptr(new BaseStorePrivate(this))
+Mere::Store::BaseStore::BaseStore(const Store &store, const QString &slice, QObject *parent)
+    : BaseStore(store.store(), slice, parent)
 {
+}
 
+Mere::Store::BaseStore::BaseStore(const QString &store, const QString &slice, QObject *parent)
+    : Store(store + "/slices/" +slice, parent),
+      d_ptr(new BaseSlicePrivate(this))
+{
+    qDebug() << "THIS IS CALLED?";
+}
+
+Mere::Store::BaseStore::BaseStore(const Store &store, const Index &index, QObject *parent)
+    : BaseStore(store.store(), index, parent)
+{
+}
+
+Mere::Store::BaseStore::BaseStore(const QString &store, const Index &index, QObject *parent)
+    : Store(store + "/indexes/" + index.name(), parent),
+      d_ptr(new BaseIndexPrivate(this))
+{
+}
+
+QString Mere::Store::BaseStore::type() const
+{
+    return d_ptr->type();
+}
+
+Mere::Store::Config* Mere::Store::BaseStore::config() const
+{
+    return Config::instance();
 }
 
 void Mere::Store::BaseStore::init()
@@ -240,6 +414,11 @@ QString Mere::Store::BaseStore::mime() const
     return config->mime();
 }
 
+QString Mere::Store::BaseStore::home() const
+{
+    return d_ptr->home();
+}
+
 int Mere::Store::BaseStore::create()
 {
     return d_ptr->create();
@@ -258,6 +437,11 @@ int Mere::Store::BaseStore::close()
 int Mere::Store::BaseStore::remove()
 {
     return d_ptr->remove();
+}
+
+int Mere::Store::BaseStore::create(const Index &index)
+{
+    return d_ptr->create(index);
 }
 
 leveldb::DB* Mere::Store::BaseStore::db()

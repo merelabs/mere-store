@@ -5,7 +5,7 @@
 #include "../context.h"
 #include "../kvutils.h"
 
-#include "mere/store/store.h"
+#include "mere/store/store/store.h"
 #include "mere/utils/merestringutils.h"
 
 Remove::Remove(QObject *parent)

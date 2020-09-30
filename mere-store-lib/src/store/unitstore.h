@@ -4,6 +4,7 @@
 #include "mapstore.h"
 #include "../unit.h"
 #include "../engine/engine.h"
+#include "../index/indexer.h"
 
 namespace Mere
 {
@@ -25,6 +26,8 @@ public:
 
     virtual QVariant list(const int &limit = 25) override;
 //    virtual QVariant list(const QString &key, const int &limit = 25) override;
+
+     Indexer* indexer(const QString &name);
 
 private:
     // Just to tell compiler to avoid warning!

@@ -16,7 +16,7 @@ public:
           m_uuid(0),
           q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     QString path() const
@@ -65,7 +65,7 @@ private:
     QString   m_type;
     QUuid     m_uuid;
 
-    bool      m_valid;
+//    bool      m_valid;
 
     UnitRef *q_ptr;
 };

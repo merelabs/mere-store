@@ -11,7 +11,7 @@ public:
     EntryPrivate(Entry *q)
         : q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     int set(const Pair &pair)

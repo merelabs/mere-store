@@ -25,18 +25,22 @@ SOURCES +=  \
     src/group.cpp \
     src/index/index.cpp \
     src/index/indexer.cpp \
+    src/index/unitindexer.cpp \
     src/store/basestore.cpp \
     src/engine/engine.cpp \
     src/engine/leveldbengine.cpp \
     src/groupkey.cpp \
     src/store/groupstore.cpp \
     src/store/hexastore.cpp \
+    src/store/indexstore.cpp \
     src/store/jsonstore.cpp \
     src/link.cpp \
     src/store/mapstore.cpp \
     src/pairkey.cpp \
     src/store/pairstore.cpp \
     src/pairvalue.cpp \
+    src/store/slice.cpp \
+    src/store/slicestore.cpp \
     src/store/store.cpp \
     src/unitdescriptor.cpp \
     src/unitkey.cpp \
@@ -59,18 +63,22 @@ HEADERS +=  \
     src/group.h \
     src/index/index.h \
     src/index/indexer.h \
+    src/index/unitindexer.h \
     src/store/basestore.h \
     src/engine/engine.h \
     src/engine/leveldbengine.h \
     src/groupkey.h \
     src/store/groupstore.h \
     src/store/hexastore.h \
+    src/store/indexstore.h \
     src/store/jsonstore.h \
     src/link.h \
     src/store/mapstore.h \
     src/pairkey.h \
     src/store/pairstore.h \
     src/pairvalue.h \
+    src/store/slice.h \
+    src/store/slicestore.h \
     src/unitdescriptor.h \
     src/unitkey.h \
     src/store/unitstore.h \

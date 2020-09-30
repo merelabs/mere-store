@@ -5,19 +5,19 @@ class Mere::Store::Index::IndexPrivate
 public:
     ~IndexPrivate()
     {
-
     }
 
     IndexPrivate(Index *q)
         : q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     QString name() const
     {
         return m_name;
     }
+
     void setName(const QString &name)
     {
         m_name = name;
@@ -60,7 +60,6 @@ private:
 Mere::Store::Index::Index()
     : d_ptr(new IndexPrivate(this))
 {
-
 }
 
 QString Mere::Store::Index::name() const

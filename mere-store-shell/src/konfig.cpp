@@ -1,6 +1,6 @@
 #include "konfig.h"
 
-#include "mere/store/unitstore.h"
+#include "mere/store/store/unitstore.h"
 
 Konfig::Konfig(QObject *parent) : QObject(parent)
 {

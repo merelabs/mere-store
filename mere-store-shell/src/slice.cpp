@@ -1,8 +1,8 @@
 #include "slice.h"
 #include "store.h"
 
-#include "mere/store/unitstore.h"
-#include "mere/store/pairstore.h"
+#include "mere/store/store/unitstore.h"
+#include "mere/store/store/pairstore.h"
 
 Slice::Slice(QObject *parent)
     : Slice("", "", parent)
@@ -28,6 +28,16 @@ bool Slice::create() const
     int ok = s->create();
 
     return ok == 0;
+}
+
+bool Slice::create(const Mere::Store::Index &index) const
+{
+    Mere::Store::BaseStore store(m_store);
+    Mere::Store::BaseStore slice(store, m_slice);
+
+    int err = slice.create(index);
+
+    return err == 0;
 }
 
 bool Slice::remove() const
@@ -68,7 +78,7 @@ bool Slice::close() const
 
 bool Slice::set(const QVariant &value)
 {
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -82,7 +92,7 @@ bool Slice::set(const QVariant &value)
 
 bool Slice::set(const QString &key, const QVariant &value)
 {
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -98,7 +108,7 @@ QVariant Slice::get(const QString &key) const
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -114,7 +124,7 @@ QVariant Slice::get(const QList<QString> &keys) const
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -130,7 +140,7 @@ bool Slice::del(const QString &key) const
 {
     bool ok = false;
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -146,7 +156,7 @@ bool Slice::del(const QList<QString> &keys) const
 {
     bool ok = false;
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::UnitStore slice(m_store, m_slice);
     s = &slice;
@@ -162,7 +172,7 @@ QVariant Slice::list()
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
@@ -178,7 +188,7 @@ QVariant Slice::list(const uint &limit)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
@@ -194,7 +204,7 @@ QVariant Slice::list(const QString &key)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;
@@ -210,7 +220,7 @@ QVariant Slice::list(const QString &key, const uint &limit)
 {
     QVariant value(QVariant::Invalid);
 
-    Mere::Store::Store *s;
+    Mere::Store::PairStore *s;
 
     Mere::Store::PairStore slice(m_store, m_slice);
     s = &slice;

@@ -12,3 +12,13 @@ Mere::Store::Pair::Pair(const Key &key, const Mere::Store::Value &value)
 {
 
 }
+
+QString Mere::Store::Pair::key() const
+{
+    return "";
+}
+
+QVariant Mere::Store::Pair::value() const
+{
+    return "";
+}

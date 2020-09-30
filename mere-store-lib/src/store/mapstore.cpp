@@ -15,15 +15,13 @@ Mere::Store::MapStore::~MapStore()
 }
 
 Mere::Store::MapStore::MapStore(const QString &store, QObject *parent)
-    : MapStore(store, "", parent)
+    : PairStore(store)
 {
-    //qDebug() << "MereDefaultStore::...." << store;
 }
 
 Mere::Store::MapStore::MapStore(const QString &store, const QString &slice, QObject *parent)
     : PairStore(store, slice, parent)
 {
-    //qDebug() << "MereDefaultStore::...." << store;
 }
 
 QVariant Mere::Store::MapStore::list(const int &limit)
@@ -120,7 +118,7 @@ QVariant Mere::Store::MapStore::list(const int &limit)
         unitMap.clear();
     }
 
-    qDebug() << "Number Of mapped-units:" << units.size();
+    //qDebug() << "Number Of mapped-units:" << units.size();
 
     return units;
 }
@@ -218,51 +216,52 @@ int Mere::Store::MapStore::create(MereStoreUnitMap &map)
 
 int Mere::Store::MapStore::update(MereStoreUnitMap &map)
 {
+    Q_UNUSED(map)
     //qDebug() << "Going to update..." << map;
 
-    // Unit Path
-    const QString path = map.value("path").toString();
-    if (MereStringUtils::isBlank(path))
-    {
-        qDebug() << "Invalid or missing path of the unit...";
-        return 1;
-    }
+//    // Unit Path
+//    const QString path = map.value("path").toString();
+//    if (MereStringUtils::isBlank(path))
+//    {
+//        qDebug() << "Invalid or missing path of the unit...";
+//        return 1;
+//    }
 
-    // Unit Type
-    const QString type = map.value("type").toString();
-    if (MereStringUtils::isBlank(type))
-    {
-        qDebug() << "Invalid or missing type of the unit...";
-        return 2;
-    }
+//    // Unit Type
+//    const QString type = map.value("type").toString();
+//    if (MereStringUtils::isBlank(type))
+//    {
+//        qDebug() << "Invalid or missing type of the unit...";
+//        return 2;
+//    }
 
-    // Unit UUID
-    const QUuid uuid = map.value("uuid").toUuid();
-    if (uuid.isNull())
-    {
-        qDebug() << "Invalid or missing uuid of the unit...";
-        return 3;
-    }
+//    // Unit UUID
+//    const QUuid uuid = map.value("uuid").toUuid();
+//    if (uuid.isNull())
+//    {
+//        qDebug() << "Invalid or missing uuid of the unit...";
+//        return 3;
+//    }
 
-    int err = write(map);
-    if (!err)
-    {
-        emit updated(map);
+//    int err = write(map);
+//    if (!err)
+//    {
+//        emit updated(map);
 
-        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 updated to the system").arg(path, type, uuid.toString());
-    }
+//        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 updated to the system").arg(path, type, uuid.toString());
+//    }
 
     return 0;
 }
 
 int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
 {
-    qDebug() << "Going to fetch...";
+    //qDebug() << "Going to fetch...";
     // Unit Path
     const QString path = map.value("path").toString();
     if (MereStringUtils::isBlank(path))
     {
-        qDebug() << "Invalid or missing path of the unit...";
+        //qDebug() << "Invalid or missing path of the unit...";
         return 1;
     }
 
@@ -270,7 +269,7 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
     const QString type = map.value("type").toString();
     if (MereStringUtils::isBlank(type))
     {
-        qDebug() << "Invalid or missing type of the unit...";
+        //qDebug() << "Invalid or missing type of the unit...";
         return 2;
     }
 
@@ -278,7 +277,7 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
     const QUuid uuid = map.value("uuid").toUuid();
     if (uuid.isNull())
     {
-        qDebug() << "Invalid or missing uuid of the unit...";
+        //qDebug() << "Invalid or missing uuid of the unit...";
         return 3;
     }
 
@@ -375,7 +374,7 @@ int Mere::Store::MapStore::read(MereStoreUnitMap &map)
 
     int err = read(pkey, map);
 
-    return 0;
+    return err;
 }
 
 int Mere::Store::MapStore::read(const QString pkey, MereStoreUnitMap &map)
@@ -423,8 +422,8 @@ int Mere::Store::MapStore::read(const QString pkey, MereStoreUnitMap &map)
         }
     }
 
-    qDebug() << "ROWS:" << parts;
-    qDebug() << "UNIT:" << map;
+    //qDebug() << "ROWS:" << parts;
+    //qDebug() << "UNIT:" << map;
     return 0;
 }
 
@@ -478,8 +477,8 @@ int Mere::Store::MapStore::write(const MereStoreUnitMap &map)
     }
 
     int err = set(pairs);
-    if (!err)
-        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 saved to the system").arg(path, type, uuid);
+    //if (!err)
+    //    qDebug() << QString("Unit path:%1:type:%2:uuid:%3 saved to the system").arg(path, type, uuid);
 
     return err;
 }

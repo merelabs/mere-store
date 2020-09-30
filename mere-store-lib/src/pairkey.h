@@ -11,7 +11,7 @@ namespace Store
 class PairKey: public Key
 {
 public:
-    PairKey(const QString &key);    
+    PairKey(const QString &key);
 
     bool hasPart() const;
     int numberOfParts() const;

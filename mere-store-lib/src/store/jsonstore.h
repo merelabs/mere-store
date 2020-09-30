@@ -32,13 +32,8 @@ public:
 
 private:
     // Just to tell compiler to avoid warning!
-//    using MerePairStore::save;
-//    using MerePairStore::create;
-//    using MerePairStore::update;
-//    using MerePairStore::fetch;
-//    using MerePairStore::remove;
-//    using MereSimpleStore::list;
-//    using MerePairStore::search;
+    using PairStore::create;
+    using PairStore::remove;
 
 signals:
 

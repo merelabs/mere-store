@@ -11,7 +11,7 @@ public:
     UnitPrivate(Unit *q)
         :q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     MereStoreUnitAttributes attributes() const

@@ -5,6 +5,7 @@
 #include "ref.h"
 
 #include <QUuid>
+#include <QVariant>
 
 namespace Mere
 {
@@ -16,7 +17,7 @@ typedef QMap<QString, QVariant> UnitRefMap;
 class MERE_STORE_LIBSPEC UnitRef : public Ref
 {
 public:
-    ~UnitRef();
+    virtual ~UnitRef();
     explicit UnitRef();
     explicit UnitRef(const QString &ref);
     explicit UnitRef(const QMap<QString, QVariant> &map);
@@ -44,7 +45,7 @@ private:
 
 Q_DECLARE_METATYPE(Mere::Store::UnitRef);
 Q_DECLARE_METATYPE(Mere::Store::UnitRef*);
-Q_DECLARE_OPAQUE_POINTER(Mere::Store::UnitRef::UnitRefPrivate);
-Q_DECLARE_OPAQUE_POINTER(Mere::Store::UnitRef::UnitRefPrivate*);
+//Q_DECLARE_OPAQUE_POINTER(Mere::Store::UnitRef::UnitRefPrivate);
+//Q_DECLARE_OPAQUE_POINTER(Mere::Store::UnitRef::UnitRefPrivate*);
 
 #endif // MERESTOREUNITREF_H

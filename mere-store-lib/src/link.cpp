@@ -11,7 +11,7 @@ public:
     LinkPrivate(Link *q)
         :q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     QString name() const

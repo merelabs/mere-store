@@ -1,21 +1,19 @@
 #include "store.h"
-#include "../config/config.h"
 
+#include <QFileInfo>
 class Mere::Store::Store::StorePrivate
 {
 public:
-    ~StorePrivate();
-    StorePrivate(const QString &store)
-        : m_store(store),
-          m_slice("")
+    virtual ~StorePrivate()
     {
+
     }
 
-    StorePrivate(const QString &store, const QString &slice)
+    StorePrivate(const QString &store, Store *q)
         : m_store(store),
-          m_slice(slice)
+          q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
     QString store() const
@@ -23,43 +21,44 @@ public:
         return m_store;
     }
 
-    QString slice() const
+    void setStore(const QString &store)
     {
-        return m_slice;
+        m_store = store;
+    }
+
+    QString type() const
+    {
+        return m_type;
     }
 
 private:
     QString m_store;
-    QString m_slice;
+    QString m_type;
 
     Mere::Store::Store *q_ptr;
 };
 
 Mere::Store::Store::~Store()
 {
-
+    if (d_ptr)
+    {
+        delete d_ptr;
+        d_ptr = nullptr;
+    }
 }
 
-Mere::Store::Store::Store(const QString &store, QObject *parent)
-    : QObject(parent),
-      d_ptr(new StorePrivate(store))
+Mere::Store::Store::Store(const QString &name, QObject *parent)
+    : d_ptr(new StorePrivate(name, this))
 {
-
+    Q_UNUSED(parent)
 }
 
-Mere::Store::Store::Store(const QString &store, const QString &slice, QObject *parent)
-    : QObject(parent),
-      d_ptr(new StorePrivate(store, slice))
+QString Mere::Store::Store::type() const
 {
-
+    return d_ptr->type();
 }
 
 QString Mere::Store::Store::store() const
 {
     return d_ptr->store();
-}
-
-QString Mere::Store::Store::slice() const
-{
-    return d_ptr->slice();
 }

@@ -3,6 +3,8 @@
 
 #include "../global.h"
 
+#include "sliceconfig.h"
+
 #include <QMap>
 #include <QObject>
 #include <QVariant>
@@ -37,12 +39,18 @@ public:
     QVariant get(const QString &key) const;
     void set(const QString &key, const QVariant &value);
 
+    QList<SliceConfig> slices() const;
+    SliceConfig slice(const QString &name) const;
+    void addSlice(const SliceConfig &slice);
+
     static Config* instance();
 
 private:
     QMap<QString, QVariant> m_configs;
 
     QString m_config;
+
+    QMap<QString, SliceConfig> m_slices;
 };
 
 } // namespace Store

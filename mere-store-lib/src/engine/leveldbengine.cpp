@@ -12,9 +12,10 @@ public:
     }
 
     LevelDBEnginePrivate(LevelDBEngine *q)
-        : m_db(0),
+        : m_db(nullptr),
           q_ptr(q)
     {
+        Q_UNUSED(q_ptr)
     };
 
     void setStore(const QString store)
@@ -108,7 +109,7 @@ Mere::Store::LevelDBEngine::~LevelDBEngine()
     if (d_ptr)
     {
         delete d_ptr;
-        d_ptr = 0;
+        d_ptr = nullptr;
     }
 }
 

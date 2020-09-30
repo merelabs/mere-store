@@ -4,6 +4,7 @@
 #include "index.h"
 
 #include <QObject>
+#include <QDebug>
 
 namespace Mere
 {
@@ -19,6 +20,8 @@ public:
     virtual void index() const;
     virtual void index(const QString &name) const;
     virtual void index(const Index &index) const;
+
+    virtual int index(const QString &key, const QVariant &value) const = 0;
 
 signals:
 

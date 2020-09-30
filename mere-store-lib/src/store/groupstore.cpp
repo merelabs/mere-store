@@ -10,7 +10,7 @@ public:
     GroupStorePrivate(GroupStore *q)
         : q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
 private:
@@ -34,5 +34,6 @@ Mere::Store::GroupStore::GroupStore(const QString &store, const QString &slice, 
 
 QVariant Mere::Store::GroupStore::list(const QString &key, const int &limit)
 {
+    Q_UNUSED(limit)
     return PairStore::list("^" + key);
 }

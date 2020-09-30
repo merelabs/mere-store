@@ -1,10 +1,13 @@
 #include "unitstore.h"
 #include "../config/config.h"
 #include "../unitkey.h"
+#include "../index/unitindexer.h"
+#include "indexstore.h"
 
 #include "mere/utils/merestringutils.h"
 
 #include <QUuid>
+#include <QDateTime>
 
 Mere::Store::UnitStore::~UnitStore()
 {
@@ -12,19 +15,18 @@ Mere::Store::UnitStore::~UnitStore()
 }
 
 Mere::Store::UnitStore::UnitStore(const QString &store, QObject *parent)
-    : UnitStore(store, "", parent)
+    : MapStore(store, parent)
 {
-
 }
 
 Mere::Store::UnitStore::UnitStore(const QString &store, const QString &slice, QObject *parent)
     : MapStore(store, slice, parent)
 {
-
 }
 
 QVariant Mere::Store::UnitStore::list(const int &limit)
 {
+    Q_UNUSED(limit)
     QList<QVariant> units;
 
     QList<QVariant> records = MapStore::list().toList();
@@ -79,24 +81,71 @@ QVariant Mere::Store::UnitStore::list(const int &limit)
     return units;
 }
 
-//QVariant Mere::Store::UnitStore::list(const QString &key, const int &limit)
-//{
-//    throw "Mere::Store::UnitStore::list:: => Yet to implement!";
-//}
-
 int Mere::Store::UnitStore::create(Unit &unit)
 {
-    //qDebug() << "Going to create..." << unit.type();
+    qDebug() << "Going to create..." << unit.type();
 
-    // why don't you validate input?
+    // Unit Path
+    QString path = unit.path();
+    if (MereStringUtils::isBlank(path))
+        return 1;
+
+    // Unit Type
+    QString type = unit.type();
+    if (MereStringUtils::isBlank(type))
+        return 2;
+
+    // Unit UUID
+    QUuid uuid = unit.uuid();
+    if (uuid.isNull())
+        unit.setUuid(QUuid::createUuid());
 
     MereStoreUnitMap map = unit.map();
 
-    int err = create(map);
+    int err = this->MapStore::create(map);
     if (!err)
     {
         unit.setUuid(map.value("uuid").toUuid());
         emit created(unit);
+
+        /*
+        Config *config = this->config();
+        if (this->type().compare("slice") == 0)
+        {
+            SliceConfig sliceConfig = config->slice(this->slice());
+            IndexConfig indexConfig = sliceConfig.index();
+
+            QList<Index> indexes = indexConfig.indexes();
+            QListIterator<Index> it(indexes);
+            while (it.hasNext())
+            {
+                Index index = it.next();
+                qDebug() << "Index name:" << index.name();
+
+                Indexer *indexer = this->indexer(index.name());
+
+                QList<QString> attributes = index.attributes();
+
+                QStringList text;
+                QListIterator<QString> ait(attributes);
+                while (ait.hasNext())
+                {
+                    QString attribute = ait.next();
+                    text << map.value(attribute).toString();
+                }
+
+                QString key = QString("%1:path:%2:type:%3:uuid:%4").arg(text.join(" "),
+                                                                       unit.path(),
+                                                                       unit.type(),
+                                                                       unit.uuid().toString());
+                QVariant value = QString::number(QDateTime::currentMSecsSinceEpoch());
+                indexer->index(key, value);
+
+                indexer->deleteLater() ;
+            }
+
+        }
+        */
     }
 
     return err;
@@ -106,8 +155,20 @@ int Mere::Store::UnitStore::update(Unit &unit)
 {
     //qDebug() << "Going to update...";
 
-    // why don't you validate input?
-    // its an public interface right?
+    // Unit Path
+    QString path = unit.path();
+    if (MereStringUtils::isBlank(path))
+        return 1;
+
+    // Unit Type
+    QString type = unit.type();
+    if (MereStringUtils::isBlank(type))
+        return 2;
+
+    // Unit UUID
+    QUuid uuid = unit.uuid();
+    if (uuid.isNull())
+        return 3;
 
     MereStoreUnitMap map = unit.map();
     int err = update(map);
@@ -123,28 +184,19 @@ int Mere::Store::UnitStore::fetch(Unit &unit)
 {
     qDebug() << "Going to fetch...";
     // Unit Path
-    const QString path = unit.path() ;
+    QString path = unit.path();
     if (MereStringUtils::isBlank(path))
-    {
-        qDebug() << "Invalid or missing path of the unit...";
         return 1;
-    }
 
     // Unit Type
-    const QString type = unit.type();
+    QString type = unit.type();
     if (MereStringUtils::isBlank(type))
-    {
-        qDebug() << "Invalid or missing type of the unit...";
         return 2;
-    }
 
     // Unit UUID
-    const QUuid uuid = unit.uuid();
+    QUuid uuid = unit.uuid();
     if (uuid.isNull())
-    {
-        qDebug() << "Invalid or missing uuid of the unit...";
         return 3;
-    }
 
     MereStoreUnitMap map = unit.map();
     int err = fetch(map);
@@ -162,28 +214,22 @@ int Mere::Store::UnitStore::fetch(Unit &unit)
 
 int Mere::Store::UnitStore::remove(Unit &unit)
 {
-//    MereStoreUnit fetchedUnit = fetch(unit);
-
     qDebug() << "Going to remove...";
 
-    // Unit Type
-    const QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
-    {
-        qDebug() << "Invalid or missing type of the unit...";
-        return 1;
-    }
-
     // Unit Path
-    const QString path(".");
+    QString path = unit.path();
+    if (MereStringUtils::isBlank(path))
+        return 1;
+
+    // Unit Type
+    QString type = unit.type();
+    if (MereStringUtils::isBlank(type))
+        return 2;
 
     // Unit UUID
-    const QUuid uuid = unit.uuid();
+    QUuid uuid = unit.uuid();
     if (uuid.isNull())
-    {
-        qDebug() << "Invalid or missing uuid of the unit...";
         return 3;
-    }
 
     QString pkey(path);
     pkey = pkey.append(type);
@@ -226,3 +272,9 @@ QString Mere::Store::UnitStore::key(const Unit unit) const
     return key;
 }
 
+Mere::Store::Indexer* Mere::Store::UnitStore::indexer(const QString &name)
+{
+    UnitIndexer *indexer = new UnitIndexer(*this, name);
+
+    return indexer;
+}

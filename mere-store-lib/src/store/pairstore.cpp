@@ -15,7 +15,7 @@ public:
     PairStorePrivate(PairStore *q)
         : q_ptr(q)
     {
-
+        Q_UNUSED(q_ptr)
     }
 
 private:
@@ -26,8 +26,9 @@ Mere::Store::PairStore::~PairStore()
 {
 }
 
-Mere::Store::PairStore::PairStore(const QString &store, QObject *parent)
-    : PairStore(store, "", parent)
+Mere::Store::PairStore::PairStore(const QString &store, Store *parent)
+    : BaseStore(store, parent),
+      d_ptr(new PairStorePrivate(this))
 {
 }
 
@@ -36,6 +37,12 @@ Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, QO
       d_ptr(new PairStorePrivate(this))
 {
 }
+
+//Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, const QString &index, QObject *parent)
+//    : BaseStore(store, slice, index, parent),
+//      d_ptr(new PairStorePrivate(this))
+//{
+//}
 
 int Mere::Store::PairStore::set(QVariant value)
 {
@@ -57,6 +64,7 @@ int Mere::Store::PairStore::set(QVariant value)
 
 int Mere::Store::PairStore::set(const QString key, QVariant value)
 {
+    qDebug() << ">>>>>>>" << key << value;
     if (MereStringUtils::isBlank(key))
         return 1;
 
@@ -263,6 +271,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
 
 QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, const int &limit)
 {
+    Q_UNUSED(limit)
     QMap<QString, QVariant> records;
 
     return records;

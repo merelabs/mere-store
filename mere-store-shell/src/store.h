@@ -1,10 +1,13 @@
 #ifndef STORE_H
 #define STORE_H
 
+#include "mere/store/index/index.h"
+
 #include <QObject>
 #include <QDebug>
 
 class MereStore;
+//class Mere::Store::Index;
 
 class Store : public QObject
 {
@@ -17,6 +20,8 @@ public:
     bool select() const;
     bool close() const;
     bool remove() const;
+
+    bool create(const Mere::Store::Index &index) const;
 
     bool set(const QVariant &value);
     bool set(const QString &key, const QVariant &value);

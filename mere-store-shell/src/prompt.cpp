@@ -13,7 +13,7 @@ Prompt::Prompt(Context *context, QObject *parent)
 
 void Prompt::welcome() const
 {
-    QTextStream(stdout) << "Welcome to SliceDB v1.0.0" << Qt::endl;
+    QTextStream(stdout) << "Welcome to Mere Store Shell v1.0.0" << Qt::endl;
 }
 
 QString Prompt::accept()

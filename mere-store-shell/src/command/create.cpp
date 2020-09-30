@@ -5,7 +5,10 @@
 #include "../context.h"
 #include "../kvutils.h"
 
-#include "mere/store/store.h"
+#include "mere/store/store/store.h"
+#include "mere/store/store/unitstore.h"
+#include "mere/store/index/index.h"
+
 #include "mere/utils/merestringutils.h"
 
 Create::Create(QObject *parent)
@@ -54,11 +57,11 @@ bool Create::execute() const
         QString store = Shell::context()->store();
         ok = createSlices(store, blocks);
     }
-    else if (QString("index").compare(object) == 0)
+    else if (Mere::Store::Type::INDEX.compare(object) == 0)
     {
         blocks.removeFirst();
-//        QString store = Shell::context()->store();
-//        ok = createIndex(store, blocks);
+        QString store = Shell::context()->store();
+        ok = createIndex(blocks.at(0), blocks.at(1).split(","));
     }
     else
     {
@@ -81,7 +84,9 @@ bool Create::createStore(const QString &store) const
         s.close();
     }
     else
+    {
         QTextStream(stdout) << "Store " << store << " already exists." << Qt::endl;
+    }
 
     return ok;
 }
@@ -112,7 +117,9 @@ bool Create::createSlice(const QString &store, const QString &slice) const
         QTextStream(stdout) << "Slice " << slice << " of " << store << " created successfully." << Qt::endl;
     }
     else
+    {
         QTextStream(stdout) << "Slice " << slice << " of " << store << " already exists." << Qt::endl;
+    }
 
     return ok;
 
@@ -142,6 +149,34 @@ bool Create::createSlices(const QString &store, const QList<QString> &slices) co
 
 bool Create::createIndex(const QString &name, const QList<QString> &attriutes) const
 {
+    bool ok = false;
+
     QString store = Shell::context()->store();
     QString slice = Shell::context()->slice();
+
+    Mere::Store::Index index;
+    index.setName(name);
+    index.setAttributes(attriutes);
+
+    if(MereStringUtils::isBlank(slice))
+    {
+        Store s(store);
+        ok = s.create(index);
+    }
+    else
+    {
+        Slice s(store, slice);
+        ok = s.create(index);
+    }
+
+    if (ok)
+    {
+        QTextStream(stdout) << "Index " << index.name() << " created successfully." << Qt::endl;
+    }
+    else
+    {
+        QTextStream(stdout) << "Index " << index.name() << " already exists." << Qt::endl;
+    }
+
+    return ok;
 }

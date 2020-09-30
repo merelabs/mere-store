@@ -43,13 +43,20 @@ bool Get::execute() const
     else
         value = get(keys);
 
-//    QListIterator<QString> it(keys);
-//    while(it.hasNext())
-//    {
-//        QString key    = it.next();
-//        QVariant value = get(key);
-//        QTextStream(stdout) << "- " << key << " : " << value.toString() << Qt::endl;
-//    }
+    if (value.type() == QVariant::Type::String)
+    {
+        QTextStream(stdout) << "- " << keys.at(0) << " : " << value.toString() << Qt::endl;
+    }
+    else if (value.type() == QVariant::Type::Map)
+    {
+        QMap<QString, QVariant> map = value.toMap();
+        QListIterator<QString> it(keys);
+        while(it.hasNext())
+        {
+            QString key    = it.next();
+            QTextStream(stdout) << "- " << key << " : " << map.value(key).toString() << Qt::endl;
+        }
+    }
 
     return ok;
 }
