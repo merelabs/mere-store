@@ -25,6 +25,9 @@ public:
     int del(const Pair &pair);
     int del(const QList<Pair> &pairs);
 
+    QList<Pair> pairs() const;
+    QMap<QString, QVariant> map() const;
+
 private:
     class EntryPrivate;
     EntryPrivate *d_ptr;

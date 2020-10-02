@@ -63,12 +63,28 @@ public:
         return 0;
     }
 
+    QList<Mere::Store::Pair> pairs() const
+    {
+        return m_pairs;
+    }
+
+    QMap<QString, QVariant> map() const
+    {
+        QMap<QString, QVariant> map;
+
+        QListIterator<Pair> it(m_pairs);
+        while (it.hasNext())
+        {
+            Pair pair = it.next();
+            map.insert(pair.key(), pair.value());
+        }
+
+        return map;
+    }
+
 private:
     QList<Pair> m_pairs;
-//    QMap<QString, QVariant> m_pars;
-
     Entry *q_ptr;
-
 };
 
 Mere::Store::Entry::Entry()
@@ -106,3 +122,14 @@ int Mere::Store::Entry::del(const QList<Pair> &pairs)
 {
     return d_ptr->del(pairs);
 }
+
+QList<Mere::Store::Pair> Mere::Store::Entry::pairs() const
+{
+    return d_ptr->pairs();
+}
+
+QMap<QString, QVariant> Mere::Store::Entry::map() const
+{
+    return d_ptr->map();
+}
+
