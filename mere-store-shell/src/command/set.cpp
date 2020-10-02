@@ -3,8 +3,11 @@
 #include "../context.h"
 #include "../store.h"
 #include "../slice.h"
+#include "../parser.h"
 
 #include "mere/utils/merestringutils.h"
+
+#include <QCommandLineParser>
 
 Set::Set(QObject *parent)
     : Set("", parent)
@@ -36,8 +39,27 @@ bool Set::execute() const
         return ok;
     }
 
-    QString key   = this->key();
-    QString value = this->value();
+    QString type = "";
+    QString key  = "";
+    QString value= "";
+
+    Parser parser(this->argument(), QStringList({"-j","-m"}));
+
+    QStringRef ref = parser.next();
+
+    if (parser.isOption())
+        type = ref.toString();
+    else
+        key = ref.toString();
+
+    if(MereStringUtils::isBlank(key))
+    {
+        QStringRef ref = parser.next();
+        key = ref.toString();
+    }
+
+    ref = parser.rest();
+    value = ref.toString();
 
     if (MereStringUtils::isBlank(key) && MereStringUtils::isBlank(value))
     {
@@ -46,59 +68,33 @@ bool Set::execute() const
         return ok;
     }
 
-    QString type  = this->type();
     ok = set(key, value, type);
 
     return ok;
 }
 
-QString Set::type() const
+QString Set::type(const QString &option) const
 {
-    QString type("string");
+    QString type;
 
-    if(this->argument().startsWith("-"))
+    QChar ch = option.at(1);
+    switch (ch.unicode())
     {
-        QChar ch = this->argument().at(1);
-        switch (ch.unicode())
-        {
-            case 'j':
-                type = "json";
-                break;
+        case 'j':
+            type = "json";
+            break;
 
-            case 'm':
-                type = "mson";
-                break;
+        case 'm':
+            type = "mson";
+            break;
 
-            default:
-                type ="string";
-                break;
+        default:
+            type ="";
+            break;
 
-        }
     }
 
     return type;
-}
-
-QString Set::key() const
-{
-    QString key;
-
-    int pos = this->argument().indexOf(" ");
-    if(pos != -1)
-        key = this->argument().left(pos);
-
-    return key;
-}
-
-QString Set::value() const
-{
-    QString value;
-
-    int pos = this->argument().indexOf(" ");
-    if(pos != -1)
-        value = this->argument().mid(pos + 1);
-
-    return value;
 }
 
 bool Set::set(const QString &key, const QString &value, const QString &type) const
@@ -121,9 +117,9 @@ bool Set::setStore(const QString &key, const QString &value, const QString &type
     Store store(storeName);
 
     if (MereStringUtils::isBlank(value))
-        ok = store.set(key);
+        ok = store.set(key, type);
     else
-        ok = store.set(key, value);
+        ok = store.set(key, value, type);
 
     return ok;
 }
@@ -134,12 +130,13 @@ bool Set::setSlice(const QString &key, const QString &value, const QString &type
 
     QString storeName = Shell::context()->store();
     QString sliceName = Shell::context()->slice();
+
     Slice slice(storeName, sliceName);
 
     if (MereStringUtils::isBlank(value))
-        ok = slice.set(key);
+        ok = slice.set(key, type);
     else
-        ok = slice.set(key, value);
+        ok = slice.set(key, value, type);
 
     return ok;
 }

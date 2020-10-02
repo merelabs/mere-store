@@ -1,4 +1,7 @@
 #include "jsonstore.h"
+#include "mere/utils/merestringutils.h"
+
+#include <QJsonDocument>
 
 Mere::Store::JsonStore::~JsonStore()
 {
@@ -6,7 +9,7 @@ Mere::Store::JsonStore::~JsonStore()
 }
 
 Mere::Store::JsonStore::JsonStore(const QString &store, QObject *parent)
-    : JsonStore(store, "", parent)
+    : PairStore(store, parent)
 {
 }
 
@@ -15,33 +18,36 @@ Mere::Store::JsonStore::JsonStore(const QString &store, const QString &slice, QO
 {
 }
 
-void Mere::Store::JsonStore::save(QJsonObject unit)
+int Mere::Store::JsonStore::set(const QString &key, const QVariant &value)
 {
-    Q_UNUSED(unit)
+    if (!value.isValid() || value.isNull())
+        return 1;
+
+    QString json = value.toString();
+    if (MereStringUtils::isBlank(json))
+        return 2;
+
+    QJsonDocument document = QJsonDocument::fromJson(json.toUtf8());
+
+    return set(key, document);
 }
 
-void Mere::Store::JsonStore::create(QJsonObject unit)
+int Mere::Store::JsonStore::set(const QString &key, const QJsonArray &value)
 {
-    Q_UNUSED(unit)
+    return set(key, QJsonDocument(value));
 }
 
-
-void Mere::Store::JsonStore::update(QJsonObject unit)
+int Mere::Store::JsonStore::set(const QString &key, const QJsonObject &value)
 {
-    Q_UNUSED(unit)
+    return set(key, QJsonDocument(value));
 }
 
-void Mere::Store::JsonStore::fetch(QJsonObject unit)
+int Mere::Store::JsonStore::set(const QString &key, const QJsonDocument &value)
 {
-    Q_UNUSED(unit)
-}
+    if (!value.isObject() && !value.isArray())
+        return 3;
 
-void Mere::Store::JsonStore::remove(QJsonObject unit)
-{
-    Q_UNUSED(unit)
-}
+    QString json = value.toJson(QJsonDocument::Compact);
 
-void Mere::Store::JsonStore::search(QJsonObject query)
-{
-    Q_UNUSED(query)
+    return PairStore::set(key, json);
 }

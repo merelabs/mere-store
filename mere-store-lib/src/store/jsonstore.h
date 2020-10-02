@@ -3,10 +3,7 @@
 
 #include "pairstore.h"
 
-#include "leveldb/cache.h"
-#include "leveldb/write_batch.h"
-
-#include <QJsonObject>
+#include <QJsonDocument>
 
 namespace Mere
 {
@@ -21,23 +18,14 @@ public:
     explicit JsonStore(const QString &store, QObject *parent = nullptr);
     explicit JsonStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-    virtual void save(QJsonObject unit) ;
-    virtual void create(QJsonObject unit) ;
-    virtual void update(QJsonObject unit) ;
-    virtual void fetch(QJsonObject unit) ;
-    virtual void remove(QJsonObject unit) ;
+    int set(const QString &key, const QVariant &value) override;
 
-    virtual void search(QJsonObject query);
-//    virtual void list(QJsonObject criteria);
+    int set(const QString &key, const QJsonArray &value);
+    int set(const QString &key, const QJsonObject &value);
+    int set(const QString &key, const QJsonDocument &value);
 
 private:
-    // Just to tell compiler to avoid warning!
-    using PairStore::create;
-    using PairStore::remove;
-
-signals:
-
-
+    using PairStore::set;
 };
 
 } // namespace Store

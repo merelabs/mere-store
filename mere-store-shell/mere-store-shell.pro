@@ -41,6 +41,7 @@ SOURCES += \
     src/konfig.cpp \
     src/kvutils.cpp \
     src/linereader.cpp \
+    src/parser.cpp \
     src/processor.cpp \
     src/prompt.cpp \
     src/reader.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     src/konfig.h \
     src/kvutils.h \
     src/linereader.h \
+    src/parser.h \
     src/processor.h \
     src/prompt.h \
     src/reader.h \

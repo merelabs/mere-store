@@ -2,13 +2,8 @@
 #include "store.h"
 
 #include "mere/store/store/unitstore.h"
+#include "mere/store/store/jsonstore.h"
 #include "mere/store/store/pairstore.h"
-
-Slice::Slice(QObject *parent)
-    : Slice("", "", parent)
-{
-
-}
 
 Slice::Slice(const QString &store, const QString &slice, QObject *parent)
     : QObject(parent),
@@ -16,6 +11,20 @@ Slice::Slice(const QString &store, const QString &slice, QObject *parent)
       m_slice(slice)
 {
 
+}
+
+Mere::Store::PairStore* Slice::slice(const QString &type) const
+{
+    Mere::Store::PairStore *store;
+
+    if (type.compare("json") == 0)
+        store = new Mere::Store::JsonStore(m_store, m_slice);
+    else if (type.compare("mson") == 0)
+        store = new Mere::Store::UnitStore(m_store, m_slice);
+    else
+        store = new Mere::Store::PairStore(m_store, m_slice);
+
+    return store;
 }
 
 bool Slice::create() const
@@ -76,30 +85,28 @@ bool Slice::close() const
     return ok == 0;
 }
 
-bool Slice::set(const QVariant &value)
+bool Slice::set(const QVariant &value, const QString &type)
 {
-    Mere::Store::PairStore *s;
-
-    Mere::Store::UnitStore slice(m_store, m_slice);
-    s = &slice;
+    Mere::Store::PairStore *s = slice(type);
 
     int err = s->open();
     if (!err)
         err = s->set(value);
 
+    delete s;
+
     return err == 0;
 }
 
-bool Slice::set(const QString &key, const QVariant &value)
+bool Slice::set(const QString &key, const QVariant &value, const QString &type)
 {
-    Mere::Store::PairStore *s;
-
-    Mere::Store::UnitStore slice(m_store, m_slice);
-    s = &slice;
+    Mere::Store::PairStore *s = slice(type);
 
     int err = s->open();
     if (!err)
         err = s->set(key, value);
+
+    delete s;
 
     return err == 0;
 }

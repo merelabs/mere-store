@@ -52,11 +52,11 @@ bool MSet::execute() const
             // when there is only one argument
             // then the key is considered as value
             // system will auto-generate the key
-            ok = store.set(pair.first);
+            ok = store.set(pair.first, "");
         }
         else
         {
-            ok = store.set(pair.first, pair.second);
+            ok = store.set(pair.first, pair.second, "");
         }
     }
 

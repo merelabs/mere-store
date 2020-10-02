@@ -26,7 +26,7 @@ Mere::Store::PairStore::~PairStore()
 {
 }
 
-Mere::Store::PairStore::PairStore(const QString &store, Store *parent)
+Mere::Store::PairStore::PairStore(const QString &store, QObject *parent)
     : BaseStore(store, parent),
       d_ptr(new PairStorePrivate(this))
 {
@@ -38,15 +38,9 @@ Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, QO
 {
 }
 
-//Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, const QString &index, QObject *parent)
-//    : BaseStore(store, slice, index, parent),
-//      d_ptr(new PairStorePrivate(this))
-//{
-//}
-
-int Mere::Store::PairStore::set(QVariant value)
+int Mere::Store::PairStore::set(const QVariant &value)
 {
-    if(!value.isValid())
+    if(!value.isValid() || value.isNull())
         return 1;
 
     QString key = QUuid::createUuid().toString();
@@ -62,7 +56,7 @@ int Mere::Store::PairStore::set(QVariant value)
     return !status.ok();
 }
 
-int Mere::Store::PairStore::set(const QString key, QVariant value)
+int Mere::Store::PairStore::set(const QString &key, const QVariant &value)
 {
     qDebug() << ">>>>>>>" << key << value;
     if (MereStringUtils::isBlank(key))

@@ -1,21 +1,30 @@
 #include "store.h"
 
 #include "mere/store/store/basestore.h"
+#include "mere/store/store/jsonstore.h"
 #include "mere/store/store/unitstore.h"
 
 #include <QFileInfo>
-
-Store::Store(QObject *parent)
-    : Store("", parent)
-{
-
-}
 
 Store::Store(QString store, QObject *parent)
     : QObject(parent),
       m_store(store)
 {
 
+}
+
+Mere::Store::PairStore* Store::store(const QString &type) const
+{
+    Mere::Store::PairStore *store;
+
+    if (type.compare("json") == 0)
+        store = new Mere::Store::JsonStore(m_store);
+    else if (type.compare("mson") == 0)
+        store = new Mere::Store::UnitStore(m_store);
+    else
+        store = new Mere::Store::PairStore(m_store);
+
+    return store;
 }
 
 bool Store::create() const
@@ -75,30 +84,30 @@ bool Store::remove() const
     return ok == 0;
 }
 
-bool Store::set(const QVariant &value)
+bool Store::set(const QVariant &value, const QString &type)
 {
-    Mere::Store::PairStore *s;
-
-    Mere::Store::UnitStore store(m_store);
-    s = &store;
+    Mere::Store::PairStore *s = this->store(type);
 
     int err = s->open();
     if (!err)
         err = s->set(value);
 
+    delete s;
+
     return err == 0;
 }
 
-bool Store::set(const QString &key, const QVariant &value)
+bool Store::set(const QString &key, const QVariant &value, const QString &type)
 {
-    Mere::Store::PairStore *s;
-
-    Mere::Store::UnitStore store(m_store);
-    s = &store;
+    Mere::Store::PairStore *s = this->store(type);
 
     int err = s->open();
+    qDebug() << "1..." << err;
     if (!err)
         err = s->set(key, value);
+    qDebug() << "2..." << err;
+
+    delete s;
 
     return err == 0;
 }

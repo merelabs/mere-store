@@ -14,13 +14,11 @@ class MERE_STORE_LIBSPEC PairStore : public BaseStore
     Q_OBJECT
 public:
     virtual ~PairStore();
-//    explicit PairStore(const QString &store, QObject *parent = nullptr);
-    explicit PairStore(const QString &store, Store *parent = nullptr);
+    explicit PairStore(const QString &store, QObject *parent = nullptr);
     explicit PairStore(const QString &store, const QString &slice, QObject *parent = nullptr);
-//    explicit PairStore(const QString &store, const QString &slice, const QString &index, QObject *parent = nullptr);
 
-    virtual int set(QVariant value);
-    virtual int set(const QString key, QVariant value);
+    virtual int set(const QVariant &value);
+    virtual int set(const QString &key, const QVariant &value);
     virtual int set(const QMap<QString, QVariant> &pairs);
     virtual int set(const QList<QPair<QString, QVariant> > &pairs);
 
