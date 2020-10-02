@@ -4,6 +4,7 @@
 #include "../context.h"
 #include "../shell.h"
 #include "../kvutils.h"
+#include "../parser.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -37,43 +38,46 @@ bool List::execute() const
         return ok;
     }
 
-    QList<QString> blocks;
+    Parser parser(this->argument(), QStringList({"-k", "-v", "-l"}));
 
-    try
-    {
-        blocks = KVUtils::blocks(this->argument());
-    }
-    catch (...)
-    {
-        QTextStream(stdout) << "Exception...." << Qt::endl;
-        return false;
-    }
+
+//    QList<QString> blocks;
+
+//    try
+//    {
+//        blocks = KVUtils::blocks(this->argument());
+//    }
+//    catch (...)
+//    {
+//        QTextStream(stdout) << "Exception...." << Qt::endl;
+//        return false;
+//    }
 
     QVariant list;
 
-    if (blocks.size() == 0)
+//    if (blocks.size() == 0)
     {
         list = this->list();
     }
-    else if (blocks.size() == 1)
-    {
-        QString arg = blocks.at(0);
+//    else if (blocks.size() == 1)
+//    {
+//        QString arg = blocks.at(0);
 
-        if (MereStringUtils::isInteger(arg))
-            list = this->list(arg.toInt());
-        else
-            list = this->list(arg);
-    }
-    else if (blocks.size() == 2 &&
-             !blocks.contains("-k") &&
-             !blocks.contains("--key") &&
-             !blocks.contains("-v") &&
-             !blocks.contains("--value") &&
-             !blocks.contains("-l") &&
-             !blocks.contains("--limit"))
-    {
-        list = this->list(blocks.at(0), blocks.at(1).toInt());
-    }
+//        if (MereStringUtils::isInteger(arg))
+//            list = this->list(arg.toInt());
+//        else
+//            list = this->list(arg);
+//    }
+//    else if (blocks.size() == 2 &&
+//             !blocks.contains("-k") &&
+//             !blocks.contains("--key") &&
+//             !blocks.contains("-v") &&
+//             !blocks.contains("--value") &&
+//             !blocks.contains("-l") &&
+//             !blocks.contains("--limit"))
+//    {
+//        list = this->list(blocks.at(0), blocks.at(1).toInt());
+//    }
 
     QMap<QString, QVariant> map = list.toMap();
     QMapIterator<QString, QVariant> it(map);

@@ -1,14 +1,14 @@
-#include "entry.h"
+#include "entity.h"
 
-class Mere::Store::Entry::EntryPrivate
+class Mere::Store::Entity::EntityPrivate
 {
 public:
-    ~EntryPrivate()
+    ~EntityPrivate()
     {
 
     }
 
-    EntryPrivate(Entry *q)
+    EntityPrivate(Entity *q)
         : q_ptr(q)
     {
         Q_UNUSED(q_ptr)
@@ -84,52 +84,51 @@ public:
 
 private:
     QList<Pair> m_pairs;
-    Entry *q_ptr;
+    Entity *q_ptr;
 };
 
-Mere::Store::Entry::Entry()
-    : d_ptr(new EntryPrivate(this))
+Mere::Store::Entity::Entity()
+    : d_ptr(new EntityPrivate(this))
 {
 
 }
 
-int Mere::Store::Entry::set(const Pair &pair)
+int Mere::Store::Entity::set(const Pair &pair)
 {
     return d_ptr->set(pair);
 }
 
-int Mere::Store::Entry::set(const QList<Pair> &pairs)
+int Mere::Store::Entity::set(const QList<Pair> &pairs)
 {
     return d_ptr->set(pairs);
 }
 
-int Mere::Store::Entry::add(const Pair &pair)
+int Mere::Store::Entity::add(const Pair &pair)
 {
     return d_ptr->add(pair);
 }
 
-int Mere::Store::Entry::add(const QList<Pair> &pairs)
+int Mere::Store::Entity::add(const QList<Pair> &pairs)
 {
     return d_ptr->add(pairs);
 }
 
-int Mere::Store::Entry::del(const Pair &pair)
+int Mere::Store::Entity::del(const Pair &pair)
 {
     return d_ptr->del(pair);
 }
 
-int Mere::Store::Entry::del(const QList<Pair> &pairs)
+int Mere::Store::Entity::del(const QList<Pair> &pairs)
 {
     return d_ptr->del(pairs);
 }
 
-QList<Mere::Store::Pair> Mere::Store::Entry::pairs() const
+QList<Mere::Store::Pair> Mere::Store::Entity::pairs() const
 {
     return d_ptr->pairs();
 }
 
-QMap<QString, QVariant> Mere::Store::Entry::map() const
+QMap<QString, QVariant> Mere::Store::Entity::map() const
 {
     return d_ptr->map();
 }
-

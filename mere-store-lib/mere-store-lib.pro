@@ -20,17 +20,16 @@ SOURCES +=  \
     src/config/indexconfig.cpp \
     src/config/sliceconfig.cpp \
     src/config/storeconfig.cpp \
-    src/entry.cpp \
+    src/entity.cpp \
     src/filter/filter.cpp \
-    src/group.cpp \
     src/index/index.cpp \
     src/index/indexer.cpp \
     src/index/unitindexer.cpp \
     src/store/basestore.cpp \
     src/engine/engine.cpp \
     src/engine/leveldbengine.cpp \
-    src/groupkey.cpp \
-    src/store/groupstore.cpp \
+    src/store/entitystore.cpp \
+    src/store/graphstore.cpp \
     src/store/hexastore.cpp \
     src/store/indexstore.cpp \
     src/store/jsonstore.cpp \
@@ -57,18 +56,17 @@ HEADERS +=  \
     src/config/indexconfig.h \
     src/config/sliceconfig.h \
     src/config/storeconfig.h \
-    src/entry.h \
+    src/entity.h \
     src/filter/filter.h \
     src/global.h \
-    src/group.h \
     src/index/index.h \
     src/index/indexer.h \
     src/index/unitindexer.h \
     src/store/basestore.h \
     src/engine/engine.h \
     src/engine/leveldbengine.h \
-    src/groupkey.h \
-    src/store/groupstore.h \
+    src/store/entitystore.h \
+    src/store/graphstore.h \
     src/store/hexastore.h \
     src/store/indexstore.h \
     src/store/jsonstore.h \

@@ -1,14 +1,14 @@
 #ifndef HEXASTORE_H
 #define HEXASTORE_H
 
-#include "groupstore.h"
+#include "entitystore.h"
 
 namespace Mere
 {
 namespace Store
 {
 
-class HexaStore : public GroupStore
+class HexaStore : public EntityStore
 {
     Q_OBJECT
 public:
@@ -27,15 +27,12 @@ public:
     //
 
     // All the vertex that going from or coming to
-    //virtual QList<UnitRef> vertex(const UnitRef &ref, HexaStore::Flow flow = InComing) const;
     virtual QList<QString> vertex(const QString &vertex, HexaStore::Flow flow = InComing) const;
 
     // All the vertex that going from or coming to via arc
-    //virtual QList<UnitRef> vertex(const UnitRef &ref, const QString &predicate, HexaStore::Flow flow = InComing) const;
     virtual QList<QString> vertex(const QString &vertex, const QString &predicate, HexaStore::Flow flow = InComing) const;
 
     // All the vertex connected by predcate
-    //virtual QList<UnitRef> vertex(const QString &predicate) const;
     virtual QList<QString> vertex(const QString &predicate) const;
 
     virtual QList<QString> arc(const QString &subject, const QString &object) const;

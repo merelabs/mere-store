@@ -1,4 +1,5 @@
 #include "pairstore.h"
+#include "../pair.h"
 #include "../engine/leveldbengine.h"
 
 #include "mere/utils/merestringutils.h"
@@ -58,7 +59,6 @@ int Mere::Store::PairStore::set(const QVariant &value)
 
 int Mere::Store::PairStore::set(const QString &key, const QVariant &value)
 {
-    qDebug() << ">>>>>>>" << key << value;
     if (MereStringUtils::isBlank(key))
         return 1;
 
@@ -102,21 +102,21 @@ int Mere::Store::PairStore::set(const QMap<QString, QVariant> &pairs)
     return !status.ok();
 }
 
-int Mere::Store::PairStore::set(const QList<QPair<QString, QVariant>> &pairs)
+int Mere::Store::PairStore::set(const QList<Pair> &pairs)
 {
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;
 
-    QListIterator<QPair<QString, QVariant>> it(pairs);
+    QListIterator<Pair> it(pairs);
     while (it.hasNext())
     {
-        QPair<QString, QVariant> pair = it.next();
+        Pair pair = it.next();
 
-        QString key = pair.first;
+        QString key = pair.key();
         if (MereStringUtils::isBlank(key))
             continue;
 
-        QVariant val = pair.second;
+        QVariant val = pair.value();
         if (!val.isValid())
             continue;
 

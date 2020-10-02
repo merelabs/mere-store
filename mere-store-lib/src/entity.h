@@ -9,10 +9,10 @@ namespace Mere
 namespace Store
 {
 
-class Entry
+class Entity
 {
 public:
-    explicit Entry();
+    explicit Entity();
 
     UnitRef ref() const;
 
@@ -29,8 +29,8 @@ public:
     QMap<QString, QVariant> map() const;
 
 private:
-    class EntryPrivate;
-    EntryPrivate *d_ptr;
+    class EntityPrivate;
+    EntityPrivate *d_ptr;
 };
 
 } // namespace Store

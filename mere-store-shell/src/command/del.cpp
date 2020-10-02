@@ -52,7 +52,7 @@ bool Del::execute() const
 
     QTextStream input(stdin);
     QString answer = input.readLine(1);
-    if (answer.toLower().compare("y"))
+    if (answer.toLower().compare("y") == 0)
     {
         if(keys.size() == 1)
             del(keys.at(0));

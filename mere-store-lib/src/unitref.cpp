@@ -2,6 +2,8 @@
 
 #include "mere/utils/merestringutils.h"
 
+QString Mere::Store::UnitRef::KEY = "path:%1:type:%2:uuid:%3:";
+
 class Mere::Store::UnitRef::UnitRefPrivate
 {
 public:
@@ -60,12 +62,15 @@ public:
         return ref;
     }
 
+    QString key() const
+    {
+        return KEY.arg(path(), type(), uuid().toString());
+    }
+
 private:
     QString   m_path;
     QString   m_type;
     QUuid     m_uuid;
-
-//    bool      m_valid;
 
     UnitRef *q_ptr;
 };
@@ -141,6 +146,11 @@ bool Mere::Store::UnitRef::isValid() const
         return false;
 
     return true;
+}
+
+QString Mere::Store::UnitRef::key() const
+{
+    return d_ptr->key();
 }
 
 Mere::Store::UnitRefMap Mere::Store::UnitRef::map() const

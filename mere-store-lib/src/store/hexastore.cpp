@@ -68,7 +68,7 @@ public:
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->GroupStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -87,7 +87,7 @@ public:
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->GroupStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -96,7 +96,7 @@ public:
     {
         QString key = QString("p:%1:").arg(predicate);
 
-        QMap<QString, QVariant> pairs = q_ptr->GroupStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -105,7 +105,7 @@ public:
     {
         QString key = QString("s:%1:o:%2").arg(subject, object);
 
-        QMap<QString, QVariant> pairs = q_ptr->GroupStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -120,12 +120,13 @@ Mere::Store::HexaStore::~HexaStore()
 }
 
 Mere::Store::HexaStore::HexaStore(const QString &store, QObject *parent)
-    : HexaStore(store, "", parent)
+    : EntityStore(store, parent),
+      d_ptr(new HexaStorePrivate(this))
 {
 }
 
 Mere::Store::HexaStore::HexaStore(const QString &store, const QString &slice, QObject *parent)
-    : GroupStore(store, slice, parent),
+    : EntityStore(store, slice, parent),
       d_ptr(new HexaStorePrivate(this))
 {
 }

@@ -9,6 +9,7 @@ namespace Mere
 namespace Store
 {
 
+class Pair;
 class MERE_STORE_LIBSPEC PairStore : public BaseStore
 {
     Q_OBJECT
@@ -20,7 +21,7 @@ public:
     virtual int set(const QVariant &value);
     virtual int set(const QString &key, const QVariant &value);
     virtual int set(const QMap<QString, QVariant> &pairs);
-    virtual int set(const QList<QPair<QString, QVariant> > &pairs);
+    virtual int set(const QList<Pair> &pairs);
 
     virtual QVariant get(const QString &key);
     virtual QVariant get(const QList<QString> &keys);

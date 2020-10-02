@@ -33,9 +33,12 @@ public:
 
     bool isValid() const;
 
+    QString key() const;
     UnitRefMap map() const;
 
 private:
+    static QString KEY;
+
     class UnitRefPrivate;
     UnitRefPrivate *d_ptr;
 };
