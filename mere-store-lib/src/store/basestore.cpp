@@ -193,54 +193,14 @@ private:
     int createIndex(const Index &index)
     {
         qDebug() << "INDEX : " <<q_ptr->store();
-
         BaseStore store(q_ptr->store(), index);
         int err = store.create();
-
-        /*
-        QString indexBase = q_ptr->home() + "/indexes";
-        QString indexHome = indexBase + "/" + index.name();
-
-        if (!QDir(q_ptr->home()).exists())
+        if (!err)
         {
-            return 1;
+
         }
-
-
-        if (!QDir(indexBase).exists())
-        {
-            if(!QDir().mkdir(indexBase))
-                return 2;
-
-            // Create a hidden file named indexes
-            QFile hidden(indexBase + "/.indexes");
-            if (!hidden.open(QIODevice::ReadWrite))
-                return 3;
-
-            hidden.close();
-        }
-
-        if(!QDir().mkdir(indexHome))
-            return 3;
-
-        QFile hidden(indexHome + "/.index");
-        if (!hidden.open(QIODevice::ReadWrite))
-            return 4;
-
-        hidden.close();
-
-        LevelDBEngine engine;
-        engine.setStore(indexHome + "/master");
-        int err = engine.create();
-        if (err)
-        {
-            qDebug() << "Failed to create index " << index.name() << " for " << q_ptr->store();
-            return 5;
-        }
-        */
 
         return err;
-
     }
 
 private:
@@ -355,7 +315,7 @@ Mere::Store::BaseStore::BaseStore(const QString &store, const QString &slice, QO
     : Store(store + "/slices/" +slice, parent),
       d_ptr(new BaseSlicePrivate(this))
 {
-    qDebug() << "THIS IS CALLED?";
+
 }
 
 Mere::Store::BaseStore::BaseStore(const Store &store, const Index &index, QObject *parent)

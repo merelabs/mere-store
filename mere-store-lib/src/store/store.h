@@ -41,22 +41,6 @@ public:
 
     virtual QString home() const = 0;
 
-//    // raw - key/value pair
-//    virtual int set(QVariant value) = 0;
-//    virtual int set(const QString key, QVariant value) = 0;
-//    virtual int set(const QMap<QString, QVariant> &pairs) = 0;
-//    virtual int set(const QList<QPair<QString, QVariant>> &pairs) = 0;
-
-//    virtual QVariant get(const QString &key) = 0;
-//    virtual QVariant get(const QList<QString> &keys) = 0;
-
-//    virtual int del(const QString &key) = 0;
-//    virtual int del(const QList<QString> &keys) = 0;
-
-//    virtual QVariant list(const int &limit = 25) = 0;
-//    virtual QVariant list(const QString &key, const int &limit = 25) = 0;
-//    virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25) = 0;
-
 //protected:
     virtual void init() = 0;
     virtual int create() = 0;

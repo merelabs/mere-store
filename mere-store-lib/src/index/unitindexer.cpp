@@ -15,14 +15,15 @@ Mere::Store::UnitIndexer::UnitIndexer(Store &store, const QString &name, QObject
 
 int Mere::Store::UnitIndexer::index(const QString &key, const QVariant &value) const
 {
-    IndexStore store(m_store, m_name);
+//    IndexStore store(m_store, m_name);
 
-    // for testing
-    store.create();
+//    // for testing
+//    store.create();
 
-    int err = store.open();
-    if (!err)
-        err = store.set(key, value);
+//    int err = store.open();
+//    if (!err)
+//        err = store.set(key, value);
 
-    return err;
+//    return err;
+    return 0;
 }

@@ -1,7 +1,7 @@
 #ifndef MERESIMPLE_H
 #define MERESIMPLE_H
 
-#include "basestore.h"
+#include "persistentstore.h"
 
 
 namespace Mere
@@ -10,7 +10,7 @@ namespace Store
 {
 
 class Pair;
-class MERE_STORE_LIBSPEC PairStore : public BaseStore
+class MERE_STORE_LIBSPEC PairStore : public PersistentStore
 {
     Q_OBJECT
 public:

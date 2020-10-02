@@ -28,13 +28,13 @@ Mere::Store::PairStore::~PairStore()
 }
 
 Mere::Store::PairStore::PairStore(const QString &store, QObject *parent)
-    : BaseStore(store, parent),
+    : PersistentStore(store, parent),
       d_ptr(new PairStorePrivate(this))
 {
 }
 
 Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, QObject *parent)
-    : BaseStore(store, slice, parent),
+    : PersistentStore(store, slice, parent),
       d_ptr(new PairStorePrivate(this))
 {
 }

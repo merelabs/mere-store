@@ -38,6 +38,7 @@ SOURCES +=  \
     src/pairkey.cpp \
     src/store/pairstore.cpp \
     src/pairvalue.cpp \
+    src/store/persistentstore.cpp \
     src/store/slice.cpp \
     src/store/slicestore.cpp \
     src/store/store.cpp \
@@ -75,6 +76,7 @@ HEADERS +=  \
     src/pairkey.h \
     src/store/pairstore.h \
     src/pairvalue.h \
+    src/store/persistentstore.h \
     src/store/slice.h \
     src/store/slicestore.h \
     src/unitdescriptor.h \

@@ -108,6 +108,7 @@ int Mere::Store::UnitStore::create(Unit &unit)
         unit.setUuid(map.value("uuid").toUuid());
         emit created(unit);
 
+//        index();
         /*
         Config *config = this->config();
         if (this->type().compare("slice") == 0)

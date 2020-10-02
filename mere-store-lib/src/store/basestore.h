@@ -24,10 +24,6 @@ public:
     explicit BaseStore(const Store &store, const QString &slice, QObject *parent = nullptr);
     explicit BaseStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-//    // index
-//    explicit BaseStore(const Store &store, const Index &index, QObject *parent = nullptr);
-//    explicit BaseStore(const QString &store, const Index &index, QObject *parent = nullptr);
-
     QString type() const override;
 
     virtual Config *config() const override;
