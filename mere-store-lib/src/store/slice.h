@@ -10,15 +10,14 @@ namespace Store
 
 class Slice
 {
-//    Q_OBJECT
 public:
-//    explicit Slice(const Store &store, const QString &name);
+    explicit Slice(const QString &store, const QString &slice);
 
 signals:
 
 private:
-    const Store &m_store;
-    const QString m_name;
+    const QString &m_store;
+    const QString &m_slice;
 };
 
 } // namespace Store

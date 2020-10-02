@@ -26,7 +26,6 @@ public:
         : q_ptr(q),
           m_engine(new LevelDBEngine())
     {
-
     };
 
     virtual QString type() const
@@ -36,21 +35,6 @@ public:
 
     void init()
     {
-//        Config *config = q_ptr->config();
-//        if (q_ptr->type().compare("slice") == 0)
-//        {
-//            SliceConfig sliceConfig = config->slice(q_ptr->slice());
-//            IndexConfig indexConfig = sliceConfig.index();
-
-//            QList<Index> indexes = indexConfig.indexes();
-//            QListIterator<Index> it(indexes);
-//            while (it.hasNext())
-//            {
-//                Index index = it.next();
-//                qDebug() << "Index name:" << index.name();
-//                createIndex(*q_ptr, index);
-//            }
-//        }
     };
 
     /*

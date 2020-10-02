@@ -265,6 +265,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
 
 QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, const int &limit)
 {
+    Q_UNUSED(filter);
     Q_UNUSED(limit)
     QMap<QString, QVariant> records;
 

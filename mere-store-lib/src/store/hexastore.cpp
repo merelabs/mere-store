@@ -19,7 +19,6 @@ public:
     HexaStorePrivate(HexaStore *q)
         : q_ptr(q)
     {
-
     }
 
     int add(const QString &subject, const QString &predicate, const QString &object) const

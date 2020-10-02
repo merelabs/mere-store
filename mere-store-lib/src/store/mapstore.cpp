@@ -15,7 +15,7 @@ Mere::Store::MapStore::~MapStore()
 }
 
 Mere::Store::MapStore::MapStore(const QString &store, QObject *parent)
-    : PairStore(store)
+    : PairStore(store, parent)
 {
 }
 
@@ -122,48 +122,6 @@ QVariant Mere::Store::MapStore::list(const int &limit)
 
     return units;
 }
-
-//FIXME
-/*
-QVariant MereMapStore::list()
-{
-    QMap<QString, QVariant> results;
-
-    QString uuid = "";
-    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->SeekToFirst(); it->Valid(); it->Next())
-    {
-        QString  _key   = QString::fromStdString(it->key().ToString());
-        QVariant _value = QString::fromStdString(it->value().ToString());
-
-        //qDebug() << "Key/Value: " << _key << " => " << _value;
-
-        QStringList parts = _key.split(":");
-        //qDebug() << "UUID:" << parts.at(2);
-        if (uuid.compare(parts.at(2)) != 0)
-        {
-            uuid = parts.at(2);
-            //qDebug() << "New UUID";
-            QString pkey(UNIT_KEY.arg(parts.at(0), parts.at(2)));
-            std::string skey = pkey.toStdString();
-            std::string ekey = skey + "~";
-
-            //qDebug() << "KEY:" << QString::fromStdString(skey);
-            //qDebug() << "KEY~:" << QString::fromStdString(ekey);
-            MereStoreUnitMap map;
-            int err = read(pkey, map);
-            if (!err)
-                results.insert(uuid, map);
-        }
-    }
-
-    delete it;
-
-
-    //qDebug() << "SIZE OF:" << results.size();
-    return results;
-}
-*/
 
 void Mere::Store::MapStore::save(MereStoreUnitMap &unit)
 {

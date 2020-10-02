@@ -10,7 +10,6 @@ public:
     GraphStorePrivate(GraphStore *q)
         : q_ptr(q)
     {
-
     }
 
     QList<Mere::Store::UnitRef> vertex(const UnitRef &ref, HexaStore::Flow flow) const
@@ -49,6 +48,10 @@ private:
 private:
     GraphStore *q_ptr;
 };
+
+Mere::Store::GraphStore::~GraphStore()
+{
+}
 
 Mere::Store::GraphStore::GraphStore(const QString &store, QObject *parent)
     : HexaStore(store, parent),
