@@ -19,14 +19,12 @@ private:
 
 Mere::Store::PersistentStore::~PersistentStore()
 {
-
 }
 
 Mere::Store::PersistentStore::PersistentStore(const QString &store, QObject *parent)
     : BaseStore(store, parent),
       d_ptr(new PersistentStorePrivate(this))
 {
-
 }
 
 Mere::Store::PersistentStore::PersistentStore(const QString &store, const QString &slice, QObject *parent)

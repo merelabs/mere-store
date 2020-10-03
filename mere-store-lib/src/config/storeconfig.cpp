@@ -1,6 +1,7 @@
 #include "storeconfig.h"
 
-StoreConfig::StoreConfig()
+Mere::Store::StoreConfig::StoreConfig()
 {
+
 
 }

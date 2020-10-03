@@ -3,6 +3,7 @@
 #include "../unitkey.h"
 #include "../index/unitindexer.h"
 #include "indexstore.h"
+#include "../config/sliceconfig.h"
 
 #include "mere/utils/merestringutils.h"
 
@@ -108,7 +109,55 @@ int Mere::Store::UnitStore::create(Unit &unit)
         unit.setUuid(map.value("uuid").toUuid());
         emit created(unit);
 
-//        index();
+//        get(".");
+//        Config config(this);
+//        QMap<QString, QVariant> indexes = config.section("index");
+
+        qDebug() << "TYPE::" << this->type();
+        qDebug() << "TYPE::" << unit.type();
+        qDebug() << "UNIT::" << map;
+
+        if(unit.type().compare("issue") == 0)
+        {
+            Mere::Store::Index indexCode;
+            indexCode.setName("code");
+            indexCode.setAttribute("code");
+
+            Mere::Store::Index indexName;
+            indexName.setName("name");
+            indexName.setAttribute("name");
+
+            QMap<QString, QVariant> attrs = map.value("attr").toMap();
+
+            QListIterator<Index> it(QList<Index>({indexCode, indexName}));
+            while (it.hasNext())
+            {
+                Index index = it.next();
+                qDebug() << "XXIndex name:" << index.name();
+
+                Indexer *indexer = this->indexer(index.name());
+
+                QList<QString> attributes = index.attributes();
+
+                QStringList text;
+                QListIterator<QString> ait(attributes);
+                while (ait.hasNext())
+                {
+                    QString attribute = ait.next();
+                    qDebug() << "?????" << attrs.value(attribute).toString();
+                    text << attrs.value(attribute).toString();
+                }
+                qDebug() << ">>>>>>>>>>>" << attributes.join(" ") << text;
+                QString key = QString("%1:path:%2:type:%3:uuid:%4").arg(text.join(" "),
+                                                                       unit.path(),
+                                                                       unit.type(),
+                                                                       unit.uuid().toString());
+                QVariant value = QString::number(QDateTime::currentMSecsSinceEpoch());
+                indexer->index(key, value);
+
+                indexer->deleteLater() ;
+            }
+        }
         /*
         Config *config = this->config();
         if (this->type().compare("slice") == 0)
@@ -278,4 +327,17 @@ Mere::Store::Indexer* Mere::Store::UnitStore::indexer(const QString &name)
     UnitIndexer *indexer = new UnitIndexer(*this, name);
 
     return indexer;
+}
+
+QMap<QString, QVariant> Mere::Store::UnitStore::find(const QString &index, const QString &what)
+{
+    QMap<QString, QVariant> records;
+
+    Mere::Store::Indexer *indexer = this->indexer(index);
+
+    records = indexer->find(what);
+
+    delete indexer;
+
+    return records;
 }

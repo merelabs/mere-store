@@ -25,9 +25,10 @@ public:
     virtual int remove(Unit &unit) ;
 
     virtual QVariant list(const int &limit = 25) override;
-//    virtual QVariant list(const QString &key, const int &limit = 25) override;
 
      Indexer* indexer(const QString &name);
+
+     QMap<QString, QVariant> find(const QString &index, const QString &what);
 
 private:
     // Just to tell compiler to avoid warning!
@@ -35,7 +36,6 @@ private:
     using MapStore::update;
     using MapStore::fetch;
     using MapStore::remove;
-//    using MereMapStore::list;
 
     QString key(const Unit unit) const;
 };

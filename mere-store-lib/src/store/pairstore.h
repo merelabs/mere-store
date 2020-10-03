@@ -18,20 +18,20 @@ public:
     explicit PairStore(const QString &store, QObject *parent = nullptr);
     explicit PairStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-    virtual int set(const QVariant &value);
-    virtual int set(const QString &key, const QVariant &value);
-    virtual int set(const QMap<QString, QVariant> &pairs);
-    virtual int set(const QList<Pair> &pairs);
+    virtual int set(const QVariant &value) override;
+    virtual int set(const QString &key, const QVariant &value) override;
+    virtual int set(const QMap<QString, QVariant> &pairs) override;
+    virtual int set(const QList<Pair> &pairs) override;
 
-    virtual QVariant get(const QString &key);
-    virtual QVariant get(const QList<QString> &keys);
+    virtual QVariant get(const QString &key) override;
+    virtual QVariant get(const QList<QString> &keys) override;
 
-    virtual int del(const QString &key);
-    virtual int del(const QList<QString> &keys);
+    virtual int del(const QString &key) override;
+    virtual int del(const QList<QString> &keys) override;
 
-    virtual QVariant list(const int &limit = 25);
-    virtual QVariant list(const QString &key, const int &limit = 25);
-    virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25);
+    virtual QVariant list(const int &limit = 25) override;
+    virtual QVariant list(const QString &key, const int &limit = 25) override;
+    virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25) override;
 
 private:
     class PairStorePrivate;

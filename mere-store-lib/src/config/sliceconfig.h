@@ -1,6 +1,7 @@
 #ifndef SLICECONFIG_H
 #define SLICECONFIG_H
 
+#include "config.h"
 #include "indexconfig.h"
 
 #include <QObject>
@@ -11,10 +12,10 @@ namespace  Mere
 namespace  Store
 {
 
-class SliceConfig
+class SliceConfig : public Config
 {
 public:
-    explicit SliceConfig();
+    explicit SliceConfig(const QString &config, QObject *parent = nullptr);
 
     QString name() const;
     void setName(const QString &name);

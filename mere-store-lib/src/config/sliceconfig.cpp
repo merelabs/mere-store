@@ -1,6 +1,7 @@
 #include "sliceconfig.h"
 
-Mere::Store::SliceConfig::SliceConfig()
+Mere::Store::SliceConfig::SliceConfig(const QString &config, QObject *parent)
+    : Config(config, parent)
 {
 
 }

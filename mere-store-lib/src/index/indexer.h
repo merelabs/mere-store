@@ -22,6 +22,7 @@ public:
     virtual void index(const Index &index) const;
 
     virtual int index(const QString &key, const QVariant &value) const = 0;
+    virtual QMap<QString, QVariant> find(const QString &what) const = 0;
 
 signals:
 

@@ -21,6 +21,8 @@ public:
 
     int index(const QString &key, const QVariant &value) const override;
 
+    QMap<QString, QVariant> find(const QString &what) const override;
+
 signals:
 private:
     Store &m_store;

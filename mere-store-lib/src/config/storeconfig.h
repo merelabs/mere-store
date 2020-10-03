@@ -1,11 +1,21 @@
 #ifndef STORECONFIG_H
 #define STORECONFIG_H
 
-class StoreConfig
+#include "config.h"
+
+namespace  Mere
+{
+namespace  Store
+{
+
+class StoreConfig //: public Config
 {
 public:
     explicit StoreConfig();
 
 };
+
+}
+}
 
 #endif // STORECONFIG_H

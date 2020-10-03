@@ -75,21 +75,35 @@ void Mere::Store::Config::setMime(const QString &mime)
     return set(Mere::Store::MimeKey, mime);
 }
 
-QList<Mere::Store::SliceConfig> Mere::Store::Config::slices() const
-{
-    return m_slices.values();
-}
+//QList<Mere::Store::SliceConfig> Mere::Store::Config::slices() const
+//{
+//    return m_slices.values();
+//}
 
-Mere::Store::SliceConfig Mere::Store::Config::slice(const QString &name) const
-{
-    SliceConfig config = m_slices.value(name);
+//Mere::Store::SliceConfig Mere::Store::Config::slice(const QString &name) const
+//{
+//    SliceConfig config = m_slices.value(name);
 
-    return config;
-}
+//    return config;
+//}
 
-void Mere::Store::Config::addSlice(const SliceConfig &slice)
+//void Mere::Store::Config::addSlice(const SliceConfig &slice)
+//{
+//    m_slices.insert(slice.name(), slice);
+//}
+
+int Mere::Store::Config::flush()
 {
-    m_slices.insert(slice.name(), slice);
+    QSettings settings(m_config, QSettings::IniFormat);
+
+    QMapIterator<QString, QVariant> it(m_configs);
+    while (it.hasNext())
+    {
+        it.next();
+        settings.setValue(it.key(), it.value());
+    }
+
+    return 0;
 }
 
 //static

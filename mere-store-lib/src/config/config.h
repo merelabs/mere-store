@@ -1,9 +1,8 @@
-#ifndef MERESTORECONFIG_H
-#define MERESTORECONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 #include "../global.h"
 
-#include "sliceconfig.h"
 
 #include <QMap>
 #include <QObject>
@@ -23,7 +22,7 @@ const QString MimeKey    = "mere.store.mime";
 class MERE_STORE_LIBSPEC Config : public QObject
 {
     Q_OBJECT
-private:
+protected:
     explicit Config(QObject *parent = nullptr);
     explicit Config(const QString &config, QObject *parent = nullptr);
 
@@ -39,9 +38,11 @@ public:
     QVariant get(const QString &key) const;
     void set(const QString &key, const QVariant &value);
 
-    QList<SliceConfig> slices() const;
-    SliceConfig slice(const QString &name) const;
-    void addSlice(const SliceConfig &slice);
+//    QList<SliceConfig> slices() const;
+//    SliceConfig slice(const QString &name) const;
+//    void addSlice(const SliceConfig &slice);
+
+    virtual int flush();
 
     static Config* instance();
 
@@ -50,10 +51,10 @@ private:
 
     QString m_config;
 
-    QMap<QString, SliceConfig> m_slices;
+//    QMap<QString, SliceConfig> m_slices;
 };
 
 } // namespace Store
 } // namespace Mere
 
-#endif // MERESTORECONFIG_H
+#endif // CONFIG_H

@@ -192,12 +192,20 @@ private:
 
     int createIndex(const Index &index)
     {
+        qDebug() << "HOME  : " <<q_ptr->home();
+        qDebug() << "TYPE  : " <<q_ptr->type();
         qDebug() << "INDEX : " <<q_ptr->store();
         BaseStore store(q_ptr->store(), index);
+
         int err = store.create();
         if (!err)
         {
-
+            if(q_ptr->type().compare("slice") == 0)
+            {
+                SliceConfig config(q_ptr->home() + "/.slice");
+                config.set("index/" + index.name(), index.attributes().join(","));
+                config.flush();
+            }
         }
 
         return err;
@@ -216,7 +224,6 @@ class Mere::Store::BaseStore::BaseSlicePrivate : public Mere::Store::BaseStore::
 public:
     virtual ~BaseSlicePrivate()
     {
-
     }
 
     BaseSlicePrivate(BaseStore *q)

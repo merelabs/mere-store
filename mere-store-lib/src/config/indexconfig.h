@@ -1,16 +1,16 @@
 #ifndef INDEXCONFIG_H
 #define INDEXCONFIG_H
 
+#include "config.h"
 #include "../index/index.h"
 
-#include <QVariant>
-
-namespace Mere
+namespace  Mere
 {
-namespace Store
+namespace  Store
 {
 
-class IndexConfig
+
+class IndexConfig //: public Config
 {
 public:
     explicit IndexConfig();
