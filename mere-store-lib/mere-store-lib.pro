@@ -22,8 +22,13 @@ SOURCES +=  \
     src/config/storeconfig.cpp \
     src/entity.cpp \
     src/filter/filter.cpp \
+    src/graph/arc.cpp \
+    src/graph/graph.cpp \
+    src/graph/vertex.cpp \
     src/index/index.cpp \
     src/index/indexer.cpp \
+    src/index/indexkey.cpp \
+    src/index/indexpair.cpp \
     src/index/unitindexer.cpp \
     src/store/basestore.cpp \
     src/engine/engine.cpp \
@@ -60,8 +65,13 @@ HEADERS +=  \
     src/entity.h \
     src/filter/filter.h \
     src/global.h \
+    src/graph/arc.h \
+    src/graph/graph.h \
+    src/graph/vertex.h \
     src/index/index.h \
     src/index/indexer.h \
+    src/index/indexkey.h \
+    src/index/indexpair.h \
     src/index/unitindexer.h \
     src/store/basestore.h \
     src/engine/engine.h \
@@ -90,10 +100,10 @@ HEADERS +=  \
     src/unitref.h \
     src/value.h
 
-DESTDIR = $$PWD/../lib
+#DESTDIR = $$PWD/../lib
 
 INCLUDEPATH += /usr/local/include
-INCLUDEPATH += /opt/local/include
+#INCLUDEPATH += /opt/local/include
 
 LIBS += -L/usr/local/lib
 LIBS += -L/opt/local/lib

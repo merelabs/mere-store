@@ -50,7 +50,18 @@ public:
         m_attributes.append(attributes);
     }
 
+    bool unique() const
+    {
+        return m_unique;
+    }
+
+    void setUnique(const bool &unique)
+    {
+        m_unique = unique;
+    }
+
 private:
+    bool m_unique;
     QString m_name;
     QList<QString> m_attributes;
 
@@ -61,6 +72,13 @@ Mere::Store::Index::Index()
     : d_ptr(new IndexPrivate(this))
 {
 }
+
+Mere::Store::Index::Index(const QString &name)
+    : d_ptr(new IndexPrivate(this))
+{
+    setName(name);
+}
+
 
 QString Mere::Store::Index::name() const
 {
@@ -95,4 +113,14 @@ void Mere::Store::Index::setAttribute(const QString &attribute)
 void Mere::Store::Index::setAttributes(const QList<QString> &attributes)
 {
     return d_ptr->setAttributes(attributes);
+}
+
+bool Mere::Store::Index::unique() const
+{
+    return d_ptr->unique();
+}
+
+void Mere::Store::Index::setUnique(const bool &unique)
+{
+    d_ptr->setUnique(unique);
 }

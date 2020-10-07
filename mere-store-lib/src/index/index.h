@@ -13,6 +13,7 @@ class Index
 {
 public:
     explicit Index();
+    explicit Index(const QString &name);
 
     QString name() const;
     void setName(const QString &name);
@@ -23,6 +24,9 @@ public:
 
     void setAttribute(const QString &attribute);
     void setAttributes(const QList<QString> &attributes);
+
+    bool unique() const;
+    void setUnique(const bool &unique);
 
 private:
     class IndexPrivate;

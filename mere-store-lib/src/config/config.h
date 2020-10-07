@@ -42,6 +42,7 @@ public:
 //    SliceConfig slice(const QString &name) const;
 //    void addSlice(const SliceConfig &slice);
 
+    virtual QMap<QString, QVariant> section(const QString &section);
     virtual int flush();
 
     static Config* instance();

@@ -19,9 +19,13 @@ public:
     virtual ~UnitIndexer();
     UnitIndexer(Store &store, const QString &name, QObject *parent = nullptr);
 
-    int index(const QString &key, const QVariant &value) const override;
+    int index(const QString &key, const Ref &ref) const override;
+    int reindex(const QString &key, const Ref &ref) const override;
+    int remove(const Ref &ref) const override;
 
-    QMap<QString, QVariant> find(const QString &what) const override;
+    UnitRef findOne(const QString &what) const override;
+    QList<UnitRef> find(const QString &what) const override;
+    QList<Pair> query(const QString &what) const override;
 
 signals:
 private:

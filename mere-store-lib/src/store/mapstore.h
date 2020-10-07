@@ -26,14 +26,14 @@ public:
     virtual void remove(MereStoreUnitMap unit);
 
     virtual void search(MereStoreUnitMap query);
-    virtual QVariant list(const int &limit = 25) override;
+//    virtual QVariant list(const int &limit = 25) override;
 
 protected:
     int read(MereStoreUnitMap &map);
     int write(const MereStoreUnitMap &map);
 
     int read(const QString pkey, MereStoreUnitMap &map);
-    int remove(const QString pkey);
+    int remove(const QString &pkey);
 
 //    QString key(const MereStoreUnit unit) const;
     using BaseStore::create;

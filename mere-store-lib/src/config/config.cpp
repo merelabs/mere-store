@@ -9,14 +9,12 @@
 Mere::Store::Config::Config(QObject *parent)
     : Config("/usr/local/etc/mere/store.conf", parent)
 {
-
 }
 
 Mere::Store::Config::Config(const QString &config, QObject *parent)
     : QObject(parent),
       m_config(config)
 {
-
 }
 
 void Mere::Store::Config::init()
@@ -46,6 +44,7 @@ void Mere::Store::Config::set(const QString &key, const QVariant &value)
 QString Mere::Store::Config::path() const
 {
     QString path = get(Mere::Store::PathKey).toString();
+
     if (MereStringUtils::isBlank(path))
             path = "./";
 
@@ -58,6 +57,9 @@ QString Mere::Store::Config::path() const
 
 void Mere::Store::Config::setPath(const QString &path)
 {
+    if (MereStringUtils::isBlank(path))
+        return;
+
     return set(Mere::Store::PathKey, path);
 }
 
@@ -91,6 +93,29 @@ void Mere::Store::Config::setMime(const QString &mime)
 //{
 //    m_slices.insert(slice.name(), slice);
 //}
+
+
+QMap<QString, QVariant> Mere::Store::Config::section(const QString &section)
+{
+    QMap<QString, QVariant> config;
+
+    QSettings settings(m_config, QSettings::IniFormat);
+    QStringList groups = settings.childGroups();
+    if (groups.contains(section))
+    {
+        settings.beginGroup(section);
+        QStringList keys = settings.allKeys();
+        QListIterator<QString> it(keys);
+        while (it.hasNext())
+        {
+            QString name = it.next();
+            config.insert(name, settings.value(name));
+        }
+        settings.endGroup();
+    }
+
+    return config;
+}
 
 int Mere::Store::Config::flush()
 {

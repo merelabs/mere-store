@@ -4,11 +4,14 @@
 #include "../index/unitindexer.h"
 #include "indexstore.h"
 #include "../config/sliceconfig.h"
+#include "../config/storeconfig.h"
+#include "../entity.h"
 
 #include "mere/utils/merestringutils.h"
 
 #include <QUuid>
 #include <QDateTime>
+#include <QList>
 
 Mere::Store::UnitStore::~UnitStore()
 {
@@ -16,310 +19,315 @@ Mere::Store::UnitStore::~UnitStore()
 }
 
 Mere::Store::UnitStore::UnitStore(const QString &store, QObject *parent)
-    : MapStore(store, parent)
+    : EntityStore(store, parent)
 {
 }
 
 Mere::Store::UnitStore::UnitStore(const QString &store, const QString &slice, QObject *parent)
-    : MapStore(store, slice, parent)
+    : EntityStore(store, slice, parent)
 {
 }
 
 QVariant Mere::Store::UnitStore::list(const int &limit)
 {
-    Q_UNUSED(limit)
-    QList<QVariant> units;
+    QList<Unit *> units;
 
-    QList<QVariant> records = MapStore::list().toList();
-    QListIterator<QVariant> it(records);
+    QVariant list = EntityStore::list(limit);
+    if (!list.isValid()) return 0;
+
+    QList<Entity *> entities = list.value<QList<Entity *> >();
+    QListIterator<Entity *> it(entities);
     while (it.hasNext())
     {
-        QVariant vmap = it.next();
+        Entity *entity = it.next();
 
-        QMap<QString, QVariant> map = vmap.toMap();
+        QMap<QString, QVariant> attributes;
+        QList<Link> links;
 
-        //Unit unit(map);
-        ///*
-        QString path = map.take("path").toString();
-        QString type = map.take("type").toString();
-        QString uuid = map.take("uuid").toString();
-
-        Unit *unit = new Unit(type);
-        unit->setPath(path);
-        unit->setUuid(QUuid::fromString(uuid));
-
-        // Attributes
-        MereStoreUnitAttributes attrs = map.take("attr").toMap();
-        unit->setAttributes(attrs);
-
-        // Links
-        QMap<QString, QVariant> links = map.take("link").toMap();
-        QMapIterator<QString, QVariant> lit(links);
-        while (lit.hasNext())
+        QMap<QString, QVariant> entries = entity->map();
+        QMapIterator<QString, QVariant> eit(entries);
+        while (eit.hasNext())
         {
-            lit.next();
+            eit.next();
 
-            QList<QVariant> list = lit.value().toList();
-            QListIterator<QVariant> listIt(list);
-            while (listIt.hasNext())
+            UnitKey key(eit.key());
+            if (key.isAttribute())
             {
-                QMap<QString, QVariant> map = listIt.next().toMap();
-                UnitRef ref(map);
-
-                unit->addLink(lit.key(), ref);
+                attributes.insert(key.attribute().toString(), eit.value());
+            }
+            if (key.isLink())
+            {
+                links.append(key.link());
             }
         }
-        //*/
 
-        //FIXEM - xtra layer
-        QVariant var;
-        var.setValue(unit);
+        UnitRef ref = entity->ref();
 
-        units.append(var);
+        Unit *unit = new Unit();
+        unit->setPath(ref.path());
+        unit->setType(ref.type());
+        unit->setUuid(ref.uuid());
+        unit->setAttributes(attributes);
+        unit->setLinks(links);
+
+        units.append(unit);
+
+        delete entity;
     }
 
-    qDebug() << "Number of units..." << units.size();
-    return units;
+//    qDebug() << "Number of units..." << units.size();
+
+    return QVariant::fromValue(units);
 }
 
 int Mere::Store::UnitStore::create(Unit &unit)
 {
     qDebug() << "Going to create..." << unit.type();
-
-    // Unit Path
-    QString path = unit.path();
-    if (MereStringUtils::isBlank(path))
-        return 1;
-
-    // Unit Type
-    QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
-        return 2;
-
     // Unit UUID
     QUuid uuid = unit.uuid();
     if (uuid.isNull())
         unit.setUuid(QUuid::createUuid());
 
-    MereStoreUnitMap map = unit.map();
+    if(!unit.isValid())
+        return 1;
 
-    int err = this->MapStore::create(map);
+    Entity entity(unit);
+    int err = this->EntityStore::create(entity);
     if (!err)
     {
-        unit.setUuid(map.value("uuid").toUuid());
         emit created(unit);
 
-//        get(".");
-//        Config config(this);
-//        QMap<QString, QVariant> indexes = config.section("index");
+        //
+        // INDEX
+        //
+        Config *config = nullptr;
 
-        qDebug() << "TYPE::" << this->type();
-        qDebug() << "TYPE::" << unit.type();
-        qDebug() << "UNIT::" << map;
+        if(this->type().compare("slice") == 0)
+            config =  new SliceConfig (this->home());
+        else if(this->type().compare("slice") == 0)
+            config = new StoreConfig (this->home());
 
-        if(unit.type().compare("issue") == 0)
+        if (config)
         {
-            Mere::Store::Index indexCode;
-            indexCode.setName("code");
-            indexCode.setAttribute("code");
+            QMap<QString, QVariant> settings = config->section("index");
+            delete config;
 
-            Mere::Store::Index indexName;
-            indexName.setName("name");
-            indexName.setAttribute("name");
-
-            QMap<QString, QVariant> attrs = map.value("attr").toMap();
-
-            QListIterator<Index> it(QList<Index>({indexCode, indexName}));
-            while (it.hasNext())
+            if (!settings.isEmpty())
             {
-                Index index = it.next();
-                qDebug() << "XXIndex name:" << index.name();
 
-                Indexer *indexer = this->indexer(index.name());
+                QList<Index> indexes;
 
-                QList<QString> attributes = index.attributes();
-
-                QStringList text;
-                QListIterator<QString> ait(attributes);
-                while (ait.hasNext())
+                QMapIterator<QString, QVariant> it(settings);
+                while (it.hasNext())
                 {
-                    QString attribute = ait.next();
-                    qDebug() << "?????" << attrs.value(attribute).toString();
-                    text << attrs.value(attribute).toString();
-                }
-                qDebug() << ">>>>>>>>>>>" << attributes.join(" ") << text;
-                QString key = QString("%1:path:%2:type:%3:uuid:%4").arg(text.join(" "),
-                                                                       unit.path(),
-                                                                       unit.type(),
-                                                                       unit.uuid().toString());
-                QVariant value = QString::number(QDateTime::currentMSecsSinceEpoch());
-                indexer->index(key, value);
+                    it.next();
+                    QString name = it.key();
 
-                indexer->deleteLater() ;
-            }
-        }
-        /*
-        Config *config = this->config();
-        if (this->type().compare("slice") == 0)
-        {
-            SliceConfig sliceConfig = config->slice(this->slice());
-            IndexConfig indexConfig = sliceConfig.index();
+                    Index index(name);
 
-            QList<Index> indexes = indexConfig.indexes();
-            QListIterator<Index> it(indexes);
-            while (it.hasNext())
-            {
-                Index index = it.next();
-                qDebug() << "Index name:" << index.name();
+                    QVariant value = it.value();
+                    QList<QString> attributes = value.toString().split(",");
+                    QListIterator<QString> it(attributes);
+                    while (it.hasNext())
+                    {
+                        QString attribute = it.next();
+                        index.setAttribute(attribute);
+                    }
 
-                Indexer *indexer = this->indexer(index.name());
-
-                QList<QString> attributes = index.attributes();
-
-                QStringList text;
-                QListIterator<QString> ait(attributes);
-                while (ait.hasNext())
-                {
-                    QString attribute = ait.next();
-                    text << map.value(attribute).toString();
+                    indexes.append(index);
                 }
 
-                QString key = QString("%1:path:%2:type:%3:uuid:%4").arg(text.join(" "),
-                                                                       unit.path(),
-                                                                       unit.type(),
-                                                                       unit.uuid().toString());
-                QVariant value = QString::number(QDateTime::currentMSecsSinceEpoch());
-                indexer->index(key, value);
+                // index
+                QMap<QString, QVariant> attrs = unit.attributes();
+                QListIterator<Index> iit(indexes);
+                while (iit.hasNext())
+                {
+                    Index index = iit.next();
 
-                indexer->deleteLater() ;
+                    Indexer *indexer = this->indexer(index.name());
+
+                    QList<QString> attributes = index.attributes();
+
+                    QStringList text;
+                    QListIterator<QString> ait(attributes);
+                    while (ait.hasNext())
+                    {
+                        QString attribute = ait.next();
+                        text << attrs.value(attribute).toString();
+                    }
+
+                    indexer->index(text.join(" "), unit);
+                    indexer->deleteLater() ;
+                }
             }
-
         }
-        */
+        //*/
     }
 
     return err;
 }
 
-int Mere::Store::UnitStore::update(Unit &unit)
+int Mere::Store::UnitStore::update(const Unit &unit)
 {
-    //qDebug() << "Going to update...";
-
-    // Unit Path
-    QString path = unit.path();
-    if (MereStringUtils::isBlank(path))
+    if(!unit.isValid())
         return 1;
 
-    // Unit Type
-    QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
-        return 2;
-
-    // Unit UUID
-    QUuid uuid = unit.uuid();
-    if (uuid.isNull())
-        return 3;
-
-    MereStoreUnitMap map = unit.map();
-    int err = update(map);
+    Entity entity(unit);
+    int err = this->EntityStore::update(entity);
     if (!err)
     {
         emit updated(unit);
+
+        // FIXME - Find of the index value really gets changed
+        //         otherwise wasing of resources or BAD program
+
+        //
+        // RE-INDEX
+        //
+        Config *config = nullptr;
+
+        if(this->type().compare("slice") == 0)
+            config =  new SliceConfig (this->home());
+        else if(this->type().compare("slice") == 0)
+            config = new StoreConfig (this->home());
+
+        if (config)
+        {
+            QMap<QString, QVariant> settings = config->section("index");
+            delete config;
+
+            if (!settings.isEmpty())
+            {
+
+                QList<Index> indexes;
+
+                QMapIterator<QString, QVariant> it(settings);
+                while (it.hasNext())
+                {
+                    it.next();
+                    QString name = it.key();
+
+                    Index index(name);
+
+                    QVariant value = it.value();
+                    QList<QString> attributes = value.toString().split(",");
+                    QListIterator<QString> it(attributes);
+                    while (it.hasNext())
+                    {
+                        QString attribute = it.next();
+                        index.setAttribute(attribute);
+                    }
+
+                    indexes.append(index);
+                }
+
+                // index
+                QMap<QString, QVariant> attrs = unit.attributes();
+                QListIterator<Index> iit(indexes);
+                while (iit.hasNext())
+                {
+                    Index index = iit.next();
+
+                    Indexer *indexer = this->indexer(index.name());
+
+                    QList<QString> attributes = index.attributes();
+
+                    QStringList text;
+                    QListIterator<QString> ait(attributes);
+                    while (ait.hasNext())
+                    {
+                        QString attribute = ait.next();
+                        text << attrs.value(attribute).toString();
+                    }
+
+                    indexer->reindex(text.join(" "), unit);
+                    indexer->deleteLater();
+                }
+            }
+        }
     }
 
     return err;
 }
 
-int Mere::Store::UnitStore::fetch(Unit &unit)
+int Mere::Store::UnitStore::fetch(const Ref &ref, Unit &unit)
 {
-    qDebug() << "Going to fetch...";
-    // Unit Path
-    QString path = unit.path();
-    if (MereStringUtils::isBlank(path))
+    if(!ref.isValid())
         return 1;
 
-    // Unit Type
-    QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
-        return 2;
+    Entity entity;
+    int err = EntityStore::fetch(ref, entity);
+    if (err) return err;
 
-    // Unit UUID
-    QUuid uuid = unit.uuid();
-    if (uuid.isNull())
-        return 3;
+    QMap<QString, QVariant> attributes;
+    QList<Link> links;
 
-    MereStoreUnitMap map = unit.map();
-    int err = fetch(map);
-    if (!err)
+    QMap<QString, QVariant> entries = entity.map();
+    QMapIterator<QString, QVariant> it(entries);
+    while (it.hasNext())
     {
-        Unit _unit(map);
+        it.next();
 
-        unit.setAttributes(_unit.attributes());
-        unit.setLinks(_unit.links());
-        emit fetched(unit);
+        UnitKey key(it.key());
+        if (key.isAttribute())
+        {
+            attributes.insert(key.attribute().toString(), it.value());
+        }
+        if (key.isLink())
+        {
+            links.append(key.link());
+        }
     }
 
-    return err;
-}
-
-int Mere::Store::UnitStore::remove(Unit &unit)
-{
-    qDebug() << "Going to remove...";
-
-    // Unit Path
-    QString path = unit.path();
-    if (MereStringUtils::isBlank(path))
-        return 1;
-
-    // Unit Type
-    QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
-        return 2;
-
-    // Unit UUID
-    QUuid uuid = unit.uuid();
-    if (uuid.isNull())
-        return 3;
-
-    QString pkey(path);
-    pkey = pkey.append(type);
-
-    pkey = UNIT_KEY.arg(pkey, uuid.toString());
-
-    remove(pkey);
-
-    emit removed(unit);
+    unit.setAttributes(attributes);
+    unit.setLinks(links);
 
     return 0;
 }
 
-QString Mere::Store::UnitStore::key(const Unit unit) const
+int Mere::Store::UnitStore::remove(const Ref &ref)
 {
-    // Unit Type
-    const QString type = unit.type();
-    if (MereStringUtils::isBlank(type))
+    qDebug() << "Going to remove...";
+    if(!ref.isValid())
+        return 1; 
+
+    int err = EntityStore::remove(ref);
+    if (err) return err;
+
+    emit removed(ref);
+
+    //
+    // REMOVE INDEX
+    //
+    Config *config = nullptr;
+
+    if(this->type().compare("slice") == 0)
+        config =  new SliceConfig (this->home());
+    else if(this->type().compare("slice") == 0)
+        config = new StoreConfig (this->home());
+
+    if (config)
     {
-        qDebug() << "Invalid or missing type of the unit...";
-        throw "Invalid or missing type of the unit...";
+        QMap<QString, QVariant> settings = config->section("index");
+        delete config;
+
+        if (!settings.isEmpty())
+        {
+            QList<Index> indexes;
+            QMapIterator<QString, QVariant> it(settings);
+            while (it.hasNext())
+            {
+                it.next();
+                Index index(it.key());
+
+                Indexer *indexer = this->indexer(index.name());
+                indexer->remove(ref);
+                indexer->deleteLater();
+            }
+        }
     }
 
-    // Unit Path
-    const QString path(".") ;
-
-    // Unit UUID
-    const QUuid uuid = unit.uuid();
-    if (uuid.isNull())
-    {
-        qDebug() << "Invalid or missing uuid of the unit...";
-        //return;
-        throw "Invalid or missing uuid of the unit...";
-    }
-
-    QString key(path);
-    key = key.append(type);
-    key = UNIT_KEY.arg(key, uuid.toString());
-
-    return key;
+    return 0;
 }
 
 Mere::Store::Indexer* Mere::Store::UnitStore::indexer(const QString &name)
@@ -329,15 +337,29 @@ Mere::Store::Indexer* Mere::Store::UnitStore::indexer(const QString &name)
     return indexer;
 }
 
-QMap<QString, QVariant> Mere::Store::UnitStore::find(const QString &index, const QString &what)
+QList<Mere::Store::UnitRef> Mere::Store::UnitStore::find(const QString &index, const QString &what)
 {
-    QMap<QString, QVariant> records;
+    QList<UnitRef> refs;
 
     Mere::Store::Indexer *indexer = this->indexer(index);
 
-    records = indexer->find(what);
+    refs = indexer->find(what);
 
     delete indexer;
 
-    return records;
+
+    return refs;
 }
+
+ QList<Mere::Store::Pair> Mere::Store::UnitStore::query(const QString &index, const QString &what)
+ {
+     QList<Pair> pairs;
+
+     Mere::Store::Indexer *indexer = this->indexer(index);
+
+     pairs = indexer->query(what);
+
+     delete indexer;
+
+     return pairs;
+ }

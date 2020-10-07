@@ -1,6 +1,7 @@
 #include "basestore.h"
 #include "indexstore.h"
 #include "../config/config.h"
+#include "../config/storeconfig.h"
 #include "../config/sliceconfig.h"
 #include "../config/indexconfig.h"
 #include "../engine/leveldbengine.h"
@@ -50,27 +51,41 @@ public:
      * 8.                 |                   |- master
      * 9.                 |                   |- .index
      * 10.                |- slices
-     * 11.                         |- .slices
-     * 12.                         |- {slice}
-     * 13.                                   |- master
-     * 14.                                   |- .slice
-     * 15.                                   |- indexes
-     * 16.                                              |- .indexes
-     * 17.                                              |-{index}
-     * 18.                                                       |- master
-     * 19                                                        |- .index
+     * 11.                |        |- .slices
+     * 12.                |        |- {slice}
+     * 13.                |                   |- master
+     * 14.                |                   |- .slice
+     * 15.                |                   |- indexes
+     * 16.                |                   |         |- .indexes
+     * 17.                |                   |         |-{index}
+     * 18.                |                   |                  |- master
+     * 19                 |                   |                  |- .index
+     * 20.                |                   |- graphs
+     * 21.                |                            |- .graphs
+     * 22.                |                            |- {graph}
+     * 23.                |                                      |- .graph
+     * 24.                |                                      |- master
+     * 20.                |- graphs
+     * 21.                         |- .graphs
+     * 22.                         |- {graph}
+     * 23.                                   |- .graph
+     * 24.                                   |- master
      *
-     * base - base location where our stores are stored specified in configuratio
-     *        file as mere.store.path
-     *        Example: (1)
+     * base    - base location where our stores are stored specified in configuratio
+     *           file as mere.store.path
+     *           Example: (1)
      *
-     * path - defined in the configuration file as mere.store.path; also known as
-     *        'base' location of the system
-     *        Example: (1)
+     * path    - defined in the configuration file as mere.store.path; also known as
+     *           'base' location of the system
+     *           Example: (1)
      *
-     * home - location of the store or slice
-     *        Example: (2), (7), (12) and (17) respectivly home of the store, index of
-     *        the store(2), slice and index of the slice(12).
+     * home    - location of the store or slice
+     *           Example: (2), (7), (12) and (17) respectivly home of the store, index of
+     *           the store(2), slice and index of the slice(12).
+     *
+     * index   - location of the index storeage
+     *
+     * graph   - lcoation of the graph storage
      */
 
     virtual int create()
@@ -116,6 +131,7 @@ public:
         QString home = "";
 
         QString store = q_ptr->store();
+
         QFileInfo info(store);
         if (info.isAbsolute())
             home = store;
@@ -128,6 +144,11 @@ public:
     int create(const Index &index)
     {
         return createIndex(index);
+    }
+
+    int create(const Graph &graph)
+    {
+        return createGraph(graph);
     }
 
     leveldb::DB* db()
@@ -153,7 +174,7 @@ private:
 
     void store(const QString &home)
     {
-        QTextStream(stdout) << "HOME:" << home << Qt::endl;
+        //QTextStream(stdout) << "HOME:" << home << Qt::endl;
         m_engine->setStore(home + "/master");
     }
 
@@ -192,21 +213,32 @@ private:
 
     int createIndex(const Index &index)
     {
-        qDebug() << "HOME  : " <<q_ptr->home();
-        qDebug() << "TYPE  : " <<q_ptr->type();
-        qDebug() << "INDEX : " <<q_ptr->store();
         BaseStore store(q_ptr->store(), index);
 
         int err = store.create();
         if (!err)
         {
+            Config *config = nullptr;
             if(q_ptr->type().compare("slice") == 0)
+                config = new SliceConfig(q_ptr->home());
+            else if(q_ptr->type().compare("slice") == 0)
+                config = new StoreConfig(q_ptr->home());
+
+            if (config)
             {
-                SliceConfig config(q_ptr->home() + "/.slice");
-                config.set("index/" + index.name(), index.attributes().join(","));
-                config.flush();
+                config->set("index/" + index.name(), index.attributes().join(","));
+                config->flush();
             }
         }
+
+        return err;
+    }
+
+    int createGraph(const Graph &graph)
+    {
+        BaseStore store(q_ptr->store(), graph);
+
+        int err = store.create();
 
         return err;
     }
@@ -285,7 +317,6 @@ public:
             if (!hidden.open(QIODevice::ReadWrite))
                 return 1;
             hidden.close();
-
         }
 
         return err;
@@ -293,6 +324,51 @@ public:
 
 private:
     Index m_index;
+
+    friend class BaseStorePrivate;
+};
+
+class Mere::Store::BaseStore::BaseGraphPrivate : public Mere::Store::BaseStore::BaseStorePrivate
+{
+public:
+    virtual ~BaseGraphPrivate()
+    {
+
+    }
+
+    BaseGraphPrivate(BaseStore *q)
+        : BaseStorePrivate(q)
+    {
+    };
+
+    BaseGraphPrivate(const Graph &graph, BaseStore *q)
+        : BaseStorePrivate(q),
+          m_graph(graph)
+    {
+    };
+
+
+    QString type() const override
+    {
+        return Mere::Store::Type::GRAPH;
+    }
+
+    int create() override
+    {
+        int err = BaseStorePrivate::create();
+        if (!err)
+        {
+            QFile hidden(this->home() + "/.graph");
+            if (!hidden.open(QIODevice::ReadWrite))
+                return 1;
+            hidden.close();
+        }
+
+        return err;
+    }
+
+private:
+    Graph m_graph;
 
     friend class BaseStorePrivate;
 };
@@ -333,6 +409,17 @@ Mere::Store::BaseStore::BaseStore(const Store &store, const Index &index, QObjec
 Mere::Store::BaseStore::BaseStore(const QString &store, const Index &index, QObject *parent)
     : Store(store + "/indexes/" + index.name(), parent),
       d_ptr(new BaseIndexPrivate(this))
+{
+}
+
+Mere::Store::BaseStore::BaseStore(const Store &store, const Graph &graph, QObject *parent)
+    : BaseStore(store.store(), graph, parent)
+{
+}
+
+Mere::Store::BaseStore::BaseStore(const QString &store, const Graph &graph, QObject *parent)
+    : Store(store + "/graphs/" + graph.name(), parent),
+      d_ptr(new BaseGraphPrivate(this))
 {
 }
 
@@ -393,6 +480,11 @@ int Mere::Store::BaseStore::remove()
 int Mere::Store::BaseStore::create(const Index &index)
 {
     return d_ptr->create(index);
+}
+
+int Mere::Store::BaseStore::create(const Graph &graph)
+{
+    return d_ptr->create(graph);
 }
 
 leveldb::DB* Mere::Store::BaseStore::db()

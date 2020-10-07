@@ -29,9 +29,13 @@ public:
     virtual int del(const QString &key) = 0;
     virtual int del(const QList<QString> &keys) = 0;
 
+    virtual int del(const QRegExp &regex) = 0;
+
     virtual QVariant list(const int &limit = 25) = 0;
     virtual QVariant list(const QString &key, const int &limit = 25) = 0;
     virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25) = 0;
+
+    virtual QVariant list(const QRegExp &regex, const int &limit) = 0;
 
 private:
     class PersistentStorePrivate;

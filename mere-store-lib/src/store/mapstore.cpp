@@ -24,6 +24,7 @@ Mere::Store::MapStore::MapStore(const QString &store, const QString &slice, QObj
 {
 }
 
+/*
 QVariant Mere::Store::MapStore::list(const int &limit)
 {
     QString uuid;
@@ -122,7 +123,7 @@ QVariant Mere::Store::MapStore::list(const int &limit)
 
     return units;
 }
-
+*/
 void Mere::Store::MapStore::save(MereStoreUnitMap &unit)
 {
     //qDebug() << "Going to save...";
@@ -174,40 +175,39 @@ int Mere::Store::MapStore::create(MereStoreUnitMap &map)
 
 int Mere::Store::MapStore::update(MereStoreUnitMap &map)
 {
-    Q_UNUSED(map)
     //qDebug() << "Going to update..." << map;
 
-//    // Unit Path
-//    const QString path = map.value("path").toString();
-//    if (MereStringUtils::isBlank(path))
-//    {
-//        qDebug() << "Invalid or missing path of the unit...";
-//        return 1;
-//    }
+    // Unit Path
+    const QString path = map.value("path").toString();
+    if (MereStringUtils::isBlank(path))
+    {
+        qDebug() << "Invalid or missing path of the unit...";
+        return 1;
+    }
 
-//    // Unit Type
-//    const QString type = map.value("type").toString();
-//    if (MereStringUtils::isBlank(type))
-//    {
-//        qDebug() << "Invalid or missing type of the unit...";
-//        return 2;
-//    }
+    // Unit Type
+    const QString type = map.value("type").toString();
+    if (MereStringUtils::isBlank(type))
+    {
+        qDebug() << "Invalid or missing type of the unit...";
+        return 2;
+    }
 
-//    // Unit UUID
-//    const QUuid uuid = map.value("uuid").toUuid();
-//    if (uuid.isNull())
-//    {
-//        qDebug() << "Invalid or missing uuid of the unit...";
-//        return 3;
-//    }
+    // Unit UUID
+    const QUuid uuid = map.value("uuid").toUuid();
+    if (uuid.isNull())
+    {
+        qDebug() << "Invalid or missing uuid of the unit...";
+        return 3;
+    }
 
-//    int err = write(map);
-//    if (!err)
-//    {
-//        emit updated(map);
+    int err = write(map);
+    if (!err)
+    {
+        emit updated(map);
 
-//        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 updated to the system").arg(path, type, uuid.toString());
-//    }
+        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 updated to the system").arg(path, type, uuid.toString());
+    }
 
     return 0;
 }
@@ -240,6 +240,7 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
     }
 
     int err = read(map);
+    qDebug() << "3...KICHU PAOWA GESE?" << err;
     if (!err)
     {
         emit fetched(map);
@@ -338,6 +339,8 @@ int Mere::Store::MapStore::read(MereStoreUnitMap &map)
 int Mere::Store::MapStore::read(const QString pkey, MereStoreUnitMap &map)
 {
     QMap<QString, QVariant> parts = PairStore::list(pkey).toMap();
+    if (parts.isEmpty())
+        return 1;
 
     QMapIterator<QString, QVariant> rit(parts);
     while (rit.hasNext())
@@ -435,26 +438,17 @@ int Mere::Store::MapStore::write(const MereStoreUnitMap &map)
     }
 
     int err = set(pairs);
-    //if (!err)
-    //    qDebug() << QString("Unit path:%1:type:%2:uuid:%3 saved to the system").arg(path, type, uuid);
+    if (!err)
+        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 saved to the system").arg(path, type, uuid);
 
     return err;
 }
 
-int Mere::Store::MapStore::remove(const QString pkey)
+int Mere::Store::MapStore::remove(const QString &pkey)
 {
-    leveldb::WriteOptions writeOptions;
-    leveldb::WriteBatch batch;
+    QRegExp re(QRegExp::escape("^" + pkey));
 
-    std::string skey = pkey.toStdString();
-    std::string ekey = (pkey + ("~")).toStdString();
-    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
-    {
-        batch.Delete(it->key().ToString());
-    }
+    int err = del(re);
 
-    db()->Write(writeOptions, &batch);
-
-    return 0;
+    return err;
 }

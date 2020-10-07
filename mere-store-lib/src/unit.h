@@ -22,10 +22,10 @@ class MERE_STORE_LIBSPEC Unit : public UnitRef
 {
 public:
     virtual ~Unit();
-    explicit Unit(const QString &type);
-    explicit Unit(const QMap<QString, QVariant> &map);
+    Unit();
+    Unit(const QString &type);
+    Unit(const QMap<QString, QVariant> &map);
 
-    Unit() = default;
     Unit(const Unit &other) = default;
 
     virtual MereStoreUnitAttributes attributes() const;

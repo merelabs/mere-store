@@ -4,6 +4,7 @@
 #include "../global.h"
 #include "../unit.h"
 #include "../index/index.h"
+#include "../graph/graph.h"
 
 #include <QMap>
 #include <QObject>
@@ -49,6 +50,7 @@ public:
     virtual int remove() = 0;
 
     virtual int create(const Index &index) = 0;
+    virtual int create(const Graph &graph) = 0;
 
 signals:
     // move from here
@@ -58,13 +60,6 @@ signals:
     void fetched(MereStoreUnitMap data);
     void removed(MereStoreUnitMap data);
     void matched(QList<MereStoreUnitMap> data);
-
-    void saved(Unit &unit);
-    void created(Unit &unit);
-    void updated(Unit &unit);
-    void fetched(Unit &unit);
-    void removed(Unit &unit);
-    void matched(QList<Unit> matches);
 
 private:
     class StorePrivate;

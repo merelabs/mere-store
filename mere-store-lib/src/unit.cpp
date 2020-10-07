@@ -19,9 +19,10 @@ public:
         return m_attributes;
     }
 
-    void setAttributes(MereStoreUnitAttributes attributes)
+    void setAttributes(QMap<QString, QVariant> attributes)
     {
-        m_attributes = attributes;
+        m_attributes.clear();
+        m_attributes.insert(attributes);
     }
 
     void addAttribute(const QString &name, const QVariant &value)
@@ -115,17 +116,36 @@ public:
 
     void addLink(const Link &link)
     {
-        m_links.append(link);
+        bool found = false;
+        QListIterator<Link> it(m_links);
+        while (it.hasNext())
+        {
+            Link _link = it.next();
+            if (_link.name().compare(link.name()) == 0)
+            {
+                _link.addUnits(link.units());
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+            m_links.append(link);
     }
 
     void addLinks(const QList<Link> &links)
     {
-        m_links.append(links);
+        QListIterator<Link> it(links);
+        while (it.hasNext())
+        {
+            Link link = it.next();
+            addLink(link);
+        }
     }
 
 private:
     MereStoreUnitAttributes m_attributes;
-    MereStoreUnitLinks m_links;
+    QList<Link> m_links;
 
     Unit *q_ptr;
 };
@@ -134,6 +154,13 @@ private:
 Mere::Store::Unit::~Unit()
 {
     delete d_ptr;
+    d_ptr = nullptr;
+}
+
+Mere::Store::Unit::Unit()
+    : d_ptr(new UnitPrivate(this))
+{
+    setPath(".");
 }
 
 Mere::Store::Unit::Unit(const QString &type)
@@ -184,7 +211,7 @@ Mere::Store::MereStoreUnitAttributes Mere::Store::Unit::attributes() const
 
 void Mere::Store::Unit::setAttributes(MereStoreUnitAttributes attributes)
 {
-    d_ptr->setAttributes(attributes);
+    return d_ptr->setAttributes(attributes);
 }
 
 void Mere::Store::Unit::addAttribute(const QString &name, const QVariant &value)

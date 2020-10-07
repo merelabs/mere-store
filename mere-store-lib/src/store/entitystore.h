@@ -1,16 +1,15 @@
 #ifndef GROUPSTORE_H
 #define GROUPSTORE_H
 
-#include "pairstore.h"
-
+#include "mapstore.h"
+#include "../entity.h"
 
 namespace Mere
 {
 namespace Store
 {
 
-class Entity;
-class MERE_STORE_LIBSPEC EntityStore : public PairStore
+class MERE_STORE_LIBSPEC EntityStore : public MapStore
 {
     Q_OBJECT
 public:
@@ -18,13 +17,19 @@ public:
     explicit EntityStore(const QString &store, QObject *parent = nullptr);
     explicit EntityStore(const QString &store, const QString &slice, QObject *parent = nullptr);
 
-    virtual int create(Entity &entity);
-    virtual int update(Entity &entity);
+    virtual bool found(const Ref &ref);
 
-    virtual QVariant list(const QString &key, const int &limit = 0) override;
+    virtual int create(const Entity &entity);
+    virtual int update(const Entity &entity);
+    virtual int fetch(const Ref &ref, Entity &entity);
+    virtual int remove(const Ref &ref);
+    virtual QVariant list(const int &limit = 25) override;
 
-private:
-    using BaseStore::create;
+//private:
+    using MapStore::create;
+    using MapStore::update;
+    using MapStore::fetch;
+    using MapStore::remove;
 
     class EntityStorePrivate;
     EntityStorePrivate *d_ptr;

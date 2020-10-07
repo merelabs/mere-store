@@ -67,7 +67,7 @@ public:
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -86,7 +86,7 @@ public:
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -95,7 +95,7 @@ public:
     {
         QString key = QString("p:%1:").arg(predicate);
 
-        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
 
         return pairs.keys();
     }
@@ -104,7 +104,7 @@ public:
     {
         QString key = QString("s:%1:o:%2").arg(subject, object);
 
-        QMap<QString, QVariant> pairs = q_ptr->EntityStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
 
         return pairs.keys();
     }

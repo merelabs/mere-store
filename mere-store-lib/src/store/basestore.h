@@ -39,6 +39,7 @@ public:
     virtual int remove() override;
 
     virtual int create(const Index &index) override;
+    virtual int create(const Graph &graph) override;
 
     leveldb::DB* db();
 
@@ -47,12 +48,17 @@ private:
     explicit BaseStore(const Store &store, const Index &index, QObject *parent = nullptr);
     explicit BaseStore(const QString &store, const Index &index, QObject *parent = nullptr);
 
+    // graph
+    explicit BaseStore(const Store &store, const Graph &graph, QObject *parent = nullptr);
+    explicit BaseStore(const QString &store, const Graph &graph, QObject *parent = nullptr);
+
 private:
     class BaseStorePrivate;
     BaseStorePrivate *d_ptr;
 
     class BaseSlicePrivate;
     class BaseIndexPrivate;
+    class BaseGraphPrivate;
 };
 
 } // namespace Store

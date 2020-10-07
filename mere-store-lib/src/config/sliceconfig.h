@@ -15,7 +15,7 @@ namespace  Store
 class SliceConfig : public Config
 {
 public:
-    explicit SliceConfig(const QString &config, QObject *parent = nullptr);
+    explicit SliceConfig(const QString &home, QObject *parent = nullptr);
 
     QString name() const;
     void setName(const QString &name);

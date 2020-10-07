@@ -29,9 +29,13 @@ public:
     virtual int del(const QString &key) override;
     virtual int del(const QList<QString> &keys) override;
 
+    virtual int del(const QRegExp &regex) override;
+
     virtual QVariant list(const int &limit = 25) override;
     virtual QVariant list(const QString &key, const int &limit = 25) override;
     virtual QVariant list(const QMap<QString, QVariant> &filter, const int &limit = 25) override;
+
+    virtual QVariant list(const QRegExp &regex, const int &limit = 0) override;
 
 private:
     class PairStorePrivate;

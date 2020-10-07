@@ -18,6 +18,14 @@ public:
     Link(const QString &name, const UnitRef &ref);
     Link(const QString &name, const QList<UnitRef> &refs);
 
+//    bool operator==(const Link &link)
+//    {
+//        if (name().compare(link.name()) != 0)
+//            return false;
+
+//        return true;
+//    }
+
     QString name() const;
     void setName(const QString &name);
 

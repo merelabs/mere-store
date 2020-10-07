@@ -12,3 +12,4 @@ mere-store-lib.depends   = mere-store-utils
 mere-store-app.depends   = mere-store-lib
 mere-store-shell.depends = mere-store-lib
 #mere-store-tests.depends = mere-store-lib
+

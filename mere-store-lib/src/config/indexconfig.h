@@ -2,6 +2,7 @@
 #define INDEXCONFIG_H
 
 #include "config.h"
+#include "../store/store.h"
 #include "../index/index.h"
 
 namespace  Mere

@@ -22,6 +22,20 @@ public:
     explicit UnitRef(const QString &ref);
     explicit UnitRef(const QMap<QString, QVariant> &map);
 
+    bool operator==(const UnitRef &ref)
+    {
+        if (path().compare(ref.path()) != 0)
+            return false;
+
+        if (type().compare(ref.type()) != 0)
+            return false;
+
+        if (uuid() != ref.uuid())
+            return false;
+
+        return true;
+    }
+
     QString path() const;
     void setPath(const QString &path);
 

@@ -31,13 +31,20 @@ public:
 
     void addUnit(const UnitRef &ref)
     {
+        if (m_units.contains(ref))
+            return;
+
         m_units.append(ref);
     }
 
-
     void addUnits(const QList<UnitRef> &refs)
     {
-        m_units.append(refs);
+        QListIterator<UnitRef> it(refs);
+        while (it.hasNext())
+        {
+            UnitRef ref = it.next();
+            addUnit(ref);
+        }
     }
 
     void setUnits(const QList<UnitRef> &refs)

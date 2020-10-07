@@ -169,8 +169,6 @@ int Mere::Store::PairStore::del(const QString &key)
     if (MereStringUtils::isBlank(key))
         return 1;
 
-    QVariant value = get(key);
-
     leveldb::WriteOptions writeOptions;
 
     leveldb::Status status = db()->Delete(writeOptions, key.toStdString());
@@ -203,6 +201,39 @@ int Mere::Store::PairStore::del(const QList<QString> &keys)
     return !status.ok();
 }
 
+int Mere::Store::PairStore::del(const QRegExp &regex)
+{
+    QString pattern = regex.pattern();
+
+    std::string skey = "";
+    if (pattern.startsWith("^"))
+        skey = pattern.toStdString();
+
+    std::string ekey = skey + "~";
+
+    leveldb::WriteOptions writeOptions;
+    leveldb::WriteBatch batch;
+
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    {
+        QString _key = QString::fromStdString(it->key().ToString());
+
+        int pos = regex.indexIn(_key);
+        if (pos == -1) continue;
+
+        batch.Delete(_key.toStdString());
+    }
+
+    delete it;
+
+    leveldb::Status status = db()->Write(writeOptions, &batch);
+
+    // 0  - success
+    // !0 - failed
+    return !status.ok();
+}
+
 QVariant Mere::Store::PairStore::list(const int &limit)
 {
     QMap<QString, QVariant> records;
@@ -224,38 +255,19 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
 {
     QMap<QString, QVariant> records;
 
-    QRegularExpression re(key);
-    uint count = limit;
-
-    // find the string to search
-    QString str = key;
-    if (str.startsWith("^"))
-        str = str.remove(0, 1);
-
-    if (str.endsWith("$"))
-        str.chop(1);
-
-    // ...
-    std::string skey;
-    if (key.startsWith("^"))
-        skey = str.toStdString();
-    else
-        skey = "";
-
+    std::string skey = key.toStdString();
     std::string ekey = skey + "~";
 
+    int count = limit;
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey && (limit == 0 || count != 0); it->Next())
     {
         QString _key = QString::fromStdString(it->key().ToString());
         QString _val = QString::fromStdString(it->value().ToString());
 
-        QRegularExpressionMatch match = re.match(_key);
-        if(!match.hasMatch())
-            continue;
-
         records.insert(_key, _val);
-        count--;
+
+        if (limit != 0) --count;
     }
 
     delete it;
@@ -268,6 +280,34 @@ QVariant Mere::Store::PairStore::list(const QMap<QString, QVariant> &filter, con
     Q_UNUSED(filter);
     Q_UNUSED(limit)
     QMap<QString, QVariant> records;
+
+    return records;
+}
+
+QVariant Mere::Store::PairStore::list(const QRegExp &regex, const int &limit)
+{
+    QMap<QString, QVariant> records;
+
+    QString pattern = regex.pattern();
+
+    std::string skey = "";
+    if (pattern.startsWith("^"))
+        skey = pattern.toStdString();
+
+    std::string ekey = skey + "~";
+
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    {
+        QString _key = QString::fromStdString(it->key().ToString());
+        int pos = regex.indexIn(_key);
+        if (pos == -1) continue;
+
+        QString _val = QString::fromStdString(it->value().ToString());
+
+        records.insert(_key, _val);
+    }
+    delete it;
 
     return records;
 }

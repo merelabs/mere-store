@@ -1,7 +1,7 @@
 #include "sliceconfig.h"
 
-Mere::Store::SliceConfig::SliceConfig(const QString &config, QObject *parent)
-    : Config(config, parent)
+Mere::Store::SliceConfig::SliceConfig(const QString &home, QObject *parent)
+    : Config(home + "/.slice", parent)
 {
 
 }
