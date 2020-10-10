@@ -25,6 +25,7 @@ SOURCES +=  \
     src/graph/arc.cpp \
     src/graph/graph.cpp \
     src/graph/vertex.cpp \
+    src/hexakey.cpp \
     src/index/index.cpp \
     src/index/indexer.cpp \
     src/index/indexkey.cpp \
@@ -68,6 +69,7 @@ HEADERS +=  \
     src/graph/arc.h \
     src/graph/graph.h \
     src/graph/vertex.h \
+    src/hexakey.h \
     src/index/index.h \
     src/index/indexer.h \
     src/index/indexkey.h \

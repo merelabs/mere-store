@@ -256,11 +256,10 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
     QMap<QString, QVariant> records;
 
     std::string skey = key.toStdString();
-    std::string ekey = skey + "~";
 
     int count = limit;
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey && (limit == 0 || count != 0); it->Next())
+    for (it->Seek(skey); it->Valid() && (limit == 0 || count != 0); it->Next())
     {
         QString _key = QString::fromStdString(it->key().ToString());
         QString _val = QString::fromStdString(it->value().ToString());
@@ -269,7 +268,6 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
 
         if (limit != 0) --count;
     }
-
     delete it;
 
     return records;
@@ -294,10 +292,9 @@ QVariant Mere::Store::PairStore::list(const QRegExp &regex, const int &limit)
     if (pattern.startsWith("^"))
         skey = pattern.toStdString();
 
-    std::string ekey = skey + "~";
-
+    int count = limit;
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    for (it->Seek(skey); it->Valid() && (limit == 0 || count != 0); it->Next())
     {
         QString _key = QString::fromStdString(it->key().ToString());
         int pos = regex.indexIn(_key);
@@ -306,7 +303,33 @@ QVariant Mere::Store::PairStore::list(const QRegExp &regex, const int &limit)
         QString _val = QString::fromStdString(it->value().ToString());
 
         records.insert(_key, _val);
+
+        if (limit != 0) --count;
     }
+    delete it;
+
+    return records;
+}
+
+QVariant Mere::Store::PairStore::find(const QString &key, const int &limit)
+{
+    QMap<QString, QVariant> records;
+
+    std::string skey = key.toStdString();
+    std::string ekey = skey + "~";
+
+    int count = limit;
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey && (limit == 0 || count != 0); it->Next())
+    {
+        QString _key = QString::fromStdString(it->key().ToString());
+        QString _val = QString::fromStdString(it->value().ToString());
+
+        records.insert(_key, _val);
+
+        if (limit != 0) --count;
+    }
+
     delete it;
 
     return records;

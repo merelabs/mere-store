@@ -174,7 +174,7 @@ private:
 
     void store(const QString &home)
     {
-        //QTextStream(stdout) << "HOME:" << home << Qt::endl;
+        QTextStream(stdout) << "HOME:" << home << Qt::endl;
         m_engine->setStore(home + "/master");
     }
 

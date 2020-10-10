@@ -22,7 +22,7 @@ public:
 
     QList<Mere::Store::UnitRef> vertex(const UnitRef &ref, const QString &predicate, HexaStore::Flow flow) const
     {
-        QString vertex = ref.key();
+        QString vertex = ref.toString();
         QList<QString> vertexes = q_ptr->vertex(vertex, predicate, flow);
 
         return refs(vertexes);
@@ -65,6 +65,16 @@ Mere::Store::GraphStore::GraphStore(const QString &store, const QString &slice, 
       d_ptr(new GraphStorePrivate(this))
 {
 
+}
+
+int Mere::Store::GraphStore::add(const Ref &subject, const QString &predicate, const Ref &object) const
+{
+    return this->add(subject.toString(), predicate, object.toString());
+}
+
+int Mere::Store::GraphStore::del(const Ref &subject, const QString &predicate, const Ref &object) const
+{
+    return this->del(subject.toString(), predicate, object.toString());
 }
 
 QList<Mere::Store::UnitRef> Mere::Store::GraphStore::vertex(const UnitRef &ref, HexaStore::Flow flow) const

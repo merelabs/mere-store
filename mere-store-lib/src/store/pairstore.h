@@ -37,6 +37,8 @@ public:
 
     virtual QVariant list(const QRegExp &regex, const int &limit = 0) override;
 
+    virtual QVariant find(const QString &key, const int &limit = 25) override;
+
 private:
     class PairStorePrivate;
     PairStorePrivate *d_ptr;

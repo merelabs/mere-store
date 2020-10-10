@@ -97,7 +97,7 @@ int Mere::Store::EntityStore::fetch(const Ref &ref, Entity &entity)
 {
     QString key = ref.toString();
 
-    QVariant list = PairStore::list(key);
+    QVariant list = PairStore::find(key);
     if (!list.isValid()) return 1;
 
     QMap<QString, QVariant> entries = list.toMap();
@@ -110,7 +110,7 @@ bool Mere::Store::EntityStore::found(const Ref &ref)
 {
     QString key = ref.toString();
 
-    QVariant list = PairStore::list(key, 1);
+    QVariant list = PairStore::find(key, 1);
     if (!list.isValid()) return false;
 
     QMap<QString, QVariant> entries = list.toMap();
@@ -144,7 +144,7 @@ QVariant Mere::Store::EntityStore::list(const int &limit)
     Entity *entity = nullptr;
 
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
-    for (it->SeekToFirst(); it->Valid() && (limit == 0 || count != 0); it->Next(), count--)
+    for (it->SeekToFirst(); it->Valid() && (limit == 0 || count != 0); it->Next())
     {
         QString key   = QString::fromStdString(it->key().ToString());
         QString value = QString::fromStdString(it->value().ToString());
@@ -157,7 +157,43 @@ QVariant Mere::Store::EntityStore::list(const int &limit)
             entity = new Entity(unitKey.ref());
 
             entities.append(entity);
-            --count;
+            if (limit != 0) --count;
+        }
+
+        entity->add(key, value);
+    }
+
+    delete it;
+
+    return QVariant::fromValue(entities);
+}
+
+QVariant Mere::Store::EntityStore::list(const QString &ref, const int &limit)
+{
+    QList<Entity *> entities;
+
+    uint count = limit;
+
+    QString entityKey;
+    Entity *entity = nullptr;
+
+    std::string skey = ref.toStdString();
+
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && (limit == 0 || count != 0); it->Next())
+    {
+        QString key   = QString::fromStdString(it->key().ToString());
+        QString value = QString::fromStdString(it->value().ToString());
+
+        UnitKey unitKey(key);
+
+        if(entityKey.compare(unitKey.ref().toString()) != 0)
+        {
+            entityKey = unitKey.ref().toString();
+            entity = new Entity(unitKey.ref());
+
+            entities.append(entity);
+            if (limit != 0) --count;
         }
 
         entity->add(key, value);

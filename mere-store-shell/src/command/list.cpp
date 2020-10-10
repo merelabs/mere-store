@@ -38,8 +38,19 @@ bool List::execute() const
         return ok;
     }
 
-    Parser parser(this->argument(), QStringList({"-k", "-v", "-l"}));
+    QVariant list;
 
+
+    QStringList options({"-k", "-v", "-l"});
+
+    Parser parser(this->argument(), options);
+
+    QStringRef ref = parser.next();
+    if (!options.contains(ref))
+    {
+        qDebug() << "ITS A KEY!!!" << ref.toString();
+        list = this->list(ref.toString());
+    }
 
 //    QList<QString> blocks;
 
@@ -53,12 +64,12 @@ bool List::execute() const
 //        return false;
 //    }
 
-    QVariant list;
+//    QVariant list;
 
 //    if (blocks.size() == 0)
-    {
-        list = this->list();
-    }
+//    {
+//        list = this->list();
+//    }
 //    else if (blocks.size() == 1)
 //    {
 //        QString arg = blocks.at(0);

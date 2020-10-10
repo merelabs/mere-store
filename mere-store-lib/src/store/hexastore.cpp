@@ -1,4 +1,5 @@
 #include "hexastore.h"
+#include "../hexakey.h"
 
 #include <QDateTime>
 
@@ -74,21 +75,34 @@ public:
 
     QList<QString> vertex(const QString &vertex, const QString &predicate, HexaStore::Flow flow) const
     {
-        QString key;
+        QString prefix;
         switch (flow)
         {
             case InComing:
-                key = QString("o:%1:p:%2").arg(vertex, predicate);
+                prefix = QString("o:%1:p:%2").arg(vertex, predicate);
                 break;
 
             case OutGoing:
-                key = QString("s:%1:p:%2").arg(vertex, predicate);
+                prefix = QString("s:%1:p:%2").arg(vertex, predicate);
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
+        QList<QString> vertexes;
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(prefix).toMap();
+        QMapIterator<QString, QVariant> it(pairs);
+        while (it.hasNext())
+        {
+            it.next();
 
-        return pairs.keys();
+            QString key = it.key();
+            key = key.remove(prefix);
+            key = key.remove(0, 3);
+
+            vertexes.append(key);
+//            HexaKey key(it.key());
+        }
+
+        return vertexes;
     }
 
     QList<QString> vertex(const QString &predicate) const

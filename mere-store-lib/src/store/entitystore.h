@@ -23,7 +23,9 @@ public:
     virtual int update(const Entity &entity);
     virtual int fetch(const Ref &ref, Entity &entity);
     virtual int remove(const Ref &ref);
+
     virtual QVariant list(const int &limit = 25) override;
+    virtual QVariant list(const QString &ref, const int &limit = 25) override;
 
 //private:
     using MapStore::create;
