@@ -30,6 +30,7 @@ Mere::Store::UnitStore::UnitStore(const QString &store, const QString &slice, QO
 
 QVariant Mere::Store::UnitStore::list(const int &limit)
 {
+    qDebug() << "KEY" << limit;
     QList<Unit *> units;
 
     QVariant list = EntityStore::list(limit);
@@ -346,7 +347,6 @@ QList<Mere::Store::UnitRef> Mere::Store::UnitStore::find(const QString &index, c
     refs = indexer->find(what);
 
     delete indexer;
-
 
     return refs;
 }

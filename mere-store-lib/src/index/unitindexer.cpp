@@ -88,22 +88,21 @@ QList<Mere::Store::UnitRef> Mere::Store::UnitIndexer::find(const QString &what) 
 
     IndexStore store(m_store, m_name);
     int err = store.open();
-    if (!err)
+    if (err) return refs;
+
+    QVariant var = store.find(what);
+    if (var.isValid())
     {
-        QVariant var = store.list("^" + what + ":");
-        if (var.isValid())
+        QMap<QString, QVariant> records = var.toMap();
+        QMapIterator<QString, QVariant> it(records);
+        while (it.hasNext())
         {
-            QMap<QString, QVariant> records = var.toMap();
-            QMapIterator<QString, QVariant> it(records);
-            while (it.hasNext())
-            {
-                it.next();
+            it.next();
 
-                QString key = it.key();
+            QString key = it.key();
 
-                IndexKey indexKey(key);
-                refs.append(indexKey.ref());
-            }
+            IndexKey indexKey(key);
+            refs.append(indexKey.ref());
         }
     }
 
