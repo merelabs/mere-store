@@ -1,6 +1,8 @@
 #include "hexastore.h"
 #include "../hexakey.h"
 
+#include "mere/utils/merestringutils.h"
+
 #include <QDateTime>
 
 QString Mere::Store::HexaStore::HEXA_KEY_1 = "s:%1:p:%2:o:%3";
@@ -24,15 +26,25 @@ public:
 
     int add(const QString &subject, const QString &predicate, const QString &object) const
     {
-        QString now = QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch());
+        if (MereStringUtils::isBlank(subject))
+            return 1;
+
+        if (MereStringUtils::isBlank(predicate))
+            return 2;
+
+        if (MereStringUtils::isBlank(object))
+            return 3;
 
         QMap<QString, QVariant> pairs;
-        pairs.insert(HEXA_KEY_1.arg(subject, predicate, object), now);
-        pairs.insert(HEXA_KEY_2.arg(subject, predicate, object), now);
-        pairs.insert(HEXA_KEY_3.arg(subject, predicate, object), now);
-        pairs.insert(HEXA_KEY_4.arg(subject, predicate, object), now);
-        pairs.insert(HEXA_KEY_5.arg(subject, predicate, object), now);
-        pairs.insert(HEXA_KEY_6.arg(subject, predicate, object), now);
+
+        QString now = QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch());
+
+        QList<QString> keys = this->keys(subject, predicate, object);
+        QListIterator<QString> it(keys);
+        while (it.hasNext())
+        {
+            pairs.insert(it.next(), now);
+        }
 
         int err = q_ptr->PairStore::set(pairs);
 
@@ -41,39 +53,84 @@ public:
 
     int del(const QString &subject, const QString &predicate, const QString &object) const
     {
-        QList<QString> keys;
-        keys.append(HEXA_KEY_1.arg(subject, predicate, object));
-        keys.append(HEXA_KEY_2.arg(subject, predicate, object));
-        keys.append(HEXA_KEY_3.arg(subject, predicate, object));
-        keys.append(HEXA_KEY_4.arg(subject, predicate, object));
-        keys.append(HEXA_KEY_5.arg(subject, predicate, object));
-        keys.append(HEXA_KEY_6.arg(subject, predicate, object));
+        if (MereStringUtils::isBlank(subject))
+            return 1;
+
+        if (MereStringUtils::isBlank(predicate))
+            return 2;
+
+        if (MereStringUtils::isBlank(object))
+            return 3;
+
+        QList<QString> keys = this->keys(subject, predicate, object);
 
         int err = q_ptr->PairStore::del(keys);
 
         return err;
     }
 
-    QList<QString> vertex(const QString &vertex, HexaStore::Flow flow) const
+    int del(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow) const
     {
-        QString key;
+        if (MereStringUtils::isBlank(vertex))
+            return 1;
+
+        if (MereStringUtils::isBlank(predicate))
+            return 2;
+
+        QString prefix;
         switch (flow)
         {
             case InComing:
-                key = QString("o:%1").arg(vertex);
+                prefix = QString("o:%1").arg(vertex);
                 break;
 
             case OutGoing:
-                key = QString("s:%1").arg(vertex);
+                prefix = QString("s:%1").arg(vertex);
                 break;
         }
 
-        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::find(prefix).toMap();
+        if (pairs.isEmpty())
+            return 3;
+
+        QList<QString> keys;
+        QMapIterator<QString, QVariant> it(pairs);
+        while (it.hasNext())
+        {
+            it.next();
+
+            QString key = it.key();
+            key = key.remove(prefix);
+            key = key.remove(0, 3);
+
+            keys.append(this->keys(vertex, predicate, key));
+        }
+
+        int err = q_ptr->PairStore::del(keys);
+
+        return err;
+    }
+
+    QList<QString> vertex(const QString &vertex, const HexaStore::Flow &flow) const
+    {
+        QString prefix;
+        switch (flow)
+        {
+            case InComing:
+                prefix = QString("o:%1").arg(vertex);
+                break;
+
+            case OutGoing:
+                prefix = QString("s:%1").arg(vertex);
+                break;
+        }
+
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::find(prefix).toMap();
 
         return pairs.keys();
     }
 
-    QList<QString> vertex(const QString &vertex, const QString &predicate, HexaStore::Flow flow) const
+    QList<QString> vertex(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow) const
     {
         QString prefix;
         switch (flow)
@@ -88,7 +145,7 @@ public:
         }
 
         QList<QString> vertexes;
-        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(prefix).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::find(prefix).toMap();
         QMapIterator<QString, QVariant> it(pairs);
         while (it.hasNext())
         {
@@ -109,7 +166,7 @@ public:
     {
         QString key = QString("p:%1:").arg(predicate);
 
-        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::find(key).toMap();
 
         return pairs.keys();
     }
@@ -118,11 +175,25 @@ public:
     {
         QString key = QString("s:%1:o:%2").arg(subject, object);
 
-        QMap<QString, QVariant> pairs = q_ptr->PairStore::list(key).toMap();
+        QMap<QString, QVariant> pairs = q_ptr->PairStore::find(key).toMap();
 
         return pairs.keys();
     }
 
+private:
+    QList<QString> keys(const QString &subject, const QString &predicate, const QString &object) const
+    {
+        QList<QString> keys;
+
+        keys.append(HEXA_KEY_1.arg(subject, predicate, object));
+        keys.append(HEXA_KEY_2.arg(subject, predicate, object));
+        keys.append(HEXA_KEY_3.arg(subject, predicate, object));
+        keys.append(HEXA_KEY_4.arg(subject, predicate, object));
+        keys.append(HEXA_KEY_5.arg(subject, predicate, object));
+        keys.append(HEXA_KEY_6.arg(subject, predicate, object));
+
+        return keys;
+    }
 
 private:
     HexaStore *q_ptr;
@@ -154,12 +225,17 @@ int Mere::Store::HexaStore::del(const QString &subject, const QString &predicate
     return d_ptr->del(subject, predicate, object);
 }
 
-QList<QString> Mere::Store::HexaStore::vertex(const QString &vertex, HexaStore::Flow flow) const
+int Mere::Store::HexaStore::del(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow) const
+{
+    return d_ptr->del(vertex, predicate, flow);
+}
+
+QList<QString> Mere::Store::HexaStore::vertex(const QString &vertex, const Flow &flow) const
 {
     return d_ptr->vertex(vertex, flow);
 }
 
-QList<QString> Mere::Store::HexaStore::vertex(const QString &vertex, const QString &predicate, HexaStore::Flow flow) const
+QList<QString> Mere::Store::HexaStore::vertex(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow) const
 {
     return d_ptr->vertex(vertex, predicate, flow);
 }

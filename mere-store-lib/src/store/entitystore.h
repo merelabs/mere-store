@@ -27,11 +27,14 @@ public:
     virtual QVariant list(const int &limit = 25) override;
     virtual QVariant list(const QString &ref, const int &limit = 25) override;
 
+    virtual Entity* find(const QString &ref);
+
 //private:
     using MapStore::create;
     using MapStore::update;
     using MapStore::fetch;
     using MapStore::remove;
+    using PairStore::find;
 
     class EntityStorePrivate;
     EntityStorePrivate *d_ptr;

@@ -20,17 +20,19 @@ public:
 
 //    void add(const UnitRef &subject, const QString &predicate, const UnitRef &object);
     virtual int add(const QString &subject, const QString &predicate, const QString &object) const;
+
     virtual int del(const QString &subject, const QString &predicate, const QString &object) const;
+    virtual int del(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow = InComing) const;
 
     //
     // Queries
     //
 
     // All the vertex that going from or coming to
-    virtual QList<QString> vertex(const QString &vertex, HexaStore::Flow flow = InComing) const;
+    virtual QList<QString> vertex(const QString &vertex, const Flow &flow = InComing) const;
 
     // All the vertex that going from or coming to via arc
-    virtual QList<QString> vertex(const QString &vertex, const QString &predicate, HexaStore::Flow flow = InComing) const;
+    virtual QList<QString> vertex(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow = InComing) const;
 
     // All the vertex connected by predcate
     virtual QList<QString> vertex(const QString &predicate) const;

@@ -78,6 +78,7 @@ int Mere::Store::PairStore::set(const QString &key, const QVariant &value)
 
 int Mere::Store::PairStore::set(const QMap<QString, QVariant> &pairs)
 {
+//    qDebug() << "PAIRS:::" << pairs;
     leveldb::WriteOptions writeOptions;
     leveldb::WriteBatch batch;
 
@@ -97,8 +98,14 @@ int Mere::Store::PairStore::set(const QMap<QString, QVariant> &pairs)
         batch.Put(key.toStdString(), val.toString().toStdString());
     }
 
+    qDebug() << "1...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << db();
+    if (!db())
+    {
+        qDebug() << "PAIRS::" << pairs;
+    }
     leveldb::Status status = db()->Write(writeOptions, &batch);
 
+    qDebug() << "2...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << status.ok();
     return !status.ok();
 }
 

@@ -203,3 +203,31 @@ QVariant Mere::Store::EntityStore::list(const QString &ref, const int &limit)
 
     return QVariant::fromValue(entities);
 }
+
+Mere::Store::Entity* Mere::Store::EntityStore::find(const QString &ref)
+{
+    Entity *entity = nullptr;
+
+    std::string skey = ref.toStdString();
+    std::string ekey = skey + "~";
+
+    leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
+    for (it->Seek(skey); it->Valid() && it->key().ToString() < ekey; it->Next())
+    {
+        QString key   = QString::fromStdString(it->key().ToString());
+        QString value = QString::fromStdString(it->value().ToString());
+
+        UnitKey unitKey(key);
+
+        if(!entity)
+        {
+            entity = new Entity(unitKey.ref());
+        }
+
+        entity->add(key, value);
+    }
+
+    delete it;
+
+    return entity;
+}

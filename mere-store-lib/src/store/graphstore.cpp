@@ -12,9 +12,16 @@ public:
     {
     }
 
+    int del(const UnitRef &ref, const QString &predicate, HexaStore::Flow flow) const
+    {
+        const QString vertex = ref.toString();
+
+        return q_ptr->del(vertex, predicate, flow);
+    }
+
     QList<Mere::Store::UnitRef> vertex(const UnitRef &ref, HexaStore::Flow flow) const
     {
-        QString vertex = ref.key();
+        QString vertex = ref.toString();
         QList<QString> vertexes = q_ptr->vertex(vertex, flow);
 
         return refs(vertexes);
@@ -77,6 +84,11 @@ int Mere::Store::GraphStore::del(const Ref &subject, const QString &predicate, c
     return this->del(subject.toString(), predicate, object.toString());
 }
 
+int Mere::Store::GraphStore::del(const UnitRef &ref, const QString &predicate, HexaStore::Flow flow) const
+{
+    return d_ptr->del(ref, predicate, flow);
+}
+
 QList<Mere::Store::UnitRef> Mere::Store::GraphStore::vertex(const UnitRef &ref, HexaStore::Flow flow) const
 {
     return d_ptr->vertex(ref, flow);
@@ -86,3 +98,4 @@ QList<Mere::Store::UnitRef> Mere::Store::GraphStore::vertex(const UnitRef &ref, 
 {
     return d_ptr->vertex(ref, predicate, flow);
 }
+

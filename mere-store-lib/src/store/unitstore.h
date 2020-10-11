@@ -39,7 +39,7 @@ signals:
      void removed(const Ref &ref);
      void matched(QList<Unit> matches);
 
-private:
+     protected:
     // Just to tell compiler to avoid warning!
     using EntityStore::create;
     using EntityStore::update;
