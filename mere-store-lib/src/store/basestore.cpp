@@ -174,7 +174,7 @@ private:
 
     void store(const QString &home)
     {
-        QTextStream(stdout) << "HOME:" << home << Qt::endl;
+        //QTextStream(stdout) << "HOME:" << home << Qt::endl;
         m_engine->setStore(home + "/master");
     }
 
@@ -213,7 +213,8 @@ private:
 
     int createIndex(const Index &index)
     {
-        BaseStore store(q_ptr->store(), index);
+//        BaseStore store(q_ptr->store(), index);
+        BaseStore store(q_ptr->home(), index);
 
         int err = store.create();
         if (!err)
@@ -236,8 +237,8 @@ private:
 
     int createGraph(const Graph &graph)
     {
-        BaseStore store(q_ptr->store(), graph);
-
+//        BaseStore store(q_ptr->store(), graph);
+        BaseStore store(q_ptr->home(), graph);
         int err = store.create();
 
         return err;

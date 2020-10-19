@@ -38,7 +38,7 @@ public:
 
         leveldb::Status status = leveldb::DB::Open(options, m_store.toStdString(), &m_db);
 
-        //qDebug() << "create()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
+        // qDebug() << "create()::" << status.ok() << QString::fromStdString(m_store.toStdString()) << QString::fromStdString(status.ToString());
         // 0  - success
         // !0 - failed
         return !status.ok();
