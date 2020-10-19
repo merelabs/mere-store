@@ -136,23 +136,18 @@ int Mere::Store::EntityStore::remove(const Ref &ref)
 
 QVariant Mere::Store::EntityStore::list(const int &limit)
 {
-    qDebug() << "1.....KEY" << limit << db();
     QList<Entity *> entities;
 
     int count = limit;
 
-     qDebug() << "2.....KEY" << limit << ((limit == 0 || count != 0));
     QString entityKey;
     Entity *entity = nullptr;
 
     leveldb::Iterator* it = db()->NewIterator(leveldb::ReadOptions());
     for (it->SeekToFirst(); it->Valid() && (limit == 0 || count != 0); it->Next())
     {
-        qDebug() << "ZZZZ KI BOLE??";
         QString key   = QString::fromStdString(it->key().ToString());
         QString value = QString::fromStdString(it->value().ToString());
-
-        qDebug() << "KEY" << key;
 
         UnitKey unitKey(key);
 
