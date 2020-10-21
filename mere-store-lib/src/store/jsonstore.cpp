@@ -1,5 +1,5 @@
 #include "jsonstore.h"
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QJsonDocument>
 
@@ -24,7 +24,7 @@ int Mere::Store::JsonStore::set(const QString &key, const QVariant &value)
         return 1;
 
     QString json = value.toString();
-    if (MereStringUtils::isBlank(json))
+    if (Mere::Utils::StringUtils::isBlank(json))
         return 2;
 
     QJsonDocument document = QJsonDocument::fromJson(json.toUtf8());

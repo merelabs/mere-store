@@ -7,8 +7,6 @@
 #include "../config/storeconfig.h"
 #include "../entity.h"
 
-#include "mere/utils/merestringutils.h"
-
 #include <QUuid>
 #include <QDateTime>
 #include <QList>

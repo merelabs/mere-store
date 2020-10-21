@@ -1,7 +1,7 @@
 #include "hexastore.h"
 #include "../hexakey.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QDateTime>
 
@@ -26,13 +26,13 @@ public:
 
     int add(const QString &subject, const QString &predicate, const QString &object) const
     {
-        if (MereStringUtils::isBlank(subject))
+        if (Mere::Utils::StringUtils::isBlank(subject))
             return 1;
 
-        if (MereStringUtils::isBlank(predicate))
+        if (Mere::Utils::StringUtils::isBlank(predicate))
             return 2;
 
-        if (MereStringUtils::isBlank(object))
+        if (Mere::Utils::StringUtils::isBlank(object))
             return 3;
 
         QMap<QString, QVariant> pairs;
@@ -53,13 +53,13 @@ public:
 
     int del(const QString &subject, const QString &predicate, const QString &object) const
     {
-        if (MereStringUtils::isBlank(subject))
+        if (Mere::Utils::StringUtils::isBlank(subject))
             return 1;
 
-        if (MereStringUtils::isBlank(predicate))
+        if (Mere::Utils::StringUtils::isBlank(predicate))
             return 2;
 
-        if (MereStringUtils::isBlank(object))
+        if (Mere::Utils::StringUtils::isBlank(object))
             return 3;
 
         QList<QString> keys = this->keys(subject, predicate, object);
@@ -71,10 +71,10 @@ public:
 
     int del(const QString &vertex, const QString &predicate, const HexaStore::Flow &flow) const
     {
-        if (MereStringUtils::isBlank(vertex))
+        if (Mere::Utils::StringUtils::isBlank(vertex))
             return 1;
 
-        if (MereStringUtils::isBlank(predicate))
+        if (Mere::Utils::StringUtils::isBlank(predicate))
             return 2;
 
         QString prefix;

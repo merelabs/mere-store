@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QDir>
 #include <QFile>
@@ -45,7 +45,7 @@ QString Mere::Store::Config::path() const
 {
     QString path = get(Mere::Store::PathKey).toString();
 
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
             path = "./";
 
     // check for trailing slash
@@ -57,7 +57,7 @@ QString Mere::Store::Config::path() const
 
 void Mere::Store::Config::setPath(const QString &path)
 {
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
         return;
 
     return set(Mere::Store::PathKey, path);
@@ -66,7 +66,7 @@ void Mere::Store::Config::setPath(const QString &path)
 QString Mere::Store::Config::mime() const
 {
     QString mime = get(Mere::Store::MimeKey).toString();
-    if (MereStringUtils::isBlank(mime))
+    if (Mere::Utils::StringUtils::isBlank(mime))
             mime = "text/plain";
 
     return mime;

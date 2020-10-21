@@ -6,8 +6,6 @@
 #include "../config/indexconfig.h"
 #include "../engine/leveldbengine.h"
 
-#include "mere/utils/merestringutils.h"
-
 #include <QDir>
 #include <QFile>
 

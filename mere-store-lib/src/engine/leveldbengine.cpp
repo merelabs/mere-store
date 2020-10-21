@@ -1,6 +1,6 @@
 #include "leveldbengine.h"
+#include "mere/utils/stringutils.h"
 
-#include "mere/utils/merestringutils.h"
 #include <QDir>
 
 class Mere::Store::LevelDBEngine::LevelDBEnginePrivate
@@ -30,6 +30,9 @@ public:
 
     int create()
     {
+        if (Mere::Utils::StringUtils::isBlank(m_store))
+            return 1;
+
         leveldb::Options options;
         options.create_if_missing = true;
         options.error_if_exists = true;
@@ -46,6 +49,9 @@ public:
 
     int open()
     {
+        if (Mere::Utils::StringUtils::isBlank(m_store))
+            return 1;
+
         leveldb::Options options;
         options.create_if_missing = false;
         options.error_if_exists = false;

@@ -2,7 +2,7 @@
 #include "../pair.h"
 #include "../engine/leveldbengine.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QRegularExpression>
 
@@ -59,7 +59,7 @@ int Mere::Store::PairStore::set(const QVariant &value)
 
 int Mere::Store::PairStore::set(const QString &key, const QVariant &value)
 {
-    if (MereStringUtils::isBlank(key))
+    if (Mere::Utils::StringUtils::isBlank(key))
         return 1;
 
     if (!value.isValid())
@@ -88,7 +88,7 @@ int Mere::Store::PairStore::set(const QMap<QString, QVariant> &pairs)
         it.next();
 
         QString key = it.key();
-        if (MereStringUtils::isBlank(key))
+        if (Mere::Utils::StringUtils::isBlank(key))
             continue;
 
         QVariant val = it.value();
@@ -114,7 +114,7 @@ int Mere::Store::PairStore::set(const QList<Pair> &pairs)
         Pair pair = it.next();
 
         QString key = pair.key();
-        if (MereStringUtils::isBlank(key))
+        if (Mere::Utils::StringUtils::isBlank(key))
             continue;
 
         QVariant val = pair.value();
@@ -131,7 +131,7 @@ int Mere::Store::PairStore::set(const QList<Pair> &pairs)
 
 QVariant Mere::Store::PairStore::get(const QString &key)
 {
-    if (MereStringUtils::isBlank(key))
+    if (Mere::Utils::StringUtils::isBlank(key))
         return QVariant(QVariant::Invalid);
 
     std::string value;
@@ -167,7 +167,7 @@ QVariant Mere::Store::PairStore::get(const QList<QString> &keys)
 
 int Mere::Store::PairStore::del(const QString &key)
 {
-    if (MereStringUtils::isBlank(key))
+    if (Mere::Utils::StringUtils::isBlank(key))
         return 1;
 
     leveldb::WriteOptions writeOptions;
@@ -189,7 +189,7 @@ int Mere::Store::PairStore::del(const QList<QString> &keys)
     {
         QString key = it.next();
 
-        if (MereStringUtils::isBlank(key))
+        if (Mere::Utils::StringUtils::isBlank(key))
             continue;
 
         batch.Delete(key.toStdString());

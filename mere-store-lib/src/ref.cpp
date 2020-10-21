@@ -1,17 +1,17 @@
 #include "ref.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 bool Mere::Store::Ref::isValid() const
 {
     // Unit Path
     QString path = this->path();
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
         return false;
 
     // Unit Type
     QString type = this->type();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
         return false;
 
     // Unit UUID

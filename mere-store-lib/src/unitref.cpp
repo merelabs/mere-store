@@ -1,6 +1,6 @@
 #include "unitref.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 QString Mere::Store::UnitRef::KEY = "path:%1:type:%2:uuid:%3:";
 
@@ -136,10 +136,10 @@ void Mere::Store::UnitRef::setPath(const QString &path)
 
 bool Mere::Store::UnitRef::isValid() const
 {
-    if (MereStringUtils::isBlank(path()))
+    if (Mere::Utils::StringUtils::isBlank(path()))
         return false;
 
-    if (MereStringUtils::isBlank(type()))
+    if (Mere::Utils::StringUtils::isBlank(type()))
         return false;
 
     if (uuid().isNull())

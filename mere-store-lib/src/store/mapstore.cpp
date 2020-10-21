@@ -2,7 +2,7 @@
 #include "../unitkey.h"
 #include "../link.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 QString Mere::Store::MapStore::UNIT_KEY      = "path:%1:type:%2:uuid:%3:";
 QString Mere::Store::MapStore::UNIT_META_KEY = UNIT_KEY + "meta:%4:";
@@ -141,7 +141,7 @@ int Mere::Store::MapStore::create(MereStoreUnitMap &map)
 
     // Unit Path
     QString path = map.value("path").toString();
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
     {
         path = ".";
         map.insert("path", path);
@@ -149,7 +149,7 @@ int Mere::Store::MapStore::create(MereStoreUnitMap &map)
 
     // Unit Type
     QString type = map.value("type").toString();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
     {
         qDebug() << "Invalid or missing type of the unit...";
         return 1;
@@ -179,7 +179,7 @@ int Mere::Store::MapStore::update(MereStoreUnitMap &map)
 
     // Unit Path
     const QString path = map.value("path").toString();
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
     {
         qDebug() << "Invalid or missing path of the unit...";
         return 1;
@@ -187,7 +187,7 @@ int Mere::Store::MapStore::update(MereStoreUnitMap &map)
 
     // Unit Type
     const QString type = map.value("type").toString();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
     {
         qDebug() << "Invalid or missing type of the unit...";
         return 2;
@@ -217,7 +217,7 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
     //qDebug() << "Going to fetch...";
     // Unit Path
     const QString path = map.value("path").toString();
-    if (MereStringUtils::isBlank(path))
+    if (Mere::Utils::StringUtils::isBlank(path))
     {
         //qDebug() << "Invalid or missing path of the unit...";
         return 1;
@@ -225,7 +225,7 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
 
     // Unit Type
     const QString type = map.value("type").toString();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
     {
         //qDebug() << "Invalid or missing type of the unit...";
         return 2;
@@ -255,7 +255,7 @@ void Mere::Store::MapStore::remove(MereStoreUnitMap unit)
 
     // Unit Type
     const QString type = unit.value("type").toString();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
     {
         qDebug() << "Invalid or missing type of the unit...";
         return;
@@ -289,7 +289,7 @@ void Mere::Store::MapStore::search(MereStoreUnitMap query)
 
     // Unit Type
     const QString type = query.value("type").toString();
-    if (MereStringUtils::isBlank(type))
+    if (Mere::Utils::StringUtils::isBlank(type))
     {
         qDebug() << "Invalid or missing type of the unit...";
         return;
