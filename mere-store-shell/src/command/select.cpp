@@ -6,7 +6,6 @@
 #include "../shell.h"
 
 #include "mere/store/store/store.h"
-#include "mere/utils/merestringutils.h"
 
 Select::Select(QObject *parent)
     : Select("", parent)

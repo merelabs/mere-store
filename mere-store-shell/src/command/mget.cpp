@@ -5,7 +5,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 MGet::MGet(QObject *parent)
     : MGet("", parent)

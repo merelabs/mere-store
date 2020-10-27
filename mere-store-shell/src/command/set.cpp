@@ -5,7 +5,7 @@
 #include "../slice.h"
 #include "../parser.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QCommandLineParser>
 
@@ -28,10 +28,10 @@ bool Set::execute() const
     bool ok = false;
 
     QString store = Shell::context()->store();
-    if (MereStringUtils::isBlank(store))
+    if (Mere::Utils::StringUtils::isBlank(store))
     {
         QString slice = Shell::context()->slice();
-        if (MereStringUtils::isBlank(slice))
+        if (Mere::Utils::StringUtils::isBlank(slice))
         {
             QTextStream(stdout) << "Did you mean to set key/value from a store or a slice?" << Qt::endl
                                 << "Run 'help set' for more information." << Qt::endl;
@@ -52,7 +52,7 @@ bool Set::execute() const
     else
         key = ref.toString();
 
-    if(MereStringUtils::isBlank(key))
+    if(Mere::Utils::StringUtils::isBlank(key))
     {
         QStringRef ref = parser.next();
         key = ref.toString();
@@ -61,7 +61,7 @@ bool Set::execute() const
     ref = parser.rest();
     value = ref.toString();
 
-    if (MereStringUtils::isBlank(key) && MereStringUtils::isBlank(value))
+    if (Mere::Utils::StringUtils::isBlank(key) && Mere::Utils::StringUtils::isBlank(value))
     {
         QTextStream(stdout) << "Please provide key and value to persist to the store or slice." << Qt::endl
                             << "Run 'help set' for more information." << Qt::endl;
@@ -101,7 +101,7 @@ bool Set::set(const QString &key, const QString &value, const QString &type) con
 {
     bool ok = false;
 
-    if (MereStringUtils::isBlank(Shell::context()->slice()))
+    if (Mere::Utils::StringUtils::isBlank(Shell::context()->slice()))
         ok = setStore(key, value, type);
     else
         ok = setSlice(key, value, type);
@@ -116,7 +116,7 @@ bool Set::setStore(const QString &key, const QString &value, const QString &type
     QString storeName = Shell::context()->store();
     Store store(storeName);
 
-    if (MereStringUtils::isBlank(value))
+    if (Mere::Utils::StringUtils::isBlank(value))
         ok = store.set(key, type);
     else
         ok = store.set(key, value, type);
@@ -133,7 +133,7 @@ bool Set::setSlice(const QString &key, const QString &value, const QString &type
 
     Slice slice(storeName, sliceName);
 
-    if (MereStringUtils::isBlank(value))
+    if (Mere::Utils::StringUtils::isBlank(value))
         ok = slice.set(key, type);
     else
         ok = slice.set(key, value, type);

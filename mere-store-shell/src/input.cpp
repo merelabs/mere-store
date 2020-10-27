@@ -4,7 +4,7 @@
 #include "command/history.h"
 #include "command/alias.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Input::~Input()
 {
@@ -18,7 +18,7 @@ Input::Input(const QString &input, QObject *parent)
 
 bool Input::process()
 {
-    if (MereStringUtils::isBlank(this->input()))
+    if (Mere::Utils::StringUtils::isBlank(this->input()))
         return false;
 
     const QString key = this->command();
@@ -46,7 +46,7 @@ QString Input::command() const
     QString command = Command::Void;
 
     QString input = this->input();
-    if (!MereStringUtils::isBlank(input))
+    if (!Mere::Utils::StringUtils::isBlank(input))
     {
         QStringList parts = input.split(" ");
 
@@ -62,7 +62,7 @@ QString Input::argument() const
     QString argument = "";
 
     QString input = this->input();
-    if (!MereStringUtils::isBlank(input))
+    if (!Mere::Utils::StringUtils::isBlank(input))
     {
         int pos = input.indexOf(" ");
         if (pos > -1)

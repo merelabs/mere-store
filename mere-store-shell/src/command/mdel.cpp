@@ -5,7 +5,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 MDel::MDel(QObject *parent)
     : MDel("", parent)

@@ -1,7 +1,5 @@
 #include "kvutils.h"
 
-#include "mere/utils/merestringutils.h"
-
 QList<QPair<QString, QString>> KVUtils::pairs(const QString &input, const QString &delim)
 {
     QList<QPair<QString, QString>> pairs;

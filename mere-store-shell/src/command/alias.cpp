@@ -2,7 +2,7 @@
 #include "../command.h"
 #include "../kvutils.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 QHash<QString, QString> Alias::m_commands;
 
@@ -22,7 +22,7 @@ bool Alias::execute() const
 {
     bool ok = true;
 
-    if (!MereStringUtils::isBlank(this->argument()))
+    if (!Mere::Utils::StringUtils::isBlank(this->argument()))
     {
         int pos = this->argument().indexOf(" ");
         if (pos != -1)

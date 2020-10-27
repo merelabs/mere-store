@@ -1,7 +1,7 @@
 #include "prompt.h"
 #include "context.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Prompt::Prompt(Context *context, QObject *parent)
     : QObject(parent),
@@ -18,10 +18,10 @@ void Prompt::welcome() const
 
 QString Prompt::accept()
 {
-    if (!MereStringUtils::isBlank(m_context->store()))
+    if (!Mere::Utils::StringUtils::isBlank(m_context->store()))
         QTextStream(stdout) << m_context->store();
 
-    if (!MereStringUtils::isBlank(m_context->slice()))
+    if (!Mere::Utils::StringUtils::isBlank(m_context->slice()))
         QTextStream(stdout) << ":" << m_context->slice();
 
     QTextStream(stdout) << ">";

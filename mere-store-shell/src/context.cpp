@@ -1,7 +1,7 @@
 #include "context.h"
 
 #include "mere/store/store/store.h"
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Context::Context(QObject *parent)
     : QObject(parent),
@@ -25,9 +25,9 @@ QString Context::context() const
 {
     QString context = "root";
 
-    if (MereStringUtils::isNotBlank(m_slice))
+    if (Mere::Utils::StringUtils::isNotBlank(m_slice))
         context = Mere::Store::Type::SLICE;
-    else if (MereStringUtils::isNotBlank(m_store))
+    else if (Mere::Utils::StringUtils::isNotBlank(m_store))
         context = Mere::Store::Type::STORE;
 
     return context;

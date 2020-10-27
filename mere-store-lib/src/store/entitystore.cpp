@@ -149,6 +149,7 @@ QVariant Mere::Store::EntityStore::list(const int &limit)
         QString key   = QString::fromStdString(it->key().ToString());
         QString value = QString::fromStdString(it->value().ToString());
 
+        qDebug() << "KEY::" << key;
         UnitKey unitKey(key);
 
         if(entityKey.compare(unitKey.ref().toString()) != 0)

@@ -6,7 +6,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Del::Del(QObject *parent)
     : Del("", parent)
@@ -25,10 +25,10 @@ bool Del::execute() const
     bool ok = false;
 
     QString store = Shell::context()->store();
-    if (MereStringUtils::isBlank(store))
+    if (Mere::Utils::StringUtils::isBlank(store))
     {
         QString slice = Shell::context()->slice();
-        if (MereStringUtils::isBlank(slice))
+        if (Mere::Utils::StringUtils::isBlank(slice))
         {
             QTextStream(stdout) << "Did you mean to del key from a store or a slice?" << Qt::endl
                                 << "Run 'help del' for more information." << Qt::endl;
@@ -67,7 +67,7 @@ bool Del::del(const QString &key) const
 {
     bool ok = false;
 
-    if (MereStringUtils::isBlank(Shell::context()->slice()))
+    if (Mere::Utils::StringUtils::isBlank(Shell::context()->slice()))
         ok = delStore(key);
     else
         ok = delSlice(key);
@@ -79,7 +79,7 @@ bool Del::del(const QList<QString> &keys) const
 {
     bool ok = false;
 
-    if (MereStringUtils::isBlank(Shell::context()->slice()))
+    if (Mere::Utils::StringUtils::isBlank(Shell::context()->slice()))
         ok = delStore(keys);
     else
         ok = delSlice(keys);

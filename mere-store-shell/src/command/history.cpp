@@ -1,7 +1,7 @@
 #include "history.h"
 #include "../kvutils.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 #include <QListIterator>
 
@@ -53,7 +53,7 @@ bool History::append(const QString &history)
 {
     bool ok = false;
 
-    if ((ok = !MereStringUtils::isBlank(history)))
+    if ((ok = !Mere::Utils::StringUtils::isBlank(history)))
         m_history.append(history);
 
     return ok;

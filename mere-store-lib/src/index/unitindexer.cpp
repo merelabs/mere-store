@@ -115,22 +115,21 @@ QList<Mere::Store::Pair> Mere::Store::UnitIndexer::query(const QString &what) co
 
     IndexStore store(m_store, m_name);
     int err = store.open();
-    if (!err)
+    if (err) return pairs;
+
+    QVariant var = store.find(what);
+    if (var.isValid())
     {
-        QVariant var = store.list(what);
-        if (var.isValid())
+        QMap<QString, QVariant> records = var.toMap();
+        QMapIterator<QString, QVariant> it(records);
+        while (it.hasNext())
         {
-            QMap<QString, QVariant> records = var.toMap();
-            QMapIterator<QString, QVariant> it(records);
-            while (it.hasNext())
-            {
-                it.next();
+            it.next();
 
-                IndexKey indexKey(it.key());
+            IndexKey indexKey(it.key());
 
-                Pair pair(indexKey.what(), QVariant::fromValue(indexKey.ref()));
-                pairs.append(pair);
-            }
+            Pair pair(indexKey.what(), QVariant::fromValue(indexKey.ref()));
+            pairs.append(pair);
         }
     }
 

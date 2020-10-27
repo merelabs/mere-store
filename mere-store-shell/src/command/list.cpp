@@ -6,7 +6,7 @@
 #include "../kvutils.h"
 #include "../parser.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 List::List(QObject *parent)
     : List("", parent)
@@ -27,10 +27,10 @@ bool List::execute() const
     bool ok = false;
 
     QString store = Shell::context()->store();
-    if (MereStringUtils::isBlank(store))
+    if (Mere::Utils::StringUtils::isBlank(store))
     {
         QString slice = Shell::context()->slice();
-        if (MereStringUtils::isBlank(slice))
+        if (Mere::Utils::StringUtils::isBlank(slice))
         {
             QTextStream(stdout) << "Did you mean to list from a store or a slice?" << Qt::endl
                                 << "Run 'help list' for more information." << Qt::endl;
@@ -108,7 +108,7 @@ QVariant List::list() const
     QString store = Shell::context()->store();
     QString slice = Shell::context()->slice();
 
-    if(MereStringUtils::isBlank(slice))
+    if(Mere::Utils::StringUtils::isBlank(slice))
     {
         Store s(store);
         list = s.list();
@@ -129,7 +129,7 @@ QVariant List::list(const uint &limit) const
     QString store = Shell::context()->store();
     QString slice = Shell::context()->slice();
 
-    if(MereStringUtils::isBlank(slice))
+    if(Mere::Utils::StringUtils::isBlank(slice))
     {
         Store s(store);
         list = s.list(limit);
@@ -150,7 +150,7 @@ QVariant  List::list(const QString &key) const
     QString store = Shell::context()->store();
     QString slice = Shell::context()->slice();
 
-    if(MereStringUtils::isBlank(slice))
+    if(Mere::Utils::StringUtils::isBlank(slice))
     {
         Store s(store);
         list = s.list(key);
@@ -171,7 +171,7 @@ QVariant  List::list(const QString &key, const uint &limit) const
     QString store = Shell::context()->store();
     QString slice = Shell::context()->slice();
 
-    if(MereStringUtils::isBlank(slice))
+    if(Mere::Utils::StringUtils::isBlank(slice))
     {
         Store s(store);
         list = s.list(key, limit);

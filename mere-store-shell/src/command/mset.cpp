@@ -5,7 +5,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 MSet::MSet(QObject *parent)
     : MSet("", parent)
@@ -47,7 +47,7 @@ bool MSet::execute() const
     {
         QPair<QString, QString> pair = it.next();
 
-        if (MereStringUtils::isBlank(pair.second))
+        if (Mere::Utils::StringUtils::isBlank(pair.second))
         {
             // when there is only one argument
             // then the key is considered as value

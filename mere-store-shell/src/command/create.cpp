@@ -9,7 +9,7 @@
 #include "mere/store/store/unitstore.h"
 #include "mere/store/index/index.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Create::Create(QObject *parent)
     : Create("", parent)
@@ -129,7 +129,7 @@ bool Create::createSlices(const QString &store, const QList<QString> &slices) co
 {
     bool ok = false;
 
-    if (MereStringUtils::isBlank(store))
+    if (Mere::Utils::StringUtils::isBlank(store))
     {
         QTextStream(stdout) << "Slice is a part of a store, select a store before creating a slice." << Qt::endl
                             << "Run 'help create' or 'help select' for more information." << Qt::endl;
@@ -158,7 +158,7 @@ bool Create::createIndex(const QString &name, const QList<QString> &attriutes) c
     index.setName(name);
     index.setAttributes(attriutes);
 
-    if(MereStringUtils::isBlank(slice))
+    if(Mere::Utils::StringUtils::isBlank(slice))
     {
         Store s(store);
         ok = s.create(index);

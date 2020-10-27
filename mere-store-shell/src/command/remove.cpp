@@ -6,7 +6,7 @@
 #include "../kvutils.h"
 
 #include "mere/store/store/store.h"
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Remove::Remove(QObject *parent)
     : Remove("", parent)
@@ -53,7 +53,7 @@ bool Remove::execute() const
     else if (Mere::Store::Type::SLICE.compare(object) == 0)
     {
         QString store = Shell::context()->store();
-        if (MereStringUtils::isBlank(store))
+        if (Mere::Utils::StringUtils::isBlank(store))
         {
             QTextStream(stdout) << "To delete a slice, select the store first." << Qt::endl
                                 << "Run 'help select' or 'help remove' for more information." << Qt::endl;

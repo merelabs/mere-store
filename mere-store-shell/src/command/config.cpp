@@ -4,7 +4,7 @@
 #include "../shell.h"
 #include "../konfig.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Config::Config(QObject *parent)
     : Config("", parent)
@@ -27,7 +27,7 @@ bool Config::execute() const
 
     Konfig config;
 
-    if (MereStringUtils::isBlank(value))
+    if (Mere::Utils::StringUtils::isBlank(value))
     {
         value = config.get(key);
         ok = true;

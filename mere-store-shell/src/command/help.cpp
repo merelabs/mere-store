@@ -1,6 +1,6 @@
 #include "help.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Help::Help(QObject *parent)
     : Help("", parent)
@@ -22,7 +22,7 @@ bool Help::execute() const
     const QString key = this->argument();
 
 
-    if (MereStringUtils::isBlank(key) || !Command::has(key))
+    if (Mere::Utils::StringUtils::isBlank(key) || !Command::has(key))
     {
         help();
     }

@@ -265,6 +265,7 @@ QVariant Mere::Store::PairStore::list(const QString &key, const int &limit)
         QString _key = QString::fromStdString(it->key().ToString());
         QString _val = QString::fromStdString(it->value().ToString());
 
+        qDebug() << "KEY::" << _key;
         records.insert(_key, _val);
 
         if (limit != 0) --count;

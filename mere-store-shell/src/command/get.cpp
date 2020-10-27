@@ -6,7 +6,7 @@
 #include "../kvutils.h"
 #include "../shell.h"
 
-#include "mere/utils/merestringutils.h"
+#include "mere/utils/stringutils.h"
 
 Get::Get(QObject *parent)
     : Get("", parent)
@@ -66,7 +66,7 @@ QVariant Get::get(const QString &key) const
 {
     QVariant val;
 
-    if (MereStringUtils::isBlank(Shell::context()->slice()))
+    if (Mere::Utils::StringUtils::isBlank(Shell::context()->slice()))
         val = getStore(key);
     else
         val = getSlice(key);
@@ -96,7 +96,7 @@ QVariant Get::get(const QList<QString> &keys) const
 {
     QVariant value(QVariant::Invalid);
 
-    if (MereStringUtils::isBlank(Shell::context()->slice()))
+    if (Mere::Utils::StringUtils::isBlank(Shell::context()->slice()))
         value = getStore(keys);
     else
         value = getSlice(keys);
