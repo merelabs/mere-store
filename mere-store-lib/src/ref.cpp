@@ -4,9 +4,9 @@
 
 bool Mere::Store::Ref::isValid() const
 {
-    // Unit Path
-    QString path = this->path();
-    if (Mere::Utils::StringUtils::isBlank(path))
+    // Unit UUID
+    QString id = this->id();
+    if (Mere::Utils::StringUtils::isBlank(id))
         return false;
 
     // Unit Type
@@ -14,15 +14,26 @@ bool Mere::Store::Ref::isValid() const
     if (Mere::Utils::StringUtils::isBlank(type))
         return false;
 
-    // Unit UUID
-    QUuid uuid = this->uuid();
-    if (uuid.isNull())
+    // Unit Path
+    QString path = this->path();
+    if (Mere::Utils::StringUtils::isBlank(path))
         return false;
 
     return true;
 };
 
-QString Mere::Store::Ref::toString() const
+QString Mere::Store::Ref::key() const
 {
-    return QString("path:%1:type:%2:uuid:%3").arg(this->path(), this->type(), this->uuid().toString());
+    return QString("p:%1:t:%2:i:%3").arg(this->path(), this->type(), this->id());
 };
+
+QMap<QString, QVariant> Mere::Store::Ref::map() const
+{
+    QMap<QString, QVariant> ref;
+
+    ref.insert("id", id());
+    ref.insert("type", type());
+    ref.insert("path", path());
+
+    return ref;
+}

@@ -31,7 +31,7 @@ public:
 private:
     static int PATH;
     static int TYPE;
-    static int UUID;
+    static int ID;
     static int ATTR;
     static int LINK;
 };

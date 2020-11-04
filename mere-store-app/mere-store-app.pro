@@ -1,4 +1,5 @@
 include(../mere-store-lib/mere-store-lib.pri)
+include(../mere-store-cli/mere-store-cli.pri)
 
 QT += core
 QT += gui
@@ -13,10 +14,41 @@ DEFINES += APP_NAME=\\\"$$TARGET\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES += src/main.cpp 
-HEADERS += 
+SOURCES += src/main.cpp  \
+    src/createview.cpp \
+    src/detailview.cpp \
+    src/exploreview.cpp \
+    src/indexview.cpp \
+    src/listview.cpp \
+    src/searchview.cpp \
+    src/selectview.cpp \
+    src/sliceview.cpp \
+    src/storeapp.cpp \
+    src/storepanel.cpp \
+    src/storeview.cpp \
+    src/storewin.cpp
+HEADERS +=  \
+    src/createview.h \
+    src/detailview.h \
+    src/exploreview.h \
+    src/indexview.h \
+    src/listview.h \
+    src/searchview.h \
+    src/selectview.h \
+    src/sliceview.h \
+    src/storeapp.h \
+    src/storepanel.h \
+    src/storeview.h \
+    src/storewin.h
 
-#INCLUDEPATH += src
+INCLUDEPATH += /usr/local/include
+
+LIBS += -lmere-utils
+LIBS += -lmere-widgets
+LIBS += -lmere-store
+
+#INCLUDEPATH += ../mere-store-cli/src
+#DEPENDPATH  += ../mere-store-cli/src
 #INCLUDEPATH += ../include
 ##INCLUDEPATH += ../../mere-utils/include
 #INCLUDEPATH += ../../mere-config/include
@@ -40,4 +72,7 @@ unix{
     target.path = /usr/local/bin
     INSTALLS += target
 }
+
+RESOURCES += \
+    res/store.qrc
 

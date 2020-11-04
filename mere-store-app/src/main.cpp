@@ -1,9 +1,10 @@
-#include <QCoreApplication>
+#include "storeapp.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-
+    StoreApp app(argc, argv);
+    app.init();
+    app.start();
     return app.exec();
 }
 

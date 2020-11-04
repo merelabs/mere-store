@@ -7,6 +7,8 @@
 #include "../config/storeconfig.h"
 #include "../entity.h"
 
+#include "mere/utils/stringutils.h"
+
 #include <QUuid>
 #include <QDateTime>
 #include <QList>
@@ -65,7 +67,7 @@ QVariant Mere::Store::UnitStore::list(const int &limit)
         Unit *unit = new Unit();
         unit->setPath(ref.path());
         unit->setType(ref.type());
-        unit->setUuid(ref.uuid());
+        unit->setId(ref.id());
         unit->setAttributes(attributes);
         unit->setLinks(links);
 
@@ -83,9 +85,9 @@ int Mere::Store::UnitStore::create(Unit &unit)
 {
     qDebug() << "Going to create..." << unit.type();
     // Unit UUID
-    QUuid uuid = unit.uuid();
-    if (uuid.isNull())
-        unit.setUuid(QUuid::createUuid());
+    QString id = unit.id();
+    if (Mere::Utils::StringUtils::isBlank(id))
+        unit.setId(QUuid::createUuid().toString());
 
     if(!unit.isValid())
         return 1;

@@ -4,7 +4,7 @@
 
 int Mere::Store::UnitKey::PATH = 1;
 int Mere::Store::UnitKey::TYPE = 3;
-int Mere::Store::UnitKey::UUID = 5;
+int Mere::Store::UnitKey::ID = 5;
 int Mere::Store::UnitKey::ATTR = 7;
 int Mere::Store::UnitKey::LINK = 12;
 
@@ -57,10 +57,10 @@ QStringRef Mere::Store::UnitKey::uuid() const
     if (refs.isEmpty())
         return QStringRef();
 
-    if (refs.size() < (UUID + 1))
+    if (refs.size() < (ID + 1))
         return QStringRef();
 
-    return refs.at(UUID);
+    return refs.at(ID);
 }
 
 bool Mere::Store::UnitKey::isAttribute() const

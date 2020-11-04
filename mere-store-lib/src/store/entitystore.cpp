@@ -95,7 +95,7 @@ int Mere::Store::EntityStore::update(const Entity &entity)
 
 int Mere::Store::EntityStore::fetch(const Ref &ref, Entity &entity)
 {
-    QString key = ref.toString();
+    QString key = ref.key();
 
     QVariant list = PairStore::find(key);
     if (!list.isValid()) return 1;
@@ -108,7 +108,7 @@ int Mere::Store::EntityStore::fetch(const Ref &ref, Entity &entity)
 
 bool Mere::Store::EntityStore::found(const Ref &ref)
 {
-    QString key = ref.toString();
+    QString key = ref.key();
 
     QVariant list = PairStore::find(key, 1);
     if (!list.isValid()) return false;
@@ -126,7 +126,7 @@ int Mere::Store::EntityStore::remove(const Ref &ref)
     bool found = this->found(ref);
     if (!found) return 2;
 
-    QRegExp regex(QRegExp::escape(ref.toString()));
+    QRegExp regex(QRegExp::escape(ref.key()));
     if (!regex.isValid() || regex.isEmpty()) return 3;
 
     int err = del(regex);
@@ -152,9 +152,9 @@ QVariant Mere::Store::EntityStore::list(const int &limit)
         qDebug() << "KEY::" << key;
         UnitKey unitKey(key);
 
-        if(entityKey.compare(unitKey.ref().toString()) != 0)
+        if(entityKey.compare(unitKey.ref().key()) != 0)
         {
-            entityKey = unitKey.ref().toString();
+            entityKey = unitKey.ref().key();
             entity = new Entity(unitKey.ref());
 
             entities.append(entity);
@@ -188,9 +188,9 @@ QVariant Mere::Store::EntityStore::list(const QString &ref, const int &limit)
 
         UnitKey unitKey(key);
 
-        if(entityKey.compare(unitKey.ref().toString()) != 0)
+        if(entityKey.compare(unitKey.ref().key()) != 0)
         {
-            entityKey = unitKey.ref().toString();
+            entityKey = unitKey.ref().key();
             entity = new Entity(unitKey.ref());
 
             entities.append(entity);

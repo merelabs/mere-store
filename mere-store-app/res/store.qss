@@ -1,0 +1,18 @@
+QPushButton#MoreSearchOption::menu-indicator
+{
+    width:0px;
+}
+
+QPushButton#Connect
+{
+    background-color: #32CD32;
+    padding : 10px;
+    border: none;
+}
+
+QPushButton#Create
+{
+    background-color: #32CD32;
+    padding : 10px;
+    border: none;
+}

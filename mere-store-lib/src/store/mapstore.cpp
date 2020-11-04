@@ -4,6 +4,8 @@
 
 #include "mere/utils/stringutils.h"
 
+#include <QUuid>
+
 QString Mere::Store::MapStore::UNIT_KEY      = "path:%1:type:%2:uuid:%3:";
 QString Mere::Store::MapStore::UNIT_META_KEY = UNIT_KEY + "meta:%4:";
 QString Mere::Store::MapStore::UNIT_ATTR_KEY = UNIT_KEY + "attr:%4:";
@@ -128,8 +130,8 @@ void Mere::Store::MapStore::save(MereStoreUnitMap &unit)
 {
     //qDebug() << "Going to save...";
 
-    QUuid uuid = unit.value("uuid").toUuid();
-    if (!uuid.isNull())
+    QString id = unit.value("id").toString();
+    if (Mere::Utils::StringUtils::isNotBlank(id))
         update(unit);
     else
         create(unit);
@@ -156,18 +158,18 @@ int Mere::Store::MapStore::create(MereStoreUnitMap &map)
     }
 
     // Unit UUID
-    QUuid uuid = map.value("uuid").toUuid();
-    if (uuid.isNull())
+    QString id = map.value("id").toString();
+    if (Mere::Utils::StringUtils::isBlank(id))
     {
-        uuid = QUuid::createUuid();
-        map.insert("uuid", uuid);
+        id = QUuid::createUuid().toString();
+        map.insert("id", id);
     }
 
     int err = write(map);
     if (!err)
     {
         emit created(map);
-        qDebug() << QString("Unit path:%1:type:%2:uuid:%3 added to the system").arg(path, type, uuid.toString());
+        qDebug() << QString("Unit p:%1:t:%2:i:%3 added to the system").arg(path, type, id);
     }
 
     return err;
@@ -232,8 +234,8 @@ int Mere::Store::MapStore::fetch(MereStoreUnitMap &map)
     }
 
     // Unit UUID
-    const QUuid uuid = map.value("uuid").toUuid();
-    if (uuid.isNull())
+    const QString id = map.value("id").toString();
+    if (Mere::Utils::StringUtils::isBlank(id))
     {
         //qDebug() << "Invalid or missing uuid of the unit...";
         return 3;

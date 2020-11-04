@@ -8,6 +8,8 @@ namespace Mere
 namespace Store
 {
 
+class Index;
+
 class Slice
 {
 public:
@@ -16,8 +18,10 @@ public:
 signals:
 
 private:
-    const QString &m_store;
-    const QString &m_slice;
+    QString m_store;
+
+    QString m_slice;
+    QList<Index> m_indexes;
 };
 
 } // namespace Store

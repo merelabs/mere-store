@@ -107,7 +107,7 @@ public:
     {
         m_ref.setPath(ref.path());
         m_ref.setType(ref.type());
-        m_ref.setUuid(ref.uuid());
+        m_ref.setId(ref.id());
     }
 
 private:
@@ -146,10 +146,7 @@ Mere::Store::Entity::Entity(const Ref &ref)
     {
         ait.next();
 
-        QString key = QString("path:%1:type:%2:uuid:%3:attr:%4").arg(ref.path(),
-                                                                     ref.type(),
-                                                                     ref.uuid().toString(),
-                                                                     ait.key());
+        QString key = QString("%1:attr:%2").arg(ref.key(), ait.key());
         flatten.insert(key, ait.value());
     }
 
@@ -167,13 +164,12 @@ Mere::Store::Entity::Entity(const Ref &ref)
         {
             QMap<QString, QVariant> lref = vit.next().toMap();
 
-            QString key = QString("path:%1:type:%2:uuid:%3:link:%4:path:%5:type:%6:uuid:%7").arg(
-                                            ref.path(),
-                                            ref.type(),
-                                            ref.uuid().toString(),lit.key(),
+            QString key = QString("%1:link:%2:p:%3:t:%4:i:%5").arg(
+                                            ref.key(),
+                                            lit.key(),
                                             lref.value("path").toString(),
                                             lref.value("type").toString(),
-                                            lref.value("uuid").toString());
+                                            lref.value("id").toString());
             flatten.insert(key, lit.value());
         }
     }

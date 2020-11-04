@@ -173,13 +173,13 @@ Mere::Store::Unit::Unit(const QString &type)
 Mere::Store::Unit::Unit(const QMap<QString, QVariant> &map)
     : d_ptr(new UnitPrivate(this))
 {
-    QString path = map.value("path").toString();
+    QString id   = map.value("id").toString();
     QString type = map.value("type").toString();
-    QString uuid = map.value("uuid").toString();
+    QString path = map.value("path").toString();
 
-    setPath(path);
+    setId(id);
     setType(type);
-    setUuid(QUuid::fromString(uuid));
+    setPath(path);
 
     // Attributes
     MereStoreUnitAttributes attrs = map.value("attr").toMap();
@@ -263,9 +263,9 @@ Mere::Store::MereStoreUnitMap Mere::Store::Unit::map() const
 {
     MereStoreUnitMap unit;
 
-    unit.insert("path", path());
-    unit.insert("type", type());
-    unit.insert("uuid", uuid());
+    MereStoreUnitMap base = Ref::map();
+
+    unit.insert(base);
 
     // attributes
     unit.insert("attr", attributes());

@@ -4,7 +4,6 @@
 #include "global.h"
 #include "ref.h"
 
-#include <QUuid>
 #include <QVariant>
 
 namespace Mere
@@ -24,13 +23,13 @@ public:
 
     bool operator==(const UnitRef &ref)
     {
-        if (path().compare(ref.path()) != 0)
+        if (id().compare(ref.id()) != 0)
             return false;
 
         if (type().compare(ref.type()) != 0)
             return false;
 
-        if (uuid() != ref.uuid())
+        if (path().compare(ref.path()) != 0)
             return false;
 
         return true;
@@ -42,17 +41,10 @@ public:
     QString type() const;
     void setType(const QString type);
 
-    QUuid uuid() const;
-    void setUuid(const QUuid &uuid);
-
-    bool isValid() const;
-
-    QString key() const;
-    UnitRefMap map() const;
+    QString id() const;
+    void setId(const QString &id);
 
 private:
-    static QString KEY;
-
     class UnitRefPrivate;
     UnitRefPrivate *d_ptr;
 };

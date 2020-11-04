@@ -4,9 +4,6 @@
 #include "../store/unitstore.h"
 #include "indexer.h"
 
-#include <QObject>
-#include <QDebug>
-
 namespace Mere
 {
 namespace Store

@@ -4,6 +4,7 @@
 
 #include "mere/utils/stringutils.h"
 
+#include <QUuid>
 #include <QRegularExpression>
 
 class Mere::Store::PairStore::PairStorePrivate
@@ -28,13 +29,13 @@ Mere::Store::PairStore::~PairStore()
 }
 
 Mere::Store::PairStore::PairStore(const QString &store, QObject *parent)
-    : PersistentStore(store, parent),
+    : PersistStore(store, parent),
       d_ptr(new PairStorePrivate(this))
 {
 }
 
 Mere::Store::PairStore::PairStore(const QString &store, const QString &slice, QObject *parent)
-    : PersistentStore(store, slice, parent),
+    : PersistStore(store, slice, parent),
       d_ptr(new PairStorePrivate(this))
 {
 }

@@ -1,7 +1,8 @@
 #ifndef GROUPSTORE_H
 #define GROUPSTORE_H
 
-#include "mapstore.h"
+//#include "mapstore.h"
+#include "pairstore.h"
 #include "../entity.h"
 
 namespace Mere
@@ -9,7 +10,7 @@ namespace Mere
 namespace Store
 {
 
-class MERE_STORE_LIBSPEC EntityStore : public MapStore
+class MERE_STORE_LIBSPEC EntityStore : public PairStore
 {
     Q_OBJECT
 public:
@@ -30,10 +31,10 @@ public:
     virtual Entity* find(const QString &ref);
 
 //private:
-    using MapStore::create;
-    using MapStore::update;
-    using MapStore::fetch;
-    using MapStore::remove;
+    using PairStore::create;
+//    using PairStore::update;
+//    using PairStore::fetch;
+    using PairStore::remove;
     using PairStore::find;
 
     class EntityStorePrivate;

@@ -2,8 +2,6 @@
 
 #include "mere/utils/stringutils.h"
 
-QString Mere::Store::UnitRef::KEY = "path:%1:type:%2:uuid:%3:";
-
 class Mere::Store::UnitRef::UnitRefPrivate
 {
 public:
@@ -13,9 +11,9 @@ public:
     }
 
     UnitRefPrivate(UnitRef *q)
-        : m_path(""),
+        : m_id(""),
           m_type(""),
-          m_uuid(0),
+          m_path(""),
           q_ptr(q)
     {
         Q_UNUSED(q_ptr)
@@ -41,36 +39,21 @@ public:
         m_type = type;
     }
 
-    QUuid uuid() const
+    QString id() const
     {
-        return m_uuid;
+        return m_id;
     }
 
-    void setUuid(const QUuid &uuid)
+    void setId(const QString &id)
     {
-        m_uuid = uuid;
+        m_id = id;
     }
 
-    UnitRefMap map() const
-    {
-        UnitRefMap ref;
-
-        ref.insert("path", path());
-        ref.insert("type", type());
-        ref.insert("uuid", uuid());
-
-        return ref;
-    }
-
-    QString key() const
-    {
-        return KEY.arg(path(), type(), uuid().toString());
-    }
 
 private:
-    QString   m_path;
-    QString   m_type;
-    QUuid     m_uuid;
+    QString m_id;
+    QString m_type;
+    QString m_path;
 
     UnitRef *q_ptr;
 };
@@ -93,7 +76,7 @@ Mere::Store::UnitRef::UnitRef(const QString &ref)
 
     setPath(parts.at(1).toString());
     setType(parts.at(3).toString());
-    setUuid(parts.at(5).toString());
+    setId(parts.at(5).toString());
 }
 
 Mere::Store::UnitRef::UnitRef(const QMap<QString, QVariant> &map)
@@ -101,7 +84,7 @@ Mere::Store::UnitRef::UnitRef(const QMap<QString, QVariant> &map)
 {
     setPath(map.value("path").toString());
     setType(map.value("type").toString());
-    setUuid(map.value("uuid").toString());
+    setId(map.value("uuid").toString());
 }
 
 QString Mere::Store::UnitRef::type() const
@@ -114,14 +97,14 @@ void Mere::Store::UnitRef::setType(const QString type)
     return d_ptr->setType(type);
 }
 
-QUuid Mere::Store::UnitRef::uuid() const
+QString Mere::Store::UnitRef::id() const
 {
-    return d_ptr->uuid();
+    return d_ptr->id();
 }
 
-void Mere::Store::UnitRef::setUuid(const QUuid &uuid)
+void Mere::Store::UnitRef::setId(const QString &id)
 {
-    return d_ptr->setUuid(uuid);
+    return d_ptr->setId(id);
 }
 
 QString Mere::Store::UnitRef::path() const
@@ -134,26 +117,26 @@ void Mere::Store::UnitRef::setPath(const QString &path)
     return d_ptr->setPath(path);
 }
 
-bool Mere::Store::UnitRef::isValid() const
-{
-    if (Mere::Utils::StringUtils::isBlank(path()))
-        return false;
+//bool Mere::Store::UnitRef::isValid() const
+//{
+//    if (Mere::Utils::StringUtils::isBlank(path()))
+//        return false;
 
-    if (Mere::Utils::StringUtils::isBlank(type()))
-        return false;
+//    if (Mere::Utils::StringUtils::isBlank(type()))
+//        return false;
 
-    if (uuid().isNull())
-        return false;
+//    if (uuid().isNull())
+//        return false;
 
-    return true;
-}
+//    return true;
+//}
 
-QString Mere::Store::UnitRef::key() const
-{
-    return d_ptr->key();
-}
+//QString Mere::Store::UnitRef::key() const
+//{
+//    return d_ptr->key();
+//}
 
-Mere::Store::UnitRefMap Mere::Store::UnitRef::map() const
-{
-    return d_ptr->map();
-}
+//Mere::Store::UnitRefMap Mere::Store::UnitRef::map() const
+//{
+//    return d_ptr->map();
+//}

@@ -1,7 +1,6 @@
-#ifndef REF_H
-#define REF_H
+#ifndef MERE_STORE_REF_H
+#define MERE_STORE_REF_H
 
-#include <QUuid>
 #include <QString>
 #include <QVariant>
 
@@ -13,17 +12,16 @@ namespace Store
 class Ref
 {
 public:
-    virtual QString path() const = 0;
+    virtual QString id() const   = 0;
     virtual QString type() const = 0;
-    virtual QUuid uuid() const   = 0;
+    virtual QString path() const = 0;
 
-    virtual bool isValid() const;
-
-    virtual QString toString() const;
-    virtual QMap<QString, QVariant> map() const = 0;
+    virtual bool isValid() const final;
+    virtual QString key() const final;
+    virtual QMap<QString, QVariant> map() const;
 };
 
 } // namespace Store
 } // namespace Mere
 
-#endif // REF_H
+#endif // MERE_STORE_REF_H

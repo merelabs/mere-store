@@ -25,7 +25,7 @@ int Mere::Store::UnitIndexer::index(const QString &key, const Ref &ref) const
     if (!err)
     {
         QVariant value = QString::number(QDateTime::currentMSecsSinceEpoch());
-        err = store.set(key + ":" + ref.toString(), value);
+        err = store.set(key + ":" + ref.key(), value);
     }
 
     return err;
@@ -46,7 +46,7 @@ int Mere::Store::UnitIndexer::remove(const Ref &ref) const
     int err = store.open();
     if (!err)
     {
-        QRegExp re(QRegExp::escape(ref.toString()));
+        QRegExp re(QRegExp::escape(ref.key()));
         err = store.del(re);
     }
 
