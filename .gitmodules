@@ -1,0 +1,9 @@
+[submodule "mere-store-lib"]
+	path = mere-store-lib
+	url = https://github.com/merelabs/mere-store-lib.git
+[submodule "mere-store-cli"]
+	path = mere-store-cli
+	url = https://github.com/merelabs/mere-store-cli.git
+[submodule "mere-store-gui"]
+	path = mere-store-gui
+	url = https://github.com/merelabs/mere-store-gui.git
