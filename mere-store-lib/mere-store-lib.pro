@@ -1,7 +1,8 @@
 include(../../mere-utils/mere-utils-lib/mere-utils-lib.pri)
 #include(../../mere-config/mere-config-lib/mere-config-lib.pri)
 
-QT      = core
+QT += core
+QT -= gui
 
 CONFIG += c++11
 CONFIG += shared

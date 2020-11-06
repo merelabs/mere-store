@@ -70,17 +70,14 @@ QPushButton* StorePanel::addControl(const QIcon &icon)
 
 void StorePanel::select()
 {
-//    QDialog *dialog= new QDialog(this, Qt::Popup | Qt:: Dialog);
-//    // create your dialog ....
-
-//    dialog->exec();
-
     m_selectView  = new SelectView;
     m_selectView->show();
 
-    connect(m_selectView, &SelectView::selected, [=](){
+    connect(m_selectView, &SelectView::selected, [=](const QString &store){
         m_selectView->hide();
+        m_selectView->disconnect();
         m_selectView->deleteLater();
+        emit selected(store);
     });
 }
 
@@ -91,6 +88,7 @@ void StorePanel::create()
 
     connect(m_createView, &CreateView::created, [=](){
         m_createView->hide();
+        m_createView->disconnect();
         m_createView->deleteLater();
     });
 }

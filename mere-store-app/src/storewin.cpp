@@ -1,6 +1,7 @@
 #include "storewin.h"
 #include "storepanel.h"
 #include "exploreview.h"
+#include "storeview.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -47,8 +48,8 @@ void StoreWin::initContentUI()
     hLayout->setContentsMargins(0, 0, 0, 0);
     hLayout->setSpacing(3);
 
-    QWidget *leftPane = new StorePanel(this);
-    hLayout->addWidget(leftPane);
+    m_panel = new StorePanel(this);
+    hLayout->addWidget(m_panel);
 
     QWidget *widget = new QWidget(this);
     hLayout->addWidget(widget);
@@ -69,8 +70,16 @@ void StoreWin::initContentUI()
     ExploreView *exploreView = new ExploreView(this);
     m_stackView->addWidget(exploreView);
 
+    StoreView *storeView = new StoreView("abc");
+    m_stackView->addWidget(storeView);
+    m_stackView->setCurrentWidget(storeView);
+
     m_statusbar = new Mere::Widgets::StatusBar(this);
     vLayout->addWidget(m_statusbar);
+
+    connect(m_panel, &StorePanel::selected, [=](const QString &store){
+        exploreView->setStore(store);
+    });
 }
 
 void StoreWin::initFooterUI()

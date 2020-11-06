@@ -4,7 +4,7 @@
 #include <QWidget>
 
 class SearchView;
-class ListView;
+class PkgListView;
 class DetailView;
 class ExploreView : public QWidget
 {
@@ -13,6 +13,8 @@ public:
     ~ExploreView();
     explicit ExploreView(QWidget *parent = nullptr);
 
+    void setStore(const QString &store);
+
 private:
     void initUI();
 
@@ -20,7 +22,7 @@ signals:
 
 private:
     SearchView *m_seachView;
-    ListView *m_listView;
+    PkgListView *m_listView;
     DetailView *m_detailView;
 };
 

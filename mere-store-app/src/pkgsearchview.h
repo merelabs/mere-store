@@ -1,6 +1,7 @@
 #ifndef SEARCHVIEW_H
 #define SEARCHVIEW_H
 
+#include <QPushButton>
 #include <QLineEdit>
 #include <QWidget>
 #include <QDebug>
@@ -11,6 +12,7 @@ class SearchView : public QWidget
 public:
     ~SearchView();
     explicit SearchView(QWidget *parent = nullptr);
+    void setStore(const QString &store);
 
 private:
     void initUI();
@@ -22,6 +24,10 @@ private slots:
 
 private:
     QLineEdit *m_searchText;
+
+    QString m_store;
+
+    QPushButton *m_btnStore;
 };
 
 #endif // SEARCHVIEW_H

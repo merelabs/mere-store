@@ -20,6 +20,7 @@ private:
     QPushButton *addControl(const QIcon &icon);
 
 signals:
+    void selected(const QString &store);
 
 private slots:
     void select();

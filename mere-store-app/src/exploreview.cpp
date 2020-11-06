@@ -1,6 +1,6 @@
 #include "exploreview.h"
-#include "searchview.h"
-#include "listview.h"
+#include "pkgsearchview.h"
+#include "pkglistview.h"
 #include "detailview.h"
 
 #include <QSplitter>
@@ -41,9 +41,15 @@ void ExploreView::initUI()
     splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout()->addWidget(splitter);
 
-    m_listView = new ListView(this);
+    m_listView = new PkgListView(this);
     splitter->addWidget(m_listView);
 
     m_detailView = new DetailView(this);
     splitter->addWidget(m_detailView);
+}
+
+void ExploreView::setStore(const QString &store)
+{
+    qDebug() << "STORE::" << store;
+    m_seachView->setStore(store);
 }

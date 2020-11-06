@@ -1,9 +1,11 @@
-#include "searchview.h"
+#include "pkgsearchview.h"
+
+#include "../mere-store-cli/src/store.h"
+#include "../mere-store-cli/src/slice.h"
 
 #include "mere/utils/stringutils.h"
 
 #include <QMenu>
-#include <QComboBox>
 #include <QPushButton>
 #include <QActionGroup>
 #include <QHBoxLayout>
@@ -32,13 +34,13 @@ SearchView::SearchView(QWidget *parent) : QWidget(parent)
 
 void SearchView::initUI()
 {
-    QPushButton *button = new QPushButton(QIcon(":/store/icons/database.svg"), "Churkut", this);
-    button->setFlat(true);
-    button->setIconSize(QSize(16, 16));
-    layout()->addWidget(button);
+    m_btnStore = new QPushButton(QIcon(":/store/icons/database.svg"), "Churkut", this);
+    m_btnStore->setFlat(true);
+    m_btnStore->setIconSize(QSize(16, 16));
+    layout()->addWidget(m_btnStore);
 
     QMenu *menu = new QMenu(this);
-    button->setMenu(menu);
+    m_btnStore->setMenu(menu);
 
     QAction *store = new QAction(QIcon(":/store/icons/database.svg"), "Churkut", this);
     QAction *slice = new QAction(QIcon(":/store/icons/server.svg"), "Note", this);
@@ -46,7 +48,7 @@ void SearchView::initUI()
     menu->addAction(store);
     menu->addAction(slice);
 
-    button->addAction(store);
+    m_btnStore->addAction(store);
 
     m_searchText = new QLineEdit();
     layout()->addWidget(m_searchText);
@@ -104,24 +106,40 @@ void SearchView::initUI()
 
 void SearchView::search()
 {
-    qDebug() << "KI BOLE??";
-
     QVariant list;
 
-    QString store = "chirkut";
-    QString slice = "issue";
+    QString store = "board";
+    QString slice = "tag";
 
-//    if(Mere::Utils::StringUtils::isBlank(slice))
-//    {
-//        Store s(store);
-//        list = s.list();
-//    }
-//    else
-//    {
-//        Slice s(store, slice);
-//        list = s.list();
-//    }
+    if(Mere::Utils::StringUtils::isBlank(slice))
+    {
+        Store s(store);
+        list = s.list();
+    }
+    else
+    {
+        Slice s(store, slice);
+        list = s.list();
+    }
 
+    QMap<QString, QVariant> map = list.toMap();
+    QMapIterator<QString, QVariant> it(map);
+    while (it.hasNext())
+    {
+        it.next();
+        QString key = it.key();
+        QString val = it.value().toString();
+
+    }
+
+        qDebug() << "RESULT::" << list;
 //    return list;
+}
+
+void SearchView::setStore(const QString &store)
+{
+    m_store = store;
+
+    m_btnStore->setText(store);
 }
 

@@ -19,7 +19,7 @@ private:
     void initHeaderUI();
 
 signals:
-    void selected();
+    void selected(const QString &store);
     void cancelled();
 
 private slots:

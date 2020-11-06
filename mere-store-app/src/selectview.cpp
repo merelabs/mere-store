@@ -14,6 +14,7 @@ SelectView::SelectView(QWidget *parent)
 {
     setObjectName(QString::fromUtf8("MereStoreSelectView"));
     setWindowFlags(Qt::FramelessWindowHint);
+    setWindowModality(Qt::ApplicationModal);
 
     QPalette palette = this->palette();
     palette.setColor(QPalette::Base, Qt::red);
@@ -126,7 +127,7 @@ void SelectView::select()
         qDebug() << "Failed to select store:" << m_name->text();
         return;
     }
-    emit selected();
+    emit selected(m_name->text());
 }
 
 void SelectView::showEvent(QShowEvent *event)

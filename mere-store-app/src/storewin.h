@@ -6,6 +6,8 @@
 #include "mere/widgets/statusbar.h"
 
 #include <QStackedWidget>
+
+class StorePanel;
 class StoreWin : public Mere::Widgets::ResizeableWin
 {
     Q_OBJECT
@@ -28,6 +30,8 @@ private:
     Mere::Widgets::StatusBar *m_statusbar;
 
     QStackedWidget *m_stackView;
+
+    StorePanel *m_panel;
 };
 
 #endif // STOREWIN_H

@@ -10,8 +10,7 @@ class CreateView : public QWidget
     Q_OBJECT
 public:
     ~CreateView();
-    explicit CreateView(QWidget *parent = nullptr);
-
+    explicit CreateView(const QString *store = nullptr, QWidget *parent = nullptr);
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -28,6 +27,8 @@ private slots:
     void create();
 
 private:
+    const QString *m_store;
+
     QLineEdit *m_name;
 };
 

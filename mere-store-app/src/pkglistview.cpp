@@ -1,11 +1,11 @@
-#include "listview.h"
+#include "pkglistview.h"
 
-ListView::~ListView()
+PkgListView::~PkgListView()
 {
 
 }
 
-ListView::ListView(QWidget *parent)
+PkgListView::PkgListView(QWidget *parent)
     : QWidget(parent)
 {
     QPalette palette = this->palette();

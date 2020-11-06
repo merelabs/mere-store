@@ -1,5 +1,6 @@
 #include "createview.h"
 #include "../mere-store-cli/src/store.h"
+#include "../mere-store-cli/src/slice.h"
 
 #include <QIcon>
 #include <QLabel>
@@ -13,11 +14,13 @@ CreateView::~CreateView()
 
 }
 
-CreateView::CreateView(QWidget *parent)
-    : QWidget(parent)
+CreateView::CreateView(const QString *store, QWidget *parent)
+    : QWidget(parent),
+      m_store(store)
 {
     setObjectName(QString::fromUtf8("MereStoreSelectView"));
     setWindowFlags(Qt::FramelessWindowHint);
+    setWindowModality(Qt::ApplicationModal);
 
     QPalette palette = this->palette();
     palette.setColor(QPalette::Base, Qt::red);
@@ -123,12 +126,24 @@ void CreateView::initHeaderUI()
 void CreateView::create()
 {
     qDebug() << "Create store:" << m_name->text();
+    bool ok = false;
 
-    Store store(m_name->text());
-    bool ok = store.create();
+    if (!m_store)
+    {
+        Store store(m_name->text());
+        ok = store.create();
+    }
+    else
+    {
+        Slice slice(*m_store, m_name->text());
+        ok = slice.create();
+    }
+
     if (!ok)
-        qDebug() << "Failed to create store " << m_name;
-
+    {
+        qDebug() << "Failed to create store/slice" << *m_store << m_name->text();
+        return;
+    }
     emit created();
 }
 

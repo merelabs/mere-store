@@ -4,12 +4,12 @@
 #include <QWidget>
 #include <QDebug>
 
-class ListView : public QWidget
+class PkgListView : public QWidget
 {
     Q_OBJECT
 public:
-    ~ListView();
-    explicit ListView(QWidget *parent = nullptr);
+    ~PkgListView();
+    explicit PkgListView(QWidget *parent = nullptr);
 
 signals:
 

@@ -19,25 +19,25 @@ SOURCES += src/main.cpp  \
     src/detailview.cpp \
     src/exploreview.cpp \
     src/indexview.cpp \
-    src/listview.cpp \
-    src/searchview.cpp \
+    src/pkglistview.cpp \
+    src/pkgsearchview.cpp \
     src/selectview.cpp \
-    src/sliceview.cpp \
     src/storeapp.cpp \
     src/storepanel.cpp \
     src/storeview.cpp \
+    src/sliceview.cpp \
     src/storewin.cpp
 HEADERS +=  \
     src/createview.h \
     src/detailview.h \
     src/exploreview.h \
     src/indexview.h \
-    src/listview.h \
-    src/searchview.h \
+    src/pkglistview.h \
+    src/pkgsearchview.h \
     src/selectview.h \
-    src/sliceview.h \
     src/storeapp.h \
     src/storepanel.h \
+    src/sliceview.h \
     src/storeview.h \
     src/storewin.h
 

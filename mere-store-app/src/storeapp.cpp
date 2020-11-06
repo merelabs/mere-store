@@ -1,8 +1,6 @@
 #include "storeapp.h"
 #include "storewin.h"
 
-#include <QScreen>
-
 StoreApp::~StoreApp()
 {
     if (m_win)
@@ -31,8 +29,7 @@ void StoreApp::init()
 
 void StoreApp::start()
 {
-    QScreen *primaryScreen = this->primaryScreen();;
-    m_win->resize(primaryScreen->size());
+    m_win->resize(m_win->maximumSize());
     m_win->show();
 }
 
